@@ -24,32 +24,35 @@ import FormField from '../molecules/FormField.astro';
 </section>
 
 <script>
-  // @ts-nocheck
   const form = document.querySelector('#capture-form');
   const successMessage = document.querySelector('#capture-form-success');
 
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
+  if (form instanceof HTMLFormElement && successMessage instanceof HTMLElement) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
 
-    let isValid = true;
-    const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
+      const requiredFields = form.querySelectorAll('[required]');
 
-    requiredFields.forEach((field) => {
-      const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
-      if (!field.value.trim()) {
-        isValid = false;
-        if (errorEl) {
-          errorEl.classList.remove('hidden');
-          errorEl.textContent = 'Este campo es obligatorio.';
+      requiredFields.forEach((field) => {
+        if (!(field instanceof HTMLInputElement)) return;
+
+        const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
+        if (!field.value.trim()) {
+          isValid = false;
+          if (errorEl) {
+            errorEl.classList.remove('hidden');
+            errorEl.textContent = 'Este campo es obligatorio.';
+          }
+        } else if (errorEl) {
+          errorEl.classList.add('hidden');
         }
-      } else if (errorEl) {
-        errorEl.classList.add('hidden');
+      });
+
+      if (isValid) {
+        successMessage.classList.remove('hidden');
+        form.reset();
       }
     });
-
-    if (isValid) {
-      successMessage.classList.remove('hidden');
-      form.reset();
-    }
-  });
+  }
 </script>
