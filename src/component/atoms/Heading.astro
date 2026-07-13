@@ -6,7 +6,7 @@ interface Props {
   class?: string;
 }
 
-const { as: Tag = 'h2', size = 'md', align = 'left', class: className } = Astro.props as Props;
+const { as: Tag = 'h2', size = 'md', align = 'left', class: className }: Props = Astro.props;
 
 const sizes = {
   lg: 'text-4xl md:text-5xl font-bold',
