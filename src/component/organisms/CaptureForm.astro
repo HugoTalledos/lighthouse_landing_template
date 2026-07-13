@@ -27,6 +27,13 @@ import FormField from '../molecules/FormField.astro';
 <script>
   const form = document.querySelector('#capture-form');
   const successMessage = document.querySelector('#capture-form-success');
+  const celularInput = document.querySelector('input[name="celular"]');
+
+  if (celularInput instanceof HTMLInputElement) {
+    celularInput.addEventListener('input', () => {
+      celularInput.value = celularInput.value.replace(/\D/g, '');
+    });
+  }
 
   if (form instanceof HTMLFormElement && successMessage instanceof HTMLElement) {
     form.addEventListener('submit', (event) => {
