@@ -1,27 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Container from '../component/atoms/Container.astro';
-import Heading from '../component/atoms/Heading.astro';
-import Text from '../component/atoms/Text.astro';
-import Label from '../component/atoms/Label.astro';
-import Input from '../component/atoms/Input.astro';
-import Button from '../component/atoms/Button.astro';
-import Logo from '../component/molecules/Logo.astro';
-import BenefitCard from '../component/molecules/BenefitCard.astro';
-import FormField from '../component/molecules/FormField.astro';
+import Hero from '../component/organisms/Hero.astro';
+import BenefitsSection from '../component/organisms/BenefitsSection.astro';
+import CaptureForm from '../component/organisms/CaptureForm.astro';
 ---
 
 <BaseLayout>
-  <Container>
-    <Heading as="h1" size="lg">Encabezado de prueba</Heading>
-    <Text muted>Texto de prueba</Text>
-    <Label for="test-input">Etiqueta de prueba</Label>
-    <Input name="test-input" placeholder="Campo de prueba" />
-    <Button variant="primary">Botón de prueba</Button>
-    <Logo />
-    <BenefitCard title="Beneficio de prueba" description="Descripción de prueba">
-      <span slot="icon">*</span>
-    </BenefitCard>
-    <FormField label="Campo de prueba" name="campo-prueba" />
-  </Container>
+  <Hero />
+  <BenefitsSection />
+  <CaptureForm />
 </BaseLayout>

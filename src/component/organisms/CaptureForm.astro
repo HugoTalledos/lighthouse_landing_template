@@ -1,0 +1,55 @@
+---
+import Container from '../atoms/Container.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+import FormField from '../molecules/FormField.astro';
+---
+
+<section class="py-16 md:py-24" id="formulario-captura">
+  <Container class="mx-auto flex max-w-xl flex-col gap-6">
+    <div class="flex flex-col gap-2 text-center">
+      <Heading as="h2" size="md" align="center">Déjanos tus datos</Heading>
+      <Text muted>Te contactaremos con más información.</Text>
+    </div>
+    <form id="capture-form" class="flex flex-col gap-4" novalidate>
+      <FormField label="Nombre" name="nombre" placeholder="Tu nombre" required />
+      <FormField label="Correo electrónico" name="email" type="email" placeholder="tu@correo.com" required />
+      <Button type="submit" variant="primary">Enviar</Button>
+      <p id="capture-form-success" class="hidden text-center text-sm text-green-600">
+        ¡Gracias! Hemos recibido tu información.
+      </p>
+    </form>
+  </Container>
+</section>
+
+<script>
+  // @ts-nocheck
+  const form = document.querySelector('#capture-form');
+  const successMessage = document.querySelector('#capture-form-success');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    let isValid = true;
+    const requiredFields = form.querySelectorAll('[required]');
+
+    requiredFields.forEach((field) => {
+      const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
+      if (!field.value.trim()) {
+        isValid = false;
+        if (errorEl) {
+          errorEl.classList.remove('hidden');
+          errorEl.textContent = 'Este campo es obligatorio.';
+        }
+      } else if (errorEl) {
+        errorEl.classList.add('hidden');
+      }
+    });
+
+    if (isValid) {
+      successMessage.classList.remove('hidden');
+      form.reset();
+    }
+  });
+</script>

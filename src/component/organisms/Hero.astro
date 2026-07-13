@@ -1,0 +1,30 @@
+---
+import Container from '../atoms/Container.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+import Logo from '../molecules/Logo.astro';
+---
+
+<header class="border-b border-gray-200">
+  <Container class="flex items-center justify-between py-6">
+    <Logo />
+  </Container>
+</header>
+
+<section class="py-16 md:py-24">
+  <Container class="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+    <div class="flex flex-col gap-6">
+      <Heading as="h1" size="lg">Título principal de tu producto o servicio</Heading>
+      <Text size="lg" muted>
+        Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.
+      </Text>
+      <div>
+        <Button variant="primary" href="#formulario-captura">Comenzar ahora</Button>
+      </div>
+    </div>
+    <div class="flex h-64 w-full items-center justify-center rounded-lg bg-[var(--color-bg-muted)] md:h-96">
+      <Text muted>[Espacio para imagen o ilustración]</Text>
+    </div>
+  </Container>
+</section>

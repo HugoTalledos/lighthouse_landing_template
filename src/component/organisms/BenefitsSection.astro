@@ -1,0 +1,25 @@
+---
+import Container from '../atoms/Container.astro';
+import Heading from '../atoms/Heading.astro';
+import BenefitCard from '../molecules/BenefitCard.astro';
+import checkIcon from '../../assets/icon-placeholder.svg?raw';
+
+const benefits = [
+  { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
+  { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
+  { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
+];
+---
+
+<section class="py-16 md:py-24" id="beneficios">
+  <Container class="flex flex-col gap-10">
+    <Heading as="h2" size="md" align="center">Beneficios</Heading>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {benefits.map((benefit) => (
+        <BenefitCard title={benefit.title} description={benefit.description}>
+          <Fragment slot="icon" set:html={checkIcon} />
+        </BenefitCard>
+      ))}
+    </div>
+  </Container>
+</section>
