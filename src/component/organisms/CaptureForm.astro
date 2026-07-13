@@ -15,6 +15,7 @@ import FormField from '../molecules/FormField.astro';
     <form id="capture-form" class="flex flex-col gap-4" novalidate>
       <FormField label="Nombre" name="nombre" placeholder="Tu nombre" required />
       <FormField label="Correo electrónico" name="email" type="email" placeholder="tu@correo.com" required />
+      <FormField label="Número de celular" name="celular" type="tel" placeholder="3001234567" required />
       <Button type="submit" variant="primary">Enviar</Button>
       <p id="capture-form-success" class="hidden text-center text-sm text-green-600">
         ¡Gracias! Hemos recibido tu información.
@@ -38,15 +39,27 @@ import FormField from '../molecules/FormField.astro';
         if (!(field instanceof HTMLInputElement)) return;
 
         const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
-        if (!field.value.trim()) {
+        const value = field.value.trim();
+
+        if (!value) {
           isValid = false;
           if (errorEl) {
             errorEl.classList.remove('hidden');
             errorEl.textContent = 'Este campo es obligatorio.';
           }
-        } else if (errorEl) {
-          errorEl.classList.add('hidden');
+          return;
         }
+
+        if (field.name === 'celular' && !/^3\d{9}$/.test(value)) {
+          isValid = false;
+          if (errorEl) {
+            errorEl.classList.remove('hidden');
+            errorEl.textContent = 'Ingresa un número de celular válido (10 dígitos, inicia en 3).';
+          }
+          return;
+        }
+
+        if (errorEl) errorEl.classList.add('hidden');
       });
 
       if (isValid) {
