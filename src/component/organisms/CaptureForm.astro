@@ -20,6 +20,9 @@ import FormField from '../molecules/FormField.astro';
       <p id="capture-form-success" class="hidden text-center text-sm text-green-600">
         ¡Gracias! Hemos recibido tu información.
       </p>
+      <p id="capture-form-error" class="hidden text-center text-sm text-red-600">
+        Ocurrió un error al enviar tu información. Intenta de nuevo.
+      </p>
     </form>
   </Container>
 </section>
@@ -27,6 +30,8 @@ import FormField from '../molecules/FormField.astro';
 <script>
   const form = document.querySelector('#capture-form');
   const successMessage = document.querySelector('#capture-form-success');
+  const errorMessage = document.querySelector('#capture-form-error');
+  const submitButton = form?.querySelector('button[type="submit"]');
   const celularInput = document.querySelector('input[name="celular"]');
 
   if (celularInput instanceof HTMLInputElement) {
@@ -35,9 +40,16 @@ import FormField from '../molecules/FormField.astro';
     });
   }
 
-  if (form instanceof HTMLFormElement && successMessage instanceof HTMLElement) {
-    form.addEventListener('submit', (event) => {
+  if (
+    form instanceof HTMLFormElement &&
+    successMessage instanceof HTMLElement &&
+    errorMessage instanceof HTMLElement &&
+    submitButton instanceof HTMLButtonElement
+  ) {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
+
+      errorMessage.classList.add('hidden');
 
       let isValid = true;
       const requiredFields = form.querySelectorAll('[required]');
@@ -69,9 +81,39 @@ import FormField from '../molecules/FormField.astro';
         if (errorEl) errorEl.classList.add('hidden');
       });
 
-      if (isValid) {
+      if (!isValid) return;
+
+      const formData = new FormData(form);
+      const originalButtonText = submitButton.textContent;
+      submitButton.disabled = true;
+      submitButton.textContent = 'Enviando...';
+
+      try {
+        const response = await fetch(import.meta.env.PUBLIC_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': import.meta.env.PUBLIC_API_KEY,
+          },
+          body: JSON.stringify({
+            email: formData.get('email'),
+            phone: formData.get('celular'),
+            name: formData.get('nombre'),
+            platform: import.meta.env.PUBLIC_PLATFORM_NAME,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
         successMessage.classList.remove('hidden');
         form.reset();
+      } catch {
+        errorMessage.classList.remove('hidden');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
       }
     });
   }

@@ -11,11 +11,22 @@ Template de landing page "marca blanca" hecho con Astro, TypeScript y Tailwind C
 
 ```bash
 npm install
+cp .env.example .env   # completa PUBLIC_API_URL, PUBLIC_API_KEY y PUBLIC_PLATFORM_NAME
 npm run dev      # servidor de desarrollo en http://localhost:4321
 npm run build    # build de producción en dist/
 npm run preview  # sirve el build de producción localmente
 npm run check    # type-check con astro check
 ```
+
+## Variables de entorno
+
+| Variable | Descripción |
+| --- | --- |
+| `PUBLIC_API_URL` | URL del servicio backend al que el formulario de captura envía los datos (`POST`). |
+| `PUBLIC_API_KEY` | API key del servicio backend, enviada en el header `x-api-key`. |
+| `PUBLIC_PLATFORM_NAME` | Identificador de la plataforma/proyecto que se envía en el payload (campo `platform`). |
+
+**Importante:** al llevar el prefijo `PUBLIC_`, Astro expone estos valores en el bundle de JavaScript que se sirve al navegador — no son secretos ocultos. Cualquiera que inspeccione el sitio puede ver la API key. Esto es inherente a que el formulario es 100% client-side, sin backend propio intermedio.
 
 ## Estructura
 
@@ -55,4 +66,4 @@ El copy de ejemplo (títulos, descripciones de beneficios, textos del formulario
 
 ## Formulario de captura
 
-El formulario en `CaptureForm.astro` es solo UI: valida campos requeridos en el cliente y muestra un mensaje de éxito simulado. No envía datos a ningún backend — hay que conectarlo al servicio que corresponda en cada proyecto.
+El formulario en `CaptureForm.astro` valida nombre, correo y celular en el cliente (el celular debe tener 10 dígitos e iniciar en 3) y, si pasa la validación, envía los datos por `fetch` a `PUBLIC_API_URL`. Mientras espera la respuesta el botón muestra "Enviando...". Si el backend responde con éxito se muestra el mensaje de agradecimiento y se limpia el formulario; si falla (red o respuesta no exitosa) se muestra un mensaje de error y los datos ingresados se conservan para reintentar.
