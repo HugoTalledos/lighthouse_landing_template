@@ -1,0 +1,20 @@
+---
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  class?: string;
+}
+
+const { title, description, class: className } = Astro.props;
+---
+
+<div class={`flex flex-col items-start gap-3 rounded-lg bg-[var(--color-bg-muted)] p-6 ${className ?? ''}`}>
+  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-primary-foreground)]">
+    <slot name="icon" />
+  </div>
+  <Heading as="h3" size="sm">{title}</Heading>
+  <Text muted>{description}</Text>
+</div>

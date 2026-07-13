@@ -6,6 +6,9 @@ import Text from '../component/atoms/Text.astro';
 import Label from '../component/atoms/Label.astro';
 import Input from '../component/atoms/Input.astro';
 import Button from '../component/atoms/Button.astro';
+import Logo from '../component/molecules/Logo.astro';
+import BenefitCard from '../component/molecules/BenefitCard.astro';
+import FormField from '../component/molecules/FormField.astro';
 ---
 
 <BaseLayout>
@@ -15,5 +18,10 @@ import Button from '../component/atoms/Button.astro';
     <Label for="test-input">Etiqueta de prueba</Label>
     <Input name="test-input" placeholder="Campo de prueba" />
     <Button variant="primary">Botón de prueba</Button>
+    <Logo />
+    <BenefitCard title="Beneficio de prueba" description="Descripción de prueba">
+      <span slot="icon">*</span>
+    </BenefitCard>
+    <FormField label="Campo de prueba" name="campo-prueba" />
   </Container>
 </BaseLayout>
