@@ -1,0 +1,25 @@
+---
+interface Props {
+  as?: 'h1' | 'h2' | 'h3';
+  size?: 'lg' | 'md' | 'sm';
+  align?: 'left' | 'center';
+  class?: string;
+}
+
+const { as: Tag = 'h2', size = 'md', align = 'left', class: className } = Astro.props;
+
+const sizes = {
+  lg: 'text-4xl md:text-5xl font-bold',
+  md: 'text-2xl md:text-3xl font-bold',
+  sm: 'text-xl font-semibold',
+};
+
+const aligns = {
+  left: 'text-left',
+  center: 'text-center',
+};
+---
+
+<Tag class={`${sizes[size]} ${aligns[align]} ${className ?? ''}`}>
+  <slot />
+</Tag>

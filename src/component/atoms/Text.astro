@@ -1,0 +1,19 @@
+---
+interface Props {
+  size?: 'lg' | 'md' | 'sm';
+  muted?: boolean;
+  class?: string;
+}
+
+const { size = 'md', muted = false, class: className } = Astro.props;
+
+const sizes = {
+  lg: 'text-lg',
+  md: 'text-base',
+  sm: 'text-sm',
+};
+---
+
+<p class={`${sizes[size]} ${muted ? 'text-[var(--color-text-muted)]' : ''} ${className ?? ''}`}>
+  <slot />
+</p>
