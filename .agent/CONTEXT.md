@@ -48,6 +48,24 @@ Dependencies only flow one way: **atoms → molecules → organisms → pages**.
 
 All brand colors/typography are CSS custom properties in `src/styles/global.css` (`--color-primary`, `--color-primary-foreground`, `--color-secondary`, `--color-bg`, `--color-bg-muted`, `--color-text`, `--color-text-muted`, `--font-sans`). Components reference them via Tailwind arbitrary-value classes, e.g. `bg-[var(--color-primary)]`. To re-skin the template for a project, edit `:root` in `global.css` — don't hardcode colors directly in component markup.
 
+### Data-driven composition (`src/data/page.json`)
+
+`src/pages/index.astro` statically imports `../data/page.json` (a plain ESM
+JSON import, resolved at build time by Vite/Astro — no fetch, no SSR). In the
+real pipeline, `lighthouse_back`'s `LandingBuilderService.build()` writes this
+exact path (via `page_renderer.py`) *before* invoking `astro build`, so the
+import always sees the brief-driven content for that build. The file
+committed in this repo (Task 2 of
+`lighthouse_back/docs/superpowers/plans/2026-07-17-landing-template-data-wiring.md`)
+is only a fixture so `npm run dev`/`npm run check` work standalone.
+
+`index.astro` only consumes the `hero` and `features` section types (by
+`type` discriminant) — any other section type present in `page.json` is
+silently ignored, and `theme.primary_color`/`secondary_color`/`font_family`
+are regex-validated before being interpolated into an inline `<style>`
+override in `BaseLayout`, since this content originates from an LLM and ends
+up in HTML served to real visitors.
+
 ### Class-merging convention
 
 `src/utils/cn.ts` wraps `clsx` + `tailwind-merge` for combining a component's own classes with a caller-supplied `class` prop (with proper Tailwind conflict resolution). Currently only `Button.astro` uses it; the other atoms (`Container`, `Label`, `Input`, `Text`, `Heading`) concatenate classes with template literals (`` `${...} ${className ?? ''}` ``) instead. This is inconsistent but intentional-as-shipped — if you need real override/dedup behavior on one of those atoms (not just appending), switch it to `cn()` rather than assuming the template-literal version already merges correctly.
