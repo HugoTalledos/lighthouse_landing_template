@@ -271,9 +271,19 @@ molecule's icon-slot convention if you customize per-item icons.
 `organisms/CaptureForm.astro` (+ `CaptureForm.client.ts`)
 
 **Use when** you need the lead-capture form section: nombre / email / celular
-fields + submit button + success/error messages. No props — fields are
-hardcoded in the markup via `FormField`. Renders with
-`id="formulario-captura"` (must match `Hero`'s CTA anchor).
+fields + submit button + success/error messages. Heading, subtitle,
+alignment, and the submit button's label come from required props (no
+defaults); the fields themselves stay hardcoded in the markup via
+`FormField`, since they're tied to the validation logic in
+`CaptureForm.client.ts`. Renders with `id="formulario-captura"` (must match
+`Hero`'s CTA anchor).
+
+| Prop       | Type                  | Default      | Notes |
+|------------|-----------------------|--------------|-------|
+| `heading`  | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `subtitle` | `string`              | — (required) | Rendered via `Text muted` |
+| `align`    | `'left' \| 'center'`  | — (required) | Alignment of the heading/subtitle block; passed to `Heading` |
+| `ctaLabel` | `string`              | — (required) | Submit button text |
 
 To add a new field: add a `FormField` with `required` if it should be
 validated, and if it needs custom validation beyond "non-empty", add a
@@ -284,7 +294,12 @@ Don't inline new client logic into `CaptureForm.astro`'s `<script>` tag; add
 it to `CaptureForm.client.ts`.
 
 ```astro
-<CaptureForm />
+<CaptureForm
+  heading="Déjanos tus datos"
+  subtitle="Te contactaremos con más información."
+  align="center"
+  ctaLabel="Enviar"
+/>
 ```
 
 ---
@@ -302,9 +317,29 @@ import CaptureForm from '../component/organisms/CaptureForm.astro';
 ---
 
 <BaseLayout title="Landing Page Template">
-  <Hero />
-  <BenefitsSection />
-  <CaptureForm />
+  <Hero
+    title="Título principal de tu producto o servicio"
+    subtitle="Subtítulo de apoyo que explica en una frase el valor de lo que ofreces."
+    ctaLabel="Comenzar ahora"
+    align="left"
+    textPosition="left"
+  />
+  <BenefitsSection
+    heading="Beneficios"
+    headingAlign="center"
+    cardAlign="left"
+    items={[
+      { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
+      { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
+      { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
+    ]}
+  />
+  <CaptureForm
+    heading="Déjanos tus datos"
+    subtitle="Te contactaremos con más información."
+    align="center"
+    ctaLabel="Enviar"
+  />
 </BaseLayout>
 ```
 
