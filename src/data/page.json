@@ -1,0 +1,27 @@
+{
+  "theme": {
+    "primary_color": "#4f46e5",
+    "secondary_color": "#0ea5e9",
+    "font_family": "Inter",
+    "logo_url": null
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "headline": "Título principal de tu producto o servicio",
+      "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
+      "image_url": null,
+      "cta_text": "Comenzar ahora",
+      "cta_url": null
+    },
+    {
+      "type": "features",
+      "headline": "Beneficios",
+      "items": [
+        { "icon": "check", "title": "Beneficio uno", "description": "Descripción breve del primer beneficio ofrecido." },
+        { "icon": "check", "title": "Beneficio dos", "description": "Descripción breve del segundo beneficio ofrecido." },
+        { "icon": "check", "title": "Beneficio tres", "description": "Descripción breve del tercer beneficio ofrecido." }
+      ]
+    }
+  ]
+}

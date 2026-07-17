@@ -306,42 +306,20 @@ it to `CaptureForm.client.ts`.
 
 ## Composition example (page-level)
 
-This is the entire composition surface of the template — `src/pages/index.astro`:
+`src/pages/index.astro` reads `src/data/page.json` (a `PageComposition` written
+by `lighthouse_back`'s `page_renderer.py` before `astro build` runs) and maps
+its `hero` and `features` sections onto `Hero` and `BenefitsSection` props,
+falling back to the placeholder copy below when a section is absent. Theme
+colors (`theme.primary_color`/`secondary_color`/`font_family`) are validated
+(hex-only colors, alnum-only font name) and passed to `BaseLayout` as CSS
+custom property overrides. `CaptureForm` stays hardcoded — `PageComposition`
+has no section type that maps to it. See `src/pages/index.astro` for the
+current implementation.
 
-```astro
----
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../component/organisms/Hero.astro';
-import BenefitsSection from '../component/organisms/BenefitsSection.astro';
-import CaptureForm from '../component/organisms/CaptureForm.astro';
----
-
-<BaseLayout title="Landing Page Template">
-  <Hero
-    title="Título principal de tu producto o servicio"
-    subtitle="Subtítulo de apoyo que explica en una frase el valor de lo que ofreces."
-    ctaLabel="Comenzar ahora"
-    align="left"
-    textPosition="left"
-  />
-  <BenefitsSection
-    heading="Beneficios"
-    headingAlign="center"
-    cardAlign="left"
-    items={[
-      { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
-      { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
-      { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
-    ]}
-  />
-  <CaptureForm
-    heading="Déjanos tus datos"
-    subtitle="Te contactaremos con más información."
-    align="center"
-    ctaLabel="Enviar"
-  />
-</BaseLayout>
-```
+Known gap: `testimonials`/`pricing`/`faq`/`cta`/`footer` section types from
+`PageComposition` have no organism yet and are silently ignored if present in
+`page.json`. `HeroSection.image_url`/`cta_url` and `FeatureItem.icon` are read
+but not rendered.
 
 If asked to build a new page or a variant, compose from these three
 organisms first before reaching for atoms/molecules directly — that's the

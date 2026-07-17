@@ -3,25 +3,67 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../component/organisms/Hero.astro';
 import BenefitsSection from '../component/organisms/BenefitsSection.astro';
 import CaptureForm from '../component/organisms/CaptureForm.astro';
+import pageData from '../data/page.json';
+
+interface RawSection {
+  type: string;
+  [key: string]: unknown;
+}
+
+interface RawTheme {
+  primary_color: string;
+  secondary_color: string;
+  font_family: string;
+}
+
+interface PageData {
+  theme: RawTheme;
+  sections: RawSection[];
+}
+
+const data = pageData as PageData;
+
+const HEX_COLOR_RE = /^#[0-9a-fA-F]{3,8}$/;
+const SAFE_FONT_RE = /^[A-Za-z0-9 _-]+$/;
+
+function sanitizeTheme(theme: RawTheme) {
+  return {
+    primaryColor: HEX_COLOR_RE.test(theme.primary_color) ? theme.primary_color : '#4f46e5',
+    secondaryColor: HEX_COLOR_RE.test(theme.secondary_color) ? theme.secondary_color : '#0ea5e9',
+    fontFamily: SAFE_FONT_RE.test(theme.font_family) ? theme.font_family : 'Inter',
+  };
+}
+
+const heroSection = data.sections.find((s) => s.type === 'hero') as
+  | { headline: string; subheadline: string; cta_text: string }
+  | undefined;
+
+const featuresSection = data.sections.find((s) => s.type === 'features') as
+  | { headline?: string; items: { title: string; description: string }[] }
+  | undefined;
+
+const theme = sanitizeTheme(data.theme);
+
+const fallbackItems = [
+  { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
+  { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
+  { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
+];
 ---
 
-<BaseLayout title="Landing Page Template">
+<BaseLayout title="Landing Page Template" theme={theme}>
   <Hero
-    title="Título principal de tu producto o servicio"
-    subtitle="Subtítulo de apoyo que explica en una frase el valor de lo que ofreces."
-    ctaLabel="Comenzar ahora"
+    title={heroSection?.headline ?? 'Título principal de tu producto o servicio'}
+    subtitle={heroSection?.subheadline ?? 'Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.'}
+    ctaLabel={heroSection?.cta_text ?? 'Comenzar ahora'}
     align="left"
     textPosition="left"
   />
   <BenefitsSection
-    heading="Beneficios"
+    heading={featuresSection?.headline ?? 'Beneficios'}
     headingAlign="center"
     cardAlign="left"
-    items={[
-      { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
-      { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
-      { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
-    ]}
+    items={(featuresSection?.items ?? fallbackItems).map(({ title, description }) => ({ title, description }))}
   />
   <CaptureForm
     heading="Déjanos tus datos"
