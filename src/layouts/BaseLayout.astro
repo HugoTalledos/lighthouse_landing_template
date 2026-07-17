@@ -1,11 +1,18 @@
 ---
 import '../styles/global.css';
 
-interface Props {
-  title?: string;
+interface Theme {
+  primaryColor: string;
+  secondaryColor: string;
+  fontFamily: string;
 }
 
-const { title = 'Landing Page Template' } = Astro.props;
+interface Props {
+  title?: string;
+  theme?: Theme;
+}
+
+const { title = 'Landing Page Template', theme }: Props = Astro.props;
 ---
 
 <!doctype html>
@@ -15,6 +22,9 @@ const { title = 'Landing Page Template' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    {theme && (
+      <style set:html={`:root { --color-primary: ${theme.primaryColor}; --color-secondary: ${theme.secondaryColor}; --font-sans: '${theme.fontFamily}', system-ui, sans-serif; }`} />
+    )}
   </head>
   <body>
     <slot />
