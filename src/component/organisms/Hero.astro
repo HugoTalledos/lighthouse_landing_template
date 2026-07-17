@@ -4,6 +4,31 @@ import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import Button from '../atoms/Button.astro';
 import Logo from '../molecules/Logo.astro';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  ctaLabel: string;
+  align: 'left' | 'center';
+  textPosition: 'left' | 'right';
+}
+
+const { title, subtitle, ctaLabel, align, textPosition }: Props = Astro.props;
+
+const alignClasses = {
+  left: 'items-start text-left',
+  center: 'items-center text-center',
+};
+
+const textOrderClasses = {
+  left: 'md:order-1',
+  right: 'md:order-2',
+};
+
+const imageOrderClasses = {
+  left: 'md:order-2',
+  right: 'md:order-1',
+};
 ---
 
 <header class="border-b border-gray-200">
@@ -14,16 +39,16 @@ import Logo from '../molecules/Logo.astro';
 
 <section class="py-16 md:py-24">
   <Container class="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-    <div class="flex flex-col gap-6">
-      <Heading as="h1" size="lg">Título principal de tu producto o servicio</Heading>
+    <div class={`flex flex-col gap-6 ${alignClasses[align]} ${textOrderClasses[textPosition]}`}>
+      <Heading as="h1" size="lg" align={align}>{title}</Heading>
       <Text size="lg" muted>
-        Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.
+        {subtitle}
       </Text>
       <div>
-        <Button variant="primary" href="#formulario-captura">Comenzar ahora</Button>
+        <Button variant="primary" href="#formulario-captura">{ctaLabel}</Button>
       </div>
     </div>
-    <div class="flex h-64 w-full items-center justify-center rounded-lg bg-[var(--color-bg-muted)] md:h-96">
+    <div class={`flex h-64 w-full items-center justify-center rounded-lg bg-[var(--color-bg-muted)] md:h-96 ${imageOrderClasses[textPosition]}`}>
       <Text muted>[Espacio para imagen o ilustración]</Text>
     </div>
   </Container>

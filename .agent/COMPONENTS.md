@@ -210,13 +210,29 @@ template is deliberately scoped to Hero → Beneficios → Formulario.
 `organisms/Hero.astro`
 
 **Use when** you need the page's top section: header bar (logo) + hero
-banner (headline, subtitle, primary CTA button, image placeholder). No
-props — all copy is inline placeholder text meant to be edited per-project.
-The CTA button links to `#formulario-captura`, which must match
-`CaptureForm`'s section `id` — keep that anchor in sync if you rename either.
+banner (headline, subtitle, primary CTA button, image placeholder). All
+copy and layout come from required props — there are no defaults, so every
+usage must pass them explicitly. The CTA button always links to
+`#formulario-captura`, which must match `CaptureForm`'s section `id` — that
+anchor is not configurable via props, to avoid an agent breaking the link
+by accident.
+
+| Prop           | Type                   | Default      | Notes |
+|----------------|------------------------|--------------|-------|
+| `title`        | `string`               | — (required) | Rendered via `Heading as="h1" size="lg"` |
+| `subtitle`     | `string`               | — (required) | Rendered via `Text size="lg" muted` |
+| `ctaLabel`     | `string`               | — (required) | CTA button text; href is fixed to `#formulario-captura` |
+| `align`        | `'left' \| 'center'`   | — (required) | Alignment of title/subtitle/button within the text column |
+| `textPosition` | `'left' \| 'right'`    | — (required) | Which side the text column renders on at `md:`; the image placeholder takes the other side. Text stays first in DOM order regardless. |
 
 ```astro
-<Hero />
+<Hero
+  title="Título principal de tu producto o servicio"
+  subtitle="Subtítulo de apoyo que explica en una frase el valor de lo que ofreces."
+  ctaLabel="Comenzar ahora"
+  align="left"
+  textPosition="left"
+/>
 ```
 
 ### BenefitsSection
