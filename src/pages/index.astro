@@ -13,6 +13,15 @@ import CaptureForm from '../component/organisms/CaptureForm.astro';
     align="left"
     textPosition="left"
   />
-  <BenefitsSection />
+  <BenefitsSection
+    heading="Beneficios"
+    headingAlign="center"
+    cardAlign="left"
+    items={[
+      { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
+      { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
+      { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
+    ]}
+  />
   <CaptureForm />
 </BaseLayout>

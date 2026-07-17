@@ -166,18 +166,19 @@ description card. This is what `BenefitsSection` maps over; use it for any
 similar icon-title-description grid (e.g. a future "features" or "how it
 works" section), not just literally "beneficios".
 
-| Prop          | Type     | Default      | Notes |
-|---------------|----------|--------------|-------|
-| `title`       | `string` | — (required) | Rendered via `Heading as="h3" size="sm"` |
-| `description` | `string` | — (required) | Rendered via `Text muted` |
-| `class`       | `string` | —            | Appended, not merged |
+| Prop          | Type                  | Default      | Notes |
+|---------------|-----------------------|--------------|-------|
+| `title`       | `string`              | — (required) | Rendered via `Heading as="h3" size="sm"` |
+| `description` | `string`              | — (required) | Rendered via `Text muted` |
+| `align`       | `'left' \| 'center'`  | — (required) | Controls card content alignment; passed through to the internal `Heading` |
+| `class`       | `string`              | —            | Appended, not merged |
 
 Named slot `icon` — pass an inline SVG (see `BenefitsSection.astro`'s
 `set:html={checkIcon}` pattern for importing an SVG with `?raw` and injecting
 it).
 
 ```astro
-<BenefitCard title={benefit.title} description={benefit.description}>
+<BenefitCard title={benefit.title} description={benefit.description} align="left">
   <Fragment slot="icon" set:html={checkIcon} />
 </BenefitCard>
 ```
@@ -239,14 +240,30 @@ by accident.
 
 `organisms/BenefitsSection.astro`
 
-**Use when** you need the 3-column benefits/features grid. No props — the
-`benefits` array (title/description per card) is defined inline in the
-component; edit that array to change copy/count. Renders with
-`id="beneficios"` for anchor-linking. Uses `BenefitCard` under the hood, so
-follow that molecule's icon-slot convention if you add more cards.
+**Use when** you need the benefits/features grid (`md:grid-cols-3`, wraps
+for other counts). All copy, alignment, and the card list come from
+required props — there are no defaults. Renders with `id="beneficios"` for
+anchor-linking. Uses `BenefitCard` under the hood, so follow that
+molecule's icon-slot convention if you customize per-item icons.
+
+| Prop           | Type                  | Default      | Notes |
+|----------------|-----------------------|--------------|-------|
+| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
+| `cardAlign`    | `'left' \| 'center'`  | — (required) | Passed to every `BenefitCard` uniformly |
+| `items`        | `BenefitItem[]`       | — (required) | `{ title: string; description: string; icon?: string }[]`. Length is variable — not fixed to 3. `icon` is a raw SVG string; omit to fall back to the placeholder icon. |
 
 ```astro
-<BenefitsSection />
+<BenefitsSection
+  heading="Beneficios"
+  headingAlign="center"
+  cardAlign="left"
+  items={[
+    { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
+    { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
+    { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
+  ]}
+/>
 ```
 
 ### CaptureForm
