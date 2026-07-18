@@ -264,6 +264,24 @@ over.
 />
 ```
 
+### FaqItem
+
+`molecules/FaqItem.astro`
+
+**Use when** rendering one question/answer pair in an FAQ list. Uses a
+native `<details>/<summary>` element — no JavaScript, accessible by
+default. This is what `FaqSection` maps over.
+
+| Prop       | Type     | Default      | Notes |
+|------------|----------|--------------|-------|
+| `question` | `string` | — (required) | Rendered in `<summary>` |
+| `answer`   | `string` | — (required) | Rendered via `Text muted`, shown when the `<details>` is expanded |
+| `class`    | `string` | —            | Appended, not merged |
+
+```astro
+<FaqItem question="¿Cómo puedo cancelar mi suscripción?" answer="Puedes cancelar en cualquier momento." />
+```
+
 ---
 
 ## Organisms
@@ -420,6 +438,30 @@ only when a `testimonials` section is present in `page.json`.
   headingAlign="center"
   items={[
     { quote: 'La calidad del café es inigualable.', authorName: 'María Sánchez', authorRole: 'Amante del café' },
+  ]}
+/>
+```
+
+### FaqSection
+
+`organisms/FaqSection.astro`
+
+**Use when** you need an FAQ list (not a grid — items stack top-to-bottom).
+Renders with `id="preguntas-frecuentes"`. Renders conditionally in
+`index.astro` — only when a `faq` section is present in `page.json`.
+
+| Prop           | Type                  | Default      | Notes |
+|----------------|-----------------------|--------------|-------|
+| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
+| `items`        | `FaqEntry[]`          | — (required) | `{ question: string; answer: string }[]` |
+
+```astro
+<FaqSection
+  heading="Preguntas frecuentes"
+  headingAlign="center"
+  items={[
+    { question: '¿Cómo puedo cancelar mi suscripción?', answer: 'Puedes cancelar en cualquier momento.' },
   ]}
 />
 ```
