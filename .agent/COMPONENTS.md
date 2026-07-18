@@ -313,24 +313,28 @@ template is deliberately scoped to Hero → Beneficios → Formulario.
 `organisms/Hero.astro`
 
 **Use when** you need the page's top section: header bar (logo) + hero
-banner (headline, subtitle, primary CTA button, image placeholder). Copy,
-layout, and CTA props are required — there are no defaults, so every usage
-must pass them explicitly. `logoText`/`logoIcon` are optional and forwarded
-straight through to `Logo`; omit them to fall back to `Logo`'s own default
-(`'[Tu Marca]'`, no icon). The CTA button always links to
-`#formulario-captura`, which must match `CaptureForm`'s section `id` — that
-anchor is not configurable via props, to avoid an agent breaking the link
-by accident.
+banner (headline, subtitle, primary CTA button, image or placeholder).
+Copy, layout, and CTA label/alignment props are required — there are no
+defaults, so every usage must pass them explicitly. `logoText`/`logoIcon`
+are optional and forwarded straight through to `Logo`; omit them to fall
+back to `Logo`'s own default (`'[Tu Marca]'`, no icon). `imageUrl` is
+optional — when omitted, the `[Espacio para imagen...]` placeholder box
+renders as before. `ctaHref` is optional and defaults to
+`#formulario-captura` (must match `CaptureForm`'s section `id`) — passing it
+explicitly lets `page.json`'s `cta_url` override the default without every
+other caller needing to specify it.
 
-| Prop           | Type                   | Default      | Notes |
-|----------------|------------------------|--------------|-------|
-| `title`        | `string`               | — (required) | Rendered via `Heading as="h1" size="lg"` |
-| `subtitle`     | `string`               | — (required) | Rendered via `Text size="lg" muted` |
-| `ctaLabel`     | `string`               | — (required) | CTA button text; href is fixed to `#formulario-captura` |
-| `align`        | `'left' \| 'center'`   | — (required) | Alignment of title/subtitle/button within the text column |
-| `textPosition` | `'left' \| 'right'`    | — (required) | Which side the text column renders on at `md:`; the image placeholder takes the other side. Text stays first in DOM order regardless. |
-| `logoText`     | `string`               | —            | Forwarded to `Logo`'s `text` prop |
-| `logoIcon`     | `string`               | —            | Raw SVG string forwarded to `Logo`'s `icon` slot via `set:html` |
+| Prop           | Type                   | Default                  | Notes |
+|----------------|------------------------|----------------------------|-------|
+| `title`        | `string`               | — (required)               | Rendered via `Heading as="h1" size="lg"` |
+| `subtitle`     | `string`               | — (required)               | Rendered via `Text size="lg" muted` |
+| `ctaLabel`     | `string`               | — (required)               | CTA button text |
+| `align`        | `'left' \| 'center'`   | — (required)               | Alignment of title/subtitle/button within the text column |
+| `textPosition` | `'left' \| 'right'`    | — (required)               | Which side the text column renders on at `md:`; the image placeholder takes the other side. Text stays first in DOM order regardless. |
+| `logoText`     | `string`               | —                          | Forwarded to `Logo`'s `text` prop |
+| `logoIcon`     | `string`               | —                          | Raw SVG string forwarded to `Logo`'s `icon` slot via `set:html` |
+| `imageUrl`     | `string`               | placeholder box            | When present, renders an `<img>` instead of the `[Espacio para imagen...]` placeholder |
+| `ctaHref`      | `string`               | `'#formulario-captura'`    | CTA button link target |
 
 ```astro
 <Hero

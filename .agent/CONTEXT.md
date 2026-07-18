@@ -78,6 +78,15 @@ addition is fixture/template-side only — verify `lighthouse_back`'s
 `page_renderer.py` actually populates `logo_text`/`logo_icon` before
 depending on them in the real pipeline.
 
+`Hero.imageUrl`/`ctaHref` are also optional props, read from
+`HeroSection.image_url`/`cta_url` in `page.json`. `ctaHref` was previously
+documented as fixed/non-configurable to prevent an agent from accidentally
+breaking the anchor link to `CaptureForm`'s `id="formulario-captura"`; it's
+now optional with that same anchor as the default, so existing callers
+(including `index.astro` when `cta_url` is `null`) are unaffected, and only
+an explicit non-null `cta_url` overrides it. `image_url` is interpolated
+into an `<img src>` unsanitized — same trust model as the fields above.
+
 ### Class-merging convention
 
 `src/utils/cn.ts` wraps `clsx` + `tailwind-merge` for combining a component's own classes with a caller-supplied `class` prop (with proper Tailwind conflict resolution). Currently only `Button.astro` uses it; the other atoms (`Container`, `Label`, `Input`, `Text`, `Heading`) concatenate classes with template literals (`` `${...} ${className ?? ''}` ``) instead. This is inconsistent but intentional-as-shipped — if you need real override/dedup behavior on one of those atoms (not just appending), switch it to `cn()` rather than assuming the template-literal version already merges correctly.
