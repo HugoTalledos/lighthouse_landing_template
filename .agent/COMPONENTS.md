@@ -214,6 +214,33 @@ runtime. If you add a new component with an optional icon slot, use the same
 <Logo text="Acme Inc." />
 ```
 
+### PricingCard
+
+`molecules/PricingCard.astro`
+
+**Use when** rendering one plan in a pricing grid — name, price, optional
+period, feature list, CTA button. This is what `PricingSection` maps over.
+
+| Prop       | Type       | Default                    | Notes |
+|------------|------------|-----------------------------|-------|
+| `name`     | `string`   | — (required)                | Rendered via `Heading as="h3" size="sm"` |
+| `price`    | `string`   | — (required)                | Rendered as a styled `<p>`, not through `Heading`/`Text` — neither atom offers a "large numeral" style |
+| `period`   | `string`   | —                            | Appended muted after `price` when present, e.g. `/mes` |
+| `features` | `string[]` | — (required)                | Rendered as a `✓`-prefixed list, `Text size="sm"` each |
+| `ctaLabel` | `string`   | — (required)                | Button text |
+| `ctaHref`  | `string`   | `'#formulario-captura'`     | Button link target |
+| `class`    | `string`   | —                            | Appended, not merged |
+
+```astro
+<PricingCard
+  name="Plan Individual"
+  price="$15.99"
+  period="/mes"
+  features={['Café de alta calidad', 'Entrega rápida']}
+  ctaLabel="Suscríbete ahora"
+/>
+```
+
 ---
 
 ## Organisms
@@ -322,6 +349,31 @@ it to `CaptureForm.client.ts`.
   subtitle="Te contactaremos con más información."
   align="center"
   ctaLabel="Enviar"
+/>
+```
+
+### PricingSection
+
+`organisms/PricingSection.astro`
+
+**Use when** you need a pricing/plans grid (`md:grid-cols-3`, wraps for
+other counts). Renders with `id="precios"`. Renders conditionally in
+`index.astro` — only when a `pricing` section is present in `page.json`,
+unlike `Hero`/`BenefitsSection`/`CaptureForm` which always render.
+
+| Prop           | Type                  | Default      | Notes |
+|----------------|-----------------------|--------------|-------|
+| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
+| `plans`        | `PricingPlan[]`       | — (required) | `{ name: string; price: string; period?: string; features: string[]; ctaLabel: string; ctaHref?: string }[]` |
+
+```astro
+<PricingSection
+  heading="Planes"
+  headingAlign="center"
+  plans={[
+    { name: 'Plan Individual', price: '$15.99', period: '/mes', features: ['Café de alta calidad'], ctaLabel: 'Suscríbete ahora' },
+  ]}
 />
 ```
 

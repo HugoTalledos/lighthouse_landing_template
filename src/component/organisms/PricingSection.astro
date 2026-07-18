@@ -1,0 +1,40 @@
+---
+import Container from '../atoms/Container.astro';
+import Heading from '../atoms/Heading.astro';
+import PricingCard from '../molecules/PricingCard.astro';
+
+interface PricingPlan {
+  name: string;
+  price: string;
+  period?: string;
+  features: string[];
+  ctaLabel: string;
+  ctaHref?: string;
+}
+
+interface Props {
+  heading: string;
+  headingAlign: 'left' | 'center';
+  plans: PricingPlan[];
+}
+
+const { heading, headingAlign, plans }: Props = Astro.props;
+---
+
+<section class="py-16 md:py-24" id="precios">
+  <Container class="flex flex-col gap-10">
+    <Heading as="h2" size="md" align={headingAlign}>{heading}</Heading>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {plans.map((plan) => (
+        <PricingCard
+          name={plan.name}
+          price={plan.price}
+          period={plan.period}
+          features={plan.features}
+          ctaLabel={plan.ctaLabel}
+          ctaHref={plan.ctaHref}
+        />
+      ))}
+    </div>
+  </Container>
+</section>

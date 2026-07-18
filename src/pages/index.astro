@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../component/organisms/Hero.astro';
 import BenefitsSection from '../component/organisms/BenefitsSection.astro';
 import CaptureForm from '../component/organisms/CaptureForm.astro';
+import PricingSection from '../component/organisms/PricingSection.astro';
 import pageData from '../data/page.json';
 
 interface RawSection {
@@ -44,6 +45,10 @@ const featuresSection = data.sections.find((s) => s.type === 'features') as
   | { headline?: string; items: { title: string; description: string }[] }
   | undefined;
 
+const pricingSection = data.sections.find((s) => s.type === 'pricing') as
+  | { plans: { name: string; price: string; period?: string | null; features: string[]; cta_text: string }[] }
+  | undefined;
+
 const theme = sanitizeTheme(data.theme);
 
 const fallbackItems = [
@@ -69,6 +74,19 @@ const fallbackItems = [
     cardAlign="left"
     items={(featuresSection?.items ?? fallbackItems).map(({ title, description }) => ({ title, description }))}
   />
+  {pricingSection && (
+    <PricingSection
+      heading="Planes"
+      headingAlign="center"
+      plans={pricingSection.plans.map((plan) => ({
+        name: plan.name,
+        price: plan.price,
+        period: plan.period ?? undefined,
+        features: plan.features,
+        ctaLabel: plan.cta_text,
+      }))}
+    />
+  )}
   <CaptureForm
     heading="Déjanos tus datos"
     subtitle="Te contactaremos con más información."

@@ -1,0 +1,33 @@
+---
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+
+interface Props {
+  name: string;
+  price: string;
+  period?: string;
+  features: string[];
+  ctaLabel: string;
+  ctaHref?: string;
+  class?: string;
+}
+
+const { name, price, period, features, ctaLabel, ctaHref, class: className }: Props = Astro.props;
+---
+
+<div class={`flex flex-col gap-4 rounded-lg bg-[var(--color-bg-muted)] p-6 ${className ?? ''}`}>
+  <Heading as="h3" size="sm">{name}</Heading>
+  <p class="text-3xl font-bold text-[var(--color-text)]">
+    {price}
+    {period && <span class="text-base font-normal text-[var(--color-text-muted)]"> {period}</span>}
+  </p>
+  <ul class="flex flex-col gap-2">
+    {features.map((feature) => (
+      <li>
+        <Text size="sm">✓ {feature}</Text>
+      </li>
+    ))}
+  </ul>
+  <Button variant="primary" href={ctaHref ?? '#formulario-captura'}>{ctaLabel}</Button>
+</div>
