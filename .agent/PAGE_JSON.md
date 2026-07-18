@@ -123,12 +123,6 @@ anything; it will be silently ignored.
 `type` is present in `sections`. There is no fallback/placeholder content for these — omit
 the section entirely if the page shouldn't have it, don't include an empty/partial one.
 
-Important gotcha for `pricing`, `testimonials`, and `faq`: their section **headings are
-hardcoded in `index.astro`** (`"Planes"`, `"Lo que dicen nuestros clientes"`, `"Preguntas
-frecuentes"` respectively) — there is currently no JSON field that overrides them. Don't add
-a `headline`/`heading` field to these three expecting it to change the rendered heading; it
-will be ignored.
-
 #### `pricing`
 
 ```json
@@ -146,9 +140,10 @@ will be ignored.
 }
 ```
 
-| Field   | Type          | Required | Notes |
-|---------|---------------|----------|-------|
-| `plans` | `PricingPlan[]` | yes    | Grid wraps for counts other than 3. |
+| Field      | Type          | Required | Notes |
+|------------|---------------|----------|-------|
+| `headline` | `string`      | no       | Passed to `PricingSection`'s `heading` prop. Falls back to `'Planes'` if omitted. |
+| `plans`    | `PricingPlan[]` | yes    | Grid wraps for counts other than 3. |
 
 `PricingPlan`:
 
@@ -174,9 +169,10 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 }
 ```
 
-| Field   | Type                | Required | Notes |
-|---------|---------------------|----------|-------|
-| `items` | `TestimonialItem[]` | yes      | `md:grid-cols-2` grid. |
+| Field      | Type                | Required | Notes |
+|------------|---------------------|----------|-------|
+| `headline` | `string`            | no       | Passed to `TestimonialsSection`'s `heading` prop. Falls back to `'Lo que dicen nuestros clientes'` if omitted. |
+| `items`    | `TestimonialItem[]` | yes      | `md:grid-cols-2` grid. |
 
 `TestimonialItem`:
 
@@ -197,9 +193,10 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 }
 ```
 
-| Field   | Type        | Required | Notes |
-|---------|-------------|----------|-------|
-| `items` | `FaqEntry[]` | yes     | Stacks top-to-bottom (not a grid). |
+| Field      | Type        | Required | Notes |
+|------------|-------------|----------|-------|
+| `headline` | `string`    | no       | Passed to `FaqSection`'s `heading` prop. Falls back to `'Preguntas frecuentes'` if omitted. |
+| `items`    | `FaqEntry[]` | yes     | Stacks top-to-bottom (not a grid). |
 
 `FaqEntry`:
 
@@ -375,10 +372,10 @@ omitted:
 3. Only include `pricing`, `testimonials`, `faq`, `cta`, `footer` if the brief actually calls
    for that section — their presence alone triggers the render, there's no separate
    `"enabled": true/false` flag.
-4. Don't invent extra fields (e.g. a `headline` on `pricing`/`testimonials`/`faq`, a
-   `cta_url` per pricing plan, an icon per social link) — they're silently ignored, not
-   errors, so a generated page that "looks right" in the JSON can still omit intended
-   content at render time.
+4. Don't invent extra fields beyond what's documented per section (e.g. a `cta_url` per
+   pricing plan, an icon per social link) — they're silently ignored, not errors, so a
+   generated page that "looks right" in the JSON can still omit intended content at render
+   time.
 5. Don't invent a new `type` for a section not in this list (e.g. `"gallery"`,
    `"team"`) without confirming with the user first — per `.agent/COMPONENTS.md`, adding a
    9th organism/section type is a template change, not a content change.
