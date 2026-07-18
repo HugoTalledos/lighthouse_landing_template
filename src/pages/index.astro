@@ -70,6 +70,10 @@ const footerSection = data.sections.find((s) => s.type === 'footer') as
   | { business_name: string; links: { label: string; url: string }[]; social_links?: { platform: string; url: string }[] }
   | undefined;
 
+const captureSection = data.sections.find((s) => s.type === 'capture') as
+  | { headline?: string; subheadline?: string; cta_text?: string }
+  | undefined;
+
 const theme = sanitizeTheme(data.theme);
 
 const fallbackItems: { title: string; description: string; icon?: string | null }[] = [
@@ -135,10 +139,10 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     />
   )}
   <CaptureForm
-    heading="Déjanos tus datos"
-    subtitle="Te contactaremos con más información."
+    heading={captureSection?.headline ?? 'Déjanos tus datos'}
+    subtitle={captureSection?.subheadline ?? 'Te contactaremos con más información.'}
     align="center"
-    ctaLabel="Enviar"
+    ctaLabel={captureSection?.cta_text ?? 'Enviar'}
   />
   {footerSection && (
     <Footer

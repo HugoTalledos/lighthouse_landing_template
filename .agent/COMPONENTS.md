@@ -561,8 +561,7 @@ custom property overrides. `theme.logo_text`/`theme.logo_icon` are passed
 straight through (no fallback/sanitization at the `index.astro` level — `??
 undefined` only handles `null`) to `Hero`'s `logoText`/`logoIcon`, which
 forwards them to `Logo`; `Logo` itself supplies the `'[Tu Marca]'` default
-when `logo_text` is absent. `CaptureForm` stays hardcoded — `PageComposition`
-has no section type that maps to it. See `src/pages/index.astro` for the
+when `logo_text` is absent. `CaptureForm`'s copy is sourced from an optional `capture` section type (falls back field-by-field to today's default copy when absent) — see `.agent/PAGE_JSON.md` for its shape. See `src/pages/index.astro` for the
 current implementation.
 
 `PricingSection`/`TestimonialsSection`/`FaqSection`/`CtaSection`/`Footer`

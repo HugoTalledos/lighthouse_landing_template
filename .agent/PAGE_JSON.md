@@ -64,10 +64,7 @@ Any `type` not in the list below is silently ignored — no error, no render.
 falls back to generic Spanish placeholder copy rather than erroring — but for a real page
 you should always include both.
 
-`CaptureForm` (lead-capture form) also always renders, but has **no corresponding section
-type** — its heading/subtitle/button copy is hardcoded in `index.astro`, not read from
-`page.json` at all. Don't add a `"type": "capture"` (or similar) section expecting it to do
-anything; it will be silently ignored.
+`CaptureForm` (lead-capture form) also always renders. Its copy is configurable via an optional `capture` section — see below — but unlike `hero`/`features`, omitting it entirely is fine too: `index.astro` falls back to today's default copy field-by-field.
 
 #### `hero`
 
@@ -116,6 +113,28 @@ anything; it will be silently ignored.
 | `title`       | `string`          | yes      | |
 | `description` | `string`          | yes      | |
 | `icon`        | `string \| null`  | no       | Two accepted forms: a string starting with `<` is treated as raw inline SVG and injected via `set:html` (unsanitized); any other non-empty string (e.g. `"check"`, an emoji like `"🚚"`) is rendered as plain text. Omit or `null` to fall back to the built-in placeholder checkmark icon. Prefer a plain emoji over hand-written SVG unless you already have a trusted, sanitized SVG string. |
+
+#### `capture`
+
+```json
+{
+  "type": "capture",
+  "headline": "Déjanos tus datos",
+  "subheadline": "Te contactaremos con más información.",
+  "cta_text": "Enviar"
+}
+```
+
+| Field         | Type     | Required | Maps to (`CaptureForm` prop) | Notes |
+|---------------|----------|----------|-------------------------------|-------|
+| `headline`    | `string` | no       | `heading`                      | Falls back to `'Déjanos tus datos'` if omitted or the whole `capture` section is absent. |
+| `subheadline` | `string` | no       | `subtitle`                     | Falls back to `'Te contactaremos con más información.'`. |
+| `cta_text`    | `string` | no       | `ctaLabel`                     | Falls back to `'Enviar'`. |
+
+Unlike every other section type, all three fields are individually optional — a `capture`
+section can set just one of them and rely on the defaults for the rest. This section only
+controls copy; the actual form fields (nombre/email/celular) and validation are hardcoded in
+`CaptureForm.astro`/`CaptureForm.client.ts`, per `.agent/COMPONENTS.md`.
 
 ### Conditionally-rendering sections
 
