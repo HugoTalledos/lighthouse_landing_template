@@ -19,6 +19,7 @@ interface RawTheme {
   primary_color: string;
   secondary_color: string;
   font_family: string;
+  logo_url?: string | null;
   logo_text?: string | null;
   logo_icon?: string | null;
 }
@@ -87,6 +88,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     textPosition="left"
     logoText={data.theme.logo_text ?? undefined}
     logoIcon={data.theme.logo_icon ?? undefined}
+    logoUrl={data.theme.logo_url ?? undefined}
     imageUrl={heroSection?.image_url ?? undefined}
     ctaHref={heroSection?.cta_url ?? undefined}
   />
