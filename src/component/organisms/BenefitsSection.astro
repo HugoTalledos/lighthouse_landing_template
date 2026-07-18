@@ -18,6 +18,10 @@ interface Props {
 }
 
 const { heading, headingAlign, cardAlign, items }: Props = Astro.props;
+
+function isSvgMarkup(icon: string): boolean {
+  return icon.trim().startsWith('<');
+}
 ---
 
 <section class="py-16 md:py-24" id="beneficios">
@@ -26,7 +30,13 @@ const { heading, headingAlign, cardAlign, items }: Props = Astro.props;
     <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
       {items.map((item) => (
         <BenefitCard title={item.title} description={item.description} align={cardAlign}>
-          <Fragment slot="icon" set:html={item.icon ?? checkIcon} />
+          {item.icon && isSvgMarkup(item.icon) ? (
+            <Fragment slot="icon" set:html={item.icon} />
+          ) : item.icon ? (
+            <Fragment slot="icon">{item.icon}</Fragment>
+          ) : (
+            <Fragment slot="icon" set:html={checkIcon} />
+          )}
         </BenefitCard>
       ))}
     </div>

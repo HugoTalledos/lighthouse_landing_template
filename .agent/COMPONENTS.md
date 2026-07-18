@@ -303,10 +303,13 @@ default. This is what `FaqSection` maps over.
 
 ## Organisms
 
-Organisms compose atoms + molecules into a full page section. `src/pages/index.astro`
-composes these three, in order, to build the whole landing page. Don't add a
-fourth top-level section without confirming with the user first — the
-template is deliberately scoped to Hero → Beneficios → Formulario.
+Organisms compose atoms + molecules into a full page section.
+`src/pages/index.astro` always renders `Hero`, `BenefitsSection`, and
+`CaptureForm`; it additionally renders `PricingSection`,
+`TestimonialsSection`, `FaqSection`, `CtaSection`, and `Footer`
+conditionally, based on which section `type`s are present in `page.json`.
+Don't add a section type beyond these 8 without confirming with the user
+first.
 
 ### Hero
 
@@ -363,7 +366,7 @@ molecule's icon-slot convention if you customize per-item icons.
 | `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
 | `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
 | `cardAlign`    | `'left' \| 'center'`  | — (required) | Passed to every `BenefitCard` uniformly |
-| `items`        | `BenefitItem[]`       | — (required) | `{ title: string; description: string; icon?: string }[]`. Length is variable — not fixed to 3. `icon` is a raw SVG string; omit to fall back to the placeholder icon. |
+| `items`        | `BenefitItem[]`       | — (required) | `{ title: string; description: string; icon?: string }[]`. Length is variable — not fixed to 3. `icon` accepts either raw SVG markup (strings starting with `<`, injected via `set:html`) or a plain string/emoji (rendered as text); omit to fall back to the placeholder icon. |
 
 ```astro
 <BenefitsSection
@@ -543,8 +546,12 @@ no per-platform icons/assets in this template. Renders conditionally in
 `src/pages/index.astro` reads `src/data/page.json` (a `PageComposition` written
 by `lighthouse_back`'s `page_renderer.py` before `astro build` runs) and maps
 its `hero` and `features` sections onto `Hero` and `BenefitsSection` props,
-falling back to the placeholder copy below when a section is absent. Theme
-colors (`theme.primary_color`/`secondary_color`/`font_family`) are validated
+falling back to the placeholder copy below when a section is absent — these
+two, plus `CaptureForm`, always render. `pricing`/`testimonials`/`faq`/`cta`/
+`footer` sections map onto `PricingSection`/`TestimonialsSection`/
+`FaqSection`/`CtaSection`/`Footer` and render conditionally — only when
+present in `page.json`, with no fallback content. Theme colors
+(`theme.primary_color`/`secondary_color`/`font_family`) are validated
 (hex-only colors, alnum-only font name) and passed to `BaseLayout` as CSS
 custom property overrides. `theme.logo_text`/`theme.logo_icon` are passed
 straight through (no fallback/sanitization at the `index.astro` level — `??
@@ -554,14 +561,15 @@ when `logo_text` is absent. `CaptureForm` stays hardcoded — `PageComposition`
 has no section type that maps to it. See `src/pages/index.astro` for the
 current implementation.
 
-Known gap: `testimonials`/`pricing`/`faq`/`cta`/`footer` section types from
-`PageComposition` have no organism yet and are silently ignored if present in
-`page.json`. `HeroSection.image_url`/`cta_url`, `FeatureItem.icon`, and
-`theme.logo_url` are read (or present in the fixture) but not rendered —
-`theme.logo_text`/`theme.logo_icon` were added to this repo's fixture and
-wired to `Logo`, but confirm `lighthouse_back`'s `page_renderer.py` actually
-emits these two fields before relying on them outside this template repo.
+`PricingSection`/`TestimonialsSection`/`FaqSection`/`CtaSection`/`Footer`
+render conditionally — only when their matching section `type`
+(`pricing`/`testimonials`/`faq`/`cta`/`footer`) is present in `page.json`.
+`Hero.imageUrl`/`ctaHref` and `BenefitItem.icon`-as-text are now rendered
+(previously read but ignored). Remaining gap: `theme.logo_url` is still read
+but unused — `theme.logo_text`/`theme.logo_icon` are the fields actually
+wired to `Logo`; confirm `lighthouse_back`'s `page_renderer.py` emits those
+two before relying on them outside this template repo.
 
-If asked to build a new page or a variant, compose from these three
-organisms first before reaching for atoms/molecules directly — that's the
-level this template is designed to be assembled at.
+If asked to build a new page or a variant, compose from these 8 organisms
+first before reaching for atoms/molecules directly — that's the level this
+template is designed to be assembled at.

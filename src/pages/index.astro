@@ -46,7 +46,7 @@ const heroSection = data.sections.find((s) => s.type === 'hero') as
   | undefined;
 
 const featuresSection = data.sections.find((s) => s.type === 'features') as
-  | { headline?: string; items: { title: string; description: string }[] }
+  | { headline?: string; items: { title: string; description: string; icon?: string | null }[] }
   | undefined;
 
 const pricingSection = data.sections.find((s) => s.type === 'pricing') as
@@ -71,7 +71,7 @@ const footerSection = data.sections.find((s) => s.type === 'footer') as
 
 const theme = sanitizeTheme(data.theme);
 
-const fallbackItems = [
+const fallbackItems: { title: string; description: string; icon?: string | null }[] = [
   { title: 'Beneficio uno', description: 'Descripción breve del primer beneficio ofrecido.' },
   { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
   { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
@@ -94,7 +94,7 @@ const fallbackItems = [
     heading={featuresSection?.headline ?? 'Beneficios'}
     headingAlign="center"
     cardAlign="left"
-    items={(featuresSection?.items ?? fallbackItems).map(({ title, description }) => ({ title, description }))}
+    items={(featuresSection?.items ?? fallbackItems).map(({ title, description, icon }) => ({ title, description, icon: icon ?? undefined }))}
   />
   {pricingSection && (
     <PricingSection
