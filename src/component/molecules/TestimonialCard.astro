@@ -1,0 +1,20 @@
+---
+import Text from '../atoms/Text.astro';
+
+interface Props {
+  quote: string;
+  authorName: string;
+  authorRole?: string;
+  class?: string;
+}
+
+const { quote, authorName, authorRole, class: className }: Props = Astro.props;
+---
+
+<div class={`flex flex-col gap-4 rounded-lg bg-[var(--color-bg-muted)] p-6 ${className ?? ''}`}>
+  <Text size="lg">"{quote}"</Text>
+  <div class="flex flex-col">
+    <Text size="sm" class="font-semibold">{authorName}</Text>
+    {authorRole && <Text size="sm" muted>{authorRole}</Text>}
+  </div>
+</div>

@@ -1,0 +1,30 @@
+---
+import Container from '../atoms/Container.astro';
+import Heading from '../atoms/Heading.astro';
+import TestimonialCard from '../molecules/TestimonialCard.astro';
+
+interface TestimonialItem {
+  quote: string;
+  authorName: string;
+  authorRole?: string;
+}
+
+interface Props {
+  heading: string;
+  headingAlign: 'left' | 'center';
+  items: TestimonialItem[];
+}
+
+const { heading, headingAlign, items }: Props = Astro.props;
+---
+
+<section class="py-16 md:py-24" id="testimonios">
+  <Container class="flex flex-col gap-10">
+    <Heading as="h2" size="md" align={headingAlign}>{heading}</Heading>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {items.map((item) => (
+        <TestimonialCard quote={item.quote} authorName={item.authorName} authorRole={item.authorRole} />
+      ))}
+    </div>
+  </Container>
+</section>

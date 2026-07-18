@@ -241,6 +241,29 @@ period, feature list, CTA button. This is what `PricingSection` maps over.
 />
 ```
 
+### TestimonialCard
+
+`molecules/TestimonialCard.astro`
+
+**Use when** rendering one customer quote in a testimonials grid — quote +
+author name + optional author role. This is what `TestimonialsSection` maps
+over.
+
+| Prop         | Type     | Default      | Notes |
+|--------------|----------|--------------|-------|
+| `quote`      | `string` | — (required) | Rendered via `Text size="lg"`, wrapped in curly quotes in markup |
+| `authorName` | `string` | — (required) | Rendered via `Text size="sm"` with `font-semibold` |
+| `authorRole` | `string` | —            | Rendered via `Text size="sm" muted`; omitted entirely if absent |
+| `class`      | `string` | —            | Appended, not merged |
+
+```astro
+<TestimonialCard
+  quote="La calidad del café es inigualable."
+  authorName="María Sánchez"
+  authorRole="Amante del café"
+/>
+```
+
 ---
 
 ## Organisms
@@ -373,6 +396,30 @@ unlike `Hero`/`BenefitsSection`/`CaptureForm` which always render.
   headingAlign="center"
   plans={[
     { name: 'Plan Individual', price: '$15.99', period: '/mes', features: ['Café de alta calidad'], ctaLabel: 'Suscríbete ahora' },
+  ]}
+/>
+```
+
+### TestimonialsSection
+
+`organisms/TestimonialsSection.astro`
+
+**Use when** you need a customer testimonials grid (`md:grid-cols-2`).
+Renders with `id="testimonios"`. Renders conditionally in `index.astro` —
+only when a `testimonials` section is present in `page.json`.
+
+| Prop           | Type                  | Default      | Notes |
+|----------------|-----------------------|--------------|-------|
+| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
+| `items`        | `TestimonialItem[]`   | — (required) | `{ quote: string; authorName: string; authorRole?: string }[]` |
+
+```astro
+<TestimonialsSection
+  heading="Lo que dicen nuestros clientes"
+  headingAlign="center"
+  items={[
+    { quote: 'La calidad del café es inigualable.', authorName: 'María Sánchez', authorRole: 'Amante del café' },
   ]}
 />
 ```

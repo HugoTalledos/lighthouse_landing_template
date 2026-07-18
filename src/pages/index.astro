@@ -4,6 +4,7 @@ import Hero from '../component/organisms/Hero.astro';
 import BenefitsSection from '../component/organisms/BenefitsSection.astro';
 import CaptureForm from '../component/organisms/CaptureForm.astro';
 import PricingSection from '../component/organisms/PricingSection.astro';
+import TestimonialsSection from '../component/organisms/TestimonialsSection.astro';
 import pageData from '../data/page.json';
 
 interface RawSection {
@@ -49,6 +50,10 @@ const pricingSection = data.sections.find((s) => s.type === 'pricing') as
   | { plans: { name: string; price: string; period?: string | null; features: string[]; cta_text: string }[] }
   | undefined;
 
+const testimonialsSection = data.sections.find((s) => s.type === 'testimonials') as
+  | { items: { quote: string; author_name: string; author_role?: string | null }[] }
+  | undefined;
+
 const theme = sanitizeTheme(data.theme);
 
 const fallbackItems = [
@@ -84,6 +89,17 @@ const fallbackItems = [
         period: plan.period ?? undefined,
         features: plan.features,
         ctaLabel: plan.cta_text,
+      }))}
+    />
+  )}
+  {testimonialsSection && (
+    <TestimonialsSection
+      heading="Lo que dicen nuestros clientes"
+      headingAlign="center"
+      items={testimonialsSection.items.map((item) => ({
+        quote: item.quote,
+        authorName: item.author_name,
+        authorRole: item.author_role ?? undefined,
       }))}
     />
   )}
