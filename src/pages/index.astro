@@ -35,10 +35,19 @@ const HEX_COLOR_RE = /^#[0-9a-fA-F]{3,8}$/;
 const SAFE_FONT_RE = /^[A-Za-z0-9 _-]+$/;
 
 function sanitizeTheme(theme: RawTheme) {
+  if (!HEX_COLOR_RE.test(theme.primary_color)) {
+    throw new Error(`page.json: theme.primary_color is not a valid hex color: ${JSON.stringify(theme.primary_color)}`);
+  }
+  if (!HEX_COLOR_RE.test(theme.secondary_color)) {
+    throw new Error(`page.json: theme.secondary_color is not a valid hex color: ${JSON.stringify(theme.secondary_color)}`);
+  }
+  if (!SAFE_FONT_RE.test(theme.font_family)) {
+    throw new Error(`page.json: theme.font_family contains invalid characters: ${JSON.stringify(theme.font_family)}`);
+  }
   return {
-    primaryColor: HEX_COLOR_RE.test(theme.primary_color) ? theme.primary_color : '#4f46e5',
-    secondaryColor: HEX_COLOR_RE.test(theme.secondary_color) ? theme.secondary_color : '#0ea5e9',
-    fontFamily: SAFE_FONT_RE.test(theme.font_family) ? theme.font_family : 'Inter',
+    primaryColor: theme.primary_color,
+    secondaryColor: theme.secondary_color,
+    fontFamily: theme.font_family,
   };
 }
 

@@ -38,9 +38,9 @@ meta description, or other top-level field — `index.astro` hardcodes
 
 | Field             | Type             | Required | Notes |
 |-------------------|------------------|----------|-------|
-| `primary_color`   | `string`         | yes      | Must match `^#[0-9a-fA-F]{3,8}$` (hex only, 3–8 hex digits after `#`). Anything else silently falls back to `#4f46e5` — no error is raised, so an invalid value just gets ignored. |
-| `secondary_color` | `string`         | yes      | Same hex validation; invalid values fall back to `#0ea5e9`. |
-| `font_family`     | `string`         | yes      | Must match `^[A-Za-z0-9 _-]+$` (letters, digits, spaces, `_`, `-` only — no commas, no quotes, no CSS font stacks). Invalid values fall back to `'Inter'`. Use a single font name (e.g. `"Poppins"`), not a full `font-family` CSS value. |
+| `primary_color`   | `string`         | yes      | Must match `^#[0-9a-fA-F]{3,8}$` (hex only, 3–8 hex digits after `#`). An invalid value fails `astro build`/`astro dev` with a thrown `Error` naming the field and value — this is not a silent fallback. |
+| `secondary_color` | `string`         | yes      | Same hex validation and same hard-failure behavior on an invalid value. |
+| `font_family`     | `string`         | yes      | Must match `^[A-Za-z0-9 _-]+$` (letters, digits, spaces, `_`, `-` only — no commas, no quotes, no CSS font stacks). Invalid values fail the build the same way. Use a single font name (e.g. `"Poppins"`), not a full `font-family` CSS value. |
 | `logo_url`        | `string \| null` | no       | Rendered as `<img>` in the header logo when `logo_icon` is absent/`null`; if `logo_icon` is also set, `logo_icon`'s inline SVG wins and `logo_url` is ignored. Unsanitized — interpolated directly into `<img src>`. |
 | `logo_text`       | `string \| null` | no       | Passed straight through to `Hero`'s `logoText` prop with no validation/sanitization. Omit or `null` to fall back to the `Logo` atom's default (`'[Tu Marca]'`). |
 | `logo_icon`       | `string \| null` | no       | Raw SVG markup string, injected unsanitized via `set:html`. Same trust model as `HeroSection.image_url` and `FeatureItem.icon` below — only put trusted/sanitized SVG here, never raw user input. Omit or `null` for no icon. |
@@ -382,9 +382,10 @@ omitted:
 
 ## Checklist for generating a `page.json` from a client brief
 
-1. Fill `theme.primary_color`/`secondary_color` with real hex codes — a bad value fails
-   silently and falls back to the indigo/sky defaults, so double-check the hex format
-   (`#` + 3–8 hex digits) rather than trusting the render to catch mistakes.
+1. Fill `theme.primary_color`/`secondary_color`/`font_family` with valid values — an invalid
+   one now fails the build outright (`astro build` throws, naming the field and value),
+   rather than silently substituting a default. Double-check the hex format (`#` + 3–8 hex
+   digits) and the font-name character set before generating the file.
 2. Always include `hero` and `features` sections with real copy — they render unconditionally
    and generic placeholder text will leak to production if left out or left as literal
    Spanish placeholders.
