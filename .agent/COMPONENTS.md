@@ -188,14 +188,31 @@ it).
 `molecules/Logo.astro`
 
 **Use when** rendering the brand mark in the header (or anywhere else the
-brand name needs to appear as text). Currently just styled placeholder text
-(`[Tu Marca]`) — for a real client project this is the file to swap for an
-`<img>`/inline SVG logo. Don't hardcode the brand name elsewhere; route
+brand name needs to appear). Renders brand text plus an optional inline SVG
+icon read via a named slot. Don't hardcode the brand name elsewhere; route
 through this component so re-skinning only touches one file.
 
-| Prop    | Type     | Default | Notes |
-|---------|----------|---------|-------|
-| `class` | `string` | —       | Appended, not merged |
+| Prop    | Type     | Default        | Notes |
+|---------|----------|----------------|-------|
+| `text`  | `string` | `'[Tu Marca]'` | Brand name/wordmark |
+| `class` | `string` | —              | Appended, not merged |
+
+Named slot `icon` — pass an inline SVG, same convention as `BenefitCard`
+(see that entry above for the `set:html`/`?raw` pattern). The icon wrapper
+only renders when the slot actually produces content — the component checks
+via `await Astro.slots.render('icon')`, not `Astro.slots.has()`, because
+`.has()` returns `true` for a statically-present `<Fragment slot="icon">`
+even when the caller's own conditional around it evaluates to falsy at
+runtime. If you add a new component with an optional icon slot, use the same
+`Astro.slots.render()` check rather than `.has()`.
+
+```astro
+<Logo text="Acme Inc." class="text-[var(--color-primary)]">
+  <Fragment slot="icon" set:html={acmeIcon} />
+</Logo>
+
+<Logo text="Acme Inc." />
+```
 
 ---
 
@@ -211,9 +228,11 @@ template is deliberately scoped to Hero → Beneficios → Formulario.
 `organisms/Hero.astro`
 
 **Use when** you need the page's top section: header bar (logo) + hero
-banner (headline, subtitle, primary CTA button, image placeholder). All
-copy and layout come from required props — there are no defaults, so every
-usage must pass them explicitly. The CTA button always links to
+banner (headline, subtitle, primary CTA button, image placeholder). Copy,
+layout, and CTA props are required — there are no defaults, so every usage
+must pass them explicitly. `logoText`/`logoIcon` are optional and forwarded
+straight through to `Logo`; omit them to fall back to `Logo`'s own default
+(`'[Tu Marca]'`, no icon). The CTA button always links to
 `#formulario-captura`, which must match `CaptureForm`'s section `id` — that
 anchor is not configurable via props, to avoid an agent breaking the link
 by accident.
@@ -225,6 +244,8 @@ by accident.
 | `ctaLabel`     | `string`               | — (required) | CTA button text; href is fixed to `#formulario-captura` |
 | `align`        | `'left' \| 'center'`   | — (required) | Alignment of title/subtitle/button within the text column |
 | `textPosition` | `'left' \| 'right'`    | — (required) | Which side the text column renders on at `md:`; the image placeholder takes the other side. Text stays first in DOM order regardless. |
+| `logoText`     | `string`               | —            | Forwarded to `Logo`'s `text` prop |
+| `logoIcon`     | `string`               | —            | Raw SVG string forwarded to `Logo`'s `icon` slot via `set:html` |
 
 ```astro
 <Hero
@@ -233,6 +254,8 @@ by accident.
   ctaLabel="Comenzar ahora"
   align="left"
   textPosition="left"
+  logoText="Acme Inc."
+  logoIcon={acmeIcon}
 />
 ```
 
@@ -312,14 +335,21 @@ its `hero` and `features` sections onto `Hero` and `BenefitsSection` props,
 falling back to the placeholder copy below when a section is absent. Theme
 colors (`theme.primary_color`/`secondary_color`/`font_family`) are validated
 (hex-only colors, alnum-only font name) and passed to `BaseLayout` as CSS
-custom property overrides. `CaptureForm` stays hardcoded — `PageComposition`
+custom property overrides. `theme.logo_text`/`theme.logo_icon` are passed
+straight through (no fallback/sanitization at the `index.astro` level — `??
+undefined` only handles `null`) to `Hero`'s `logoText`/`logoIcon`, which
+forwards them to `Logo`; `Logo` itself supplies the `'[Tu Marca]'` default
+when `logo_text` is absent. `CaptureForm` stays hardcoded — `PageComposition`
 has no section type that maps to it. See `src/pages/index.astro` for the
 current implementation.
 
 Known gap: `testimonials`/`pricing`/`faq`/`cta`/`footer` section types from
 `PageComposition` have no organism yet and are silently ignored if present in
-`page.json`. `HeroSection.image_url`/`cta_url` and `FeatureItem.icon` are read
-but not rendered.
+`page.json`. `HeroSection.image_url`/`cta_url`, `FeatureItem.icon`, and
+`theme.logo_url` are read (or present in the fixture) but not rendered —
+`theme.logo_text`/`theme.logo_icon` were added to this repo's fixture and
+wired to `Logo`, but confirm `lighthouse_back`'s `page_renderer.py` actually
+emits these two fields before relying on them outside this template repo.
 
 If asked to build a new page or a variant, compose from these three
 organisms first before reaching for atoms/molecules directly — that's the

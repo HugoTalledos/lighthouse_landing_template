@@ -3,7 +3,9 @@
     "primary_color": "#4f46e5",
     "secondary_color": "#0ea5e9",
     "font_family": "Inter",
-    "logo_url": null
+    "logo_url": null,
+    "logo_text": "[Tu Marca]",
+    "logo_icon": null
   },
   "sections": [
     {

@@ -66,6 +66,18 @@ are regex-validated before being interpolated into an inline `<style>`
 override in `BaseLayout`, since this content originates from an LLM and ends
 up in HTML served to real visitors.
 
+`theme.logo_text`/`theme.logo_icon` (added to this repo's `page.json` fixture
+alongside the pre-existing, still-unused `theme.logo_url`) feed `Logo.astro`
+via `Hero`'s `logoText`/`logoIcon` props — `logo_icon` is a raw SVG string
+injected with `set:html`, unsanitized, same trust model as
+`FeatureItem.icon` in `BenefitsSection`. Unlike the theme colors, these two
+aren't regex-validated before reaching the DOM; if that becomes a real
+concern, apply the same kind of allowlist validation used for the theme
+colors before this goes to production with untrusted `page.json` input. This
+addition is fixture/template-side only — verify `lighthouse_back`'s
+`page_renderer.py` actually populates `logo_text`/`logo_icon` before
+depending on them in the real pipeline.
+
 ### Class-merging convention
 
 `src/utils/cn.ts` wraps `clsx` + `tailwind-merge` for combining a component's own classes with a caller-supplied `class` prop (with proper Tailwind conflict resolution). Currently only `Button.astro` uses it; the other atoms (`Container`, `Label`, `Input`, `Text`, `Heading`) concatenate classes with template literals (`` `${...} ${className ?? ''}` ``) instead. This is inconsistent but intentional-as-shipped — if you need real override/dedup behavior on one of those atoms (not just appending), switch it to `cn()` rather than assuming the template-literal version already merges correctly.

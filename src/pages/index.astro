@@ -14,6 +14,8 @@ interface RawTheme {
   primary_color: string;
   secondary_color: string;
   font_family: string;
+  logo_text?: string | null;
+  logo_icon?: string | null;
 }
 
 interface PageData {
@@ -58,6 +60,8 @@ const fallbackItems = [
     ctaLabel={heroSection?.cta_text ?? 'Comenzar ahora'}
     align="left"
     textPosition="left"
+    logoText={data.theme.logo_text ?? undefined}
+    logoIcon={data.theme.logo_icon ?? undefined}
   />
   <BenefitsSection
     heading={featuresSection?.headline ?? 'Beneficios'}
