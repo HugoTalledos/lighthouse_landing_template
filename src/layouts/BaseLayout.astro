@@ -2,9 +2,14 @@
 import '../styles/global.css';
 
 interface Theme {
-  primaryColor: string;
-  secondaryColor: string;
-  fontFamily: string;
+  primaryColor?: string;
+  primaryForegroundColor?: string;
+  secondaryColor?: string;
+  bgColor?: string;
+  bgMutedColor?: string;
+  textColor?: string;
+  textMutedColor?: string;
+  fontFamily?: string;
 }
 
 interface Props {
@@ -23,7 +28,16 @@ const { title = 'Landing Page Template', theme }: Props = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     {theme && (
-      <style set:html={`:root { --color-primary: ${theme.primaryColor}; --color-secondary: ${theme.secondaryColor}; --font-sans: '${theme.fontFamily}', system-ui, sans-serif; }`} />
+      <style set:html={`:root {
+        ${theme.primaryColor ? `--color-primary: ${theme.primaryColor};` : ''}
+        ${theme.primaryForegroundColor ? `--color-primary-foreground: ${theme.primaryForegroundColor};` : ''}
+        ${theme.secondaryColor ? `--color-secondary: ${theme.secondaryColor};` : ''}
+        ${theme.bgColor ? `--color-bg: ${theme.bgColor};` : ''}
+        ${theme.bgMutedColor ? `--color-bg-muted: ${theme.bgMutedColor};` : ''}
+        ${theme.textColor ? `--color-text: ${theme.textColor};` : ''}
+        ${theme.textMutedColor ? `--color-text-muted: ${theme.textMutedColor};` : ''}
+        ${theme.fontFamily ? `--font-sans: '${theme.fontFamily}', system-ui, sans-serif;` : ''}
+      }`} />
     )}
   </head>
   <body>
