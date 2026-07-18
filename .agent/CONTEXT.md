@@ -59,15 +59,17 @@ committed in this repo (Task 2 of
 `lighthouse_back/docs/superpowers/plans/2026-07-17-landing-template-data-wiring.md`)
 is only a fixture so `npm run dev`/`npm run check` work standalone.
 
-`index.astro` only consumes the `hero` and `features` section types (by
-`type` discriminant) — any other section type present in `page.json` is
-silently ignored, and `theme.primary_color`/`secondary_color`/`font_family`
-are regex-validated before being interpolated into an inline `<style>`
-override in `BaseLayout`, since this content originates from an LLM and ends
-up in HTML served to real visitors.
+`index.astro` consumes `hero`, `features`, `pricing`, `testimonials`, `faq`, `cta`,
+`footer`, and `capture` section types (by `type` discriminant) — any other section type
+present in `page.json` is silently ignored. `hero`/`features`/`capture` always render
+(falling back to placeholder/default copy field-by-field when absent); `pricing`/
+`testimonials`/`faq`/`cta`/`footer` render only when present, with no fallback content.
+`theme.primary_color`/`secondary_color`/`font_family` are regex-validated before being
+interpolated into an inline `<style>` override in `BaseLayout`, since this content
+originates from an LLM and ends up in HTML served to real visitors — an invalid value
+throws and fails the build rather than being silently substituted.
 
-`theme.logo_text`/`theme.logo_icon` (added to this repo's `page.json` fixture
-alongside the pre-existing, still-unused `theme.logo_url`) feed `Logo.astro`
+`theme.logo_text`/`theme.logo_icon`/`theme.logo_url` feed `Logo.astro`
 via `Hero`'s `logoText`/`logoIcon` props — `logo_icon` is a raw SVG string
 injected with `set:html`, unsanitized, same trust model as
 `FeatureItem.icon` in `BenefitsSection`. Unlike the theme colors, these two

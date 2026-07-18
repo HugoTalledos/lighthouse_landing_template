@@ -554,24 +554,24 @@ falling back to the placeholder copy below when a section is absent — these
 two, plus `CaptureForm`, always render. `pricing`/`testimonials`/`faq`/`cta`/
 `footer` sections map onto `PricingSection`/`TestimonialsSection`/
 `FaqSection`/`CtaSection`/`Footer` and render conditionally — only when
-present in `page.json`, with no fallback content. Theme colors
-(`theme.primary_color`/`secondary_color`/`font_family`) are validated
-(hex-only colors, alnum-only font name) and passed to `BaseLayout` as CSS
-custom property overrides. `theme.logo_text`/`theme.logo_icon` are passed
-straight through (no fallback/sanitization at the `index.astro` level — `??
-undefined` only handles `null`) to `Hero`'s `logoText`/`logoIcon`, which
-forwards them to `Logo`; `Logo` itself supplies the `'[Tu Marca]'` default
-when `logo_text` is absent. `CaptureForm`'s copy is sourced from an optional `capture` section type (falls back field-by-field to today's default copy when absent) — see `.agent/PAGE_JSON.md` for its shape. See `src/pages/index.astro` for the
+present in `page.json`, with no fallback content. Theme colors (`theme.primary_color`/`secondary_color`/`font_family`) are validated
+(hex-only colors, alnum-only font name) before being interpolated into an inline `<style>`
+override in `BaseLayout` — an invalid value throws and fails the build rather than falling
+back silently. `theme.logo_text`/`theme.logo_icon`/`theme.logo_url` are passed straight
+through (no fallback/sanitization at the `index.astro` level — `?? undefined` only handles
+`null`) to `Hero`'s `logoText`/`logoIcon`/`logoUrl`, which forwards them to `Logo`; `Logo`
+itself supplies the `'[Tu Marca]'` text default when `logo_text` is absent, prefers
+`logo_icon`'s inline SVG over `logo_url`'s `<img>` when both are present, and renders no icon
+at all when neither is present. `CaptureForm`'s copy is sourced from an optional `capture` section type (falls back field-by-field to today's default copy when absent) — see `.agent/PAGE_JSON.md` for its shape. See `src/pages/index.astro` for the
 current implementation.
 
 `PricingSection`/`TestimonialsSection`/`FaqSection`/`CtaSection`/`Footer`
 render conditionally — only when their matching section `type`
 (`pricing`/`testimonials`/`faq`/`cta`/`footer`) is present in `page.json`.
 `Hero.imageUrl`/`ctaHref` and `BenefitItem.icon`-as-text are now rendered
-(previously read but ignored). Remaining gap: `theme.logo_url` is still read
-but unused — `theme.logo_text`/`theme.logo_icon` are the fields actually
-wired to `Logo`; confirm `lighthouse_back`'s `page_renderer.py` emits those
-two before relying on them outside this template repo.
+(previously read but ignored). `theme.logo_url`/`logo_text`/`logo_icon` are all wired to `Logo` as of this repo's
+`2026-07-18-page-json-wiring-gaps.md` plan; confirm `lighthouse_back`'s `page_renderer.py`
+actually emits all three before relying on them outside this template repo.
 
 If asked to build a new page or a variant, compose from these 8 organisms
 first before reaching for atoms/molecules directly — that's the level this
