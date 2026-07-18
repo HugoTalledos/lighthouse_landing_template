@@ -1,0 +1,29 @@
+---
+import Container from '../atoms/Container.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+
+interface Props {
+  headline: string;
+  subheadline?: string;
+  buttonLabel: string;
+  buttonHref?: string;
+  align: 'left' | 'center';
+}
+
+const { headline, subheadline, buttonLabel, buttonHref, align }: Props = Astro.props;
+
+const alignClasses = {
+  left: 'items-start text-left',
+  center: 'items-center text-center',
+};
+---
+
+<section class="bg-[var(--color-bg-muted)] py-16 md:py-24">
+  <Container class={`mx-auto flex max-w-xl flex-col gap-6 ${alignClasses[align]}`}>
+    <Heading as="h2" size="md" align={align}>{headline}</Heading>
+    {subheadline && <Text muted>{subheadline}</Text>}
+    <Button variant="primary" href={buttonHref ?? '#formulario-captura'}>{buttonLabel}</Button>
+  </Container>
+</section>

@@ -466,6 +466,31 @@ Renders with `id="preguntas-frecuentes"`. Renders conditionally in
 />
 ```
 
+### CtaSection
+
+`organisms/CtaSection.astro`
+
+**Use when** you need a standalone call-to-action banner (headline +
+optional subheadline + button), distinct from `Hero`. No `id` — nothing
+links to it directly. Renders conditionally in `index.astro` — only when a
+`cta` section is present in `page.json`.
+
+| Prop          | Type                  | Default                  | Notes |
+|---------------|-----------------------|---------------------------|-------|
+| `headline`    | `string`              | — (required)              | Rendered via `Heading as="h2" size="md"` |
+| `subheadline` | `string`              | —                         | Rendered via `Text muted`; omitted entirely if absent |
+| `buttonLabel` | `string`              | — (required)              | Button text |
+| `buttonHref`  | `string`              | `'#formulario-captura'`   | Button link target |
+| `align`       | `'left' \| 'center'`  | — (required)              | Alignment of the headline/subheadline/button block |
+
+```astro
+<CtaSection
+  headline="No esperes más para disfrutar del café de especialidad en tu casa"
+  buttonLabel="Suscríbete al plan mensual"
+  align="center"
+/>
+```
+
 ---
 
 ## Composition example (page-level)

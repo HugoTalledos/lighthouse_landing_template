@@ -6,6 +6,7 @@ import CaptureForm from '../component/organisms/CaptureForm.astro';
 import PricingSection from '../component/organisms/PricingSection.astro';
 import TestimonialsSection from '../component/organisms/TestimonialsSection.astro';
 import FaqSection from '../component/organisms/FaqSection.astro';
+import CtaSection from '../component/organisms/CtaSection.astro';
 import pageData from '../data/page.json';
 
 interface RawSection {
@@ -59,6 +60,10 @@ const faqSection = data.sections.find((s) => s.type === 'faq') as
   | { items: { question: string; answer: string }[] }
   | undefined;
 
+const ctaSection = data.sections.find((s) => s.type === 'cta') as
+  | { headline: string; subheadline?: string | null; button_text: string; button_url?: string | null }
+  | undefined;
+
 const theme = sanitizeTheme(data.theme);
 
 const fallbackItems = [
@@ -110,6 +115,15 @@ const fallbackItems = [
   )}
   {faqSection && (
     <FaqSection heading="Preguntas frecuentes" headingAlign="center" items={faqSection.items} />
+  )}
+  {ctaSection && (
+    <CtaSection
+      headline={ctaSection.headline}
+      subheadline={ctaSection.subheadline ?? undefined}
+      buttonLabel={ctaSection.button_text}
+      buttonHref={ctaSection.button_url ?? undefined}
+      align="center"
+    />
   )}
   <CaptureForm
     heading="Déjanos tus datos"
