@@ -70,15 +70,15 @@ originates from an LLM and ends up in HTML served to real visitors — an invali
 throws and fails the build rather than being silently substituted.
 
 `theme.logo_text`/`theme.logo_icon`/`theme.logo_url` feed `Logo.astro`
-via `Hero`'s `logoText`/`logoIcon` props — `logo_icon` is a raw SVG string
+via `Hero`'s `logoText`/`logoIcon`/`logoUrl` props — `logo_icon` is a raw SVG string
 injected with `set:html`, unsanitized, same trust model as
-`FeatureItem.icon` in `BenefitsSection`. Unlike the theme colors, these two
+`FeatureItem.icon` in `BenefitsSection`. Unlike the theme colors, these three
 aren't regex-validated before reaching the DOM; if that becomes a real
 concern, apply the same kind of allowlist validation used for the theme
 colors before this goes to production with untrusted `page.json` input. This
 addition is fixture/template-side only — verify `lighthouse_back`'s
-`page_renderer.py` actually populates `logo_text`/`logo_icon` before
-depending on them in the real pipeline.
+`page_renderer.py` actually populates all three (`logo_text`, `logo_icon`,
+`logo_url`) before depending on them in the real pipeline.
 
 `Hero.imageUrl`/`ctaHref` are also optional props, read from
 `HeroSection.image_url`/`cta_url` in `page.json`. `ctaHref` was previously
