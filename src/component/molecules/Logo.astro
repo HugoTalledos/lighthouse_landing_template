@@ -1,16 +1,21 @@
 ---
 interface Props {
   text?: string;
+  logoUrl?: string;
   class?: string;
 }
 
-const { text = '[Tu Marca]', class: className } = Astro.props;
+const { text = '[Tu Marca]', logoUrl, class: className } = Astro.props;
 const iconHtml = (await Astro.slots.render('icon')).trim();
 ---
 
 <span class={`flex items-center gap-2 text-lg font-bold tracking-tight ${className ?? ''}`}>
-  {iconHtml && (
+  {iconHtml ? (
     <span class="flex h-6 w-6 shrink-0 items-center justify-center [&_svg]:h-full [&_svg]:w-full" set:html={iconHtml} />
-  )}
+  ) : logoUrl ? (
+    <span class="flex h-6 w-6 shrink-0 items-center justify-center">
+      <img src={logoUrl} alt="" class="h-full w-full object-contain" />
+    </span>
+  ) : null}
   {text}
 </span>

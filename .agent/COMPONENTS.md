@@ -209,10 +209,11 @@ brand name needs to appear). Renders brand text plus an optional inline SVG
 icon read via a named slot. Don't hardcode the brand name elsewhere; route
 through this component so re-skinning only touches one file.
 
-| Prop    | Type     | Default        | Notes |
-|---------|----------|----------------|-------|
-| `text`  | `string` | `'[Tu Marca]'` | Brand name/wordmark |
-| `class` | `string` | —              | Appended, not merged |
+| Prop       | Type     | Default        | Notes |
+|------------|----------|----------------|-------|
+| `text`     | `string` | `'[Tu Marca]'` | Brand name/wordmark |
+| `logoUrl`  | `string` | —              | Rendered as `<img>` in the icon box when the `icon` slot is empty; ignored if the `icon` slot has content |
+| `class`    | `string` | —              | Appended, not merged |
 
 Named slot `icon` — pass an inline SVG, same convention as `BenefitCard`
 (see that entry above for the `set:html`/`?raw` pattern). The icon wrapper
@@ -229,6 +230,8 @@ runtime. If you add a new component with an optional icon slot, use the same
 </Logo>
 
 <Logo text="Acme Inc." />
+
+<Logo text="Acme Inc." logoUrl="https://cdn.example.com/logo.png" />
 ```
 
 ### PricingCard
@@ -336,6 +339,7 @@ other caller needing to specify it.
 | `textPosition` | `'left' \| 'right'`    | — (required)               | Which side the text column renders on at `md:`; the image placeholder takes the other side. Text stays first in DOM order regardless. |
 | `logoText`     | `string`               | —                          | Forwarded to `Logo`'s `text` prop |
 | `logoIcon`     | `string`               | —                          | Raw SVG string forwarded to `Logo`'s `icon` slot via `set:html` |
+| `logoUrl`      | `string`               | —                          | Forwarded to `Logo`'s `logoUrl` prop; ignored by `Logo` if `logoIcon` is also set |
 | `imageUrl`     | `string`               | placeholder box            | When present, renders an `<img>` instead of the `[Espacio para imagen...]` placeholder |
 | `ctaHref`      | `string`               | `'#formulario-captura'`    | CTA button link target |
 

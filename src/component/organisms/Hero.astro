@@ -13,11 +13,12 @@ interface Props {
   textPosition: 'left' | 'right';
   logoText?: string;
   logoIcon?: string;
+  logoUrl?: string;
   imageUrl?: string;
   ctaHref?: string;
 }
 
-const { title, subtitle, ctaLabel, align, textPosition, logoText, logoIcon, imageUrl, ctaHref }: Props = Astro.props;
+const { title, subtitle, ctaLabel, align, textPosition, logoText, logoIcon, logoUrl, imageUrl, ctaHref }: Props = Astro.props;
 
 const alignClasses = {
   left: 'items-start text-left',
@@ -37,7 +38,7 @@ const imageOrderClasses = {
 
 <header class="border-b border-gray-200">
   <Container class="flex items-center justify-between py-6">
-    <Logo text={logoText}>
+    <Logo text={logoText} logoUrl={logoUrl}>
       {logoIcon && <Fragment slot="icon" set:html={logoIcon} />}
     </Logo>
   </Container>
