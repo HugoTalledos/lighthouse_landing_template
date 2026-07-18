@@ -29,14 +29,14 @@ const { title = 'Landing Page Template', theme }: Props = Astro.props;
     <title>{title}</title>
     {theme && (
       <style set:html={`:root {
-        ${theme.primaryColor ? `--color-primary: ${theme.primaryColor};` : ''}
-        ${theme.primaryForegroundColor ? `--color-primary-foreground: ${theme.primaryForegroundColor};` : ''}
-        ${theme.secondaryColor ? `--color-secondary: ${theme.secondaryColor};` : ''}
-        ${theme.bgColor ? `--color-bg: ${theme.bgColor};` : ''}
-        ${theme.bgMutedColor ? `--color-bg-muted: ${theme.bgMutedColor};` : ''}
-        ${theme.textColor ? `--color-text: ${theme.textColor};` : ''}
-        ${theme.textMutedColor ? `--color-text-muted: ${theme.textMutedColor};` : ''}
-        ${theme.fontFamily ? `--font-sans: '${theme.fontFamily}', system-ui, sans-serif;` : ''}
+        ${theme.primaryColor ? `--color-primary: ${theme.primaryColor}!important;` : ''}
+        ${theme.primaryForegroundColor ? `--color-primary-foreground: ${theme.primaryForegroundColor}!important;` : ''}
+        ${theme.secondaryColor ? `--color-secondary: ${theme.secondaryColor}!important;` : ''}
+        ${theme.bgColor ? `--color-bg: ${theme.bgColor}!important;` : ''}
+        ${theme.bgMutedColor ? `--color-bg-muted: ${theme.bgMutedColor}!important;` : ''}
+        ${theme.textColor ? `--color-text: ${theme.textColor}!important;` : ''}
+        ${theme.textMutedColor ? `--color-text-muted: ${theme.textMutedColor}!important;` : ''}
+        ${theme.fontFamily ? `--font-sans: '${theme.fontFamily}', system-ui, sans-serif!important;` : ''}
       }`} />
     )}
   </head>
