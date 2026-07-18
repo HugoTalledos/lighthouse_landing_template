@@ -7,6 +7,7 @@ import PricingSection from '../component/organisms/PricingSection.astro';
 import TestimonialsSection from '../component/organisms/TestimonialsSection.astro';
 import FaqSection from '../component/organisms/FaqSection.astro';
 import CtaSection from '../component/organisms/CtaSection.astro';
+import Footer from '../component/organisms/Footer.astro';
 import pageData from '../data/page.json';
 
 interface RawSection {
@@ -62,6 +63,10 @@ const faqSection = data.sections.find((s) => s.type === 'faq') as
 
 const ctaSection = data.sections.find((s) => s.type === 'cta') as
   | { headline: string; subheadline?: string | null; button_text: string; button_url?: string | null }
+  | undefined;
+
+const footerSection = data.sections.find((s) => s.type === 'footer') as
+  | { business_name: string; links: { label: string; url: string }[]; social_links?: { platform: string; url: string }[] }
   | undefined;
 
 const theme = sanitizeTheme(data.theme);
@@ -131,4 +136,11 @@ const fallbackItems = [
     align="center"
     ctaLabel="Enviar"
   />
+  {footerSection && (
+    <Footer
+      businessName={footerSection.business_name}
+      links={footerSection.links}
+      socialLinks={footerSection.social_links}
+    />
+  )}
 </BaseLayout>

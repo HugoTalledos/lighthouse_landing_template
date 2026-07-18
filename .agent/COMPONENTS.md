@@ -126,6 +126,23 @@ need a label without the paired input/error-span markup.
 | `for`   | `string` | — (required) | Should match the paired input's `name`/`id` |
 | `class` | `string` | —            | Appended, not merged |
 
+### Link
+
+`atoms/Link.astro`
+
+**Use when** you need a plain text link — footer navigation links, social
+links — as opposed to a CTA button. Don't reuse `Button` for these; `Button`
+is styled as a filled/muted call-to-action, not an inline text link.
+
+| Prop    | Type     | Default      | Notes |
+|---------|----------|--------------|-------|
+| `href`  | `string` | — (required) | |
+| `class` | `string` | —            | Appended, not merged |
+
+```astro
+<Link href="/blog">Blog</Link>
+```
+
 ---
 
 ## Molecules
@@ -488,6 +505,30 @@ links to it directly. Renders conditionally in `index.astro` — only when a
   headline="No esperes más para disfrutar del café de especialidad en tu casa"
   buttonLabel="Suscríbete al plan mensual"
   align="center"
+/>
+```
+
+### Footer
+
+`organisms/Footer.astro`
+
+**Use when** you need the page footer: business name + nav links + optional
+social links. Uses the `Link` atom for both link groups — social links
+render as plain platform-name text (`Instagram`, `Facebook`, ...), there are
+no per-platform icons/assets in this template. Renders conditionally in
+`index.astro` — only when a `footer` section is present in `page.json`.
+
+| Prop           | Type              | Default      | Notes |
+|----------------|-------------------|--------------|-------|
+| `businessName` | `string`          | — (required) | Rendered as plain bold text, not through `Logo` |
+| `links`        | `FooterLink[]`    | — (required) | `{ label: string; url: string }[]` |
+| `socialLinks`  | `SocialLink[]`    | —            | `{ platform: string; url: string }[]`; the social nav is omitted entirely if absent or empty |
+
+```astro
+<Footer
+  businessName="Acme Coffee"
+  links={[{ label: 'Blog', url: '/blog' }]}
+  socialLinks={[{ platform: 'Instagram', url: 'https://instagram.com/acmecoffee' }]}
 />
 ```
 
