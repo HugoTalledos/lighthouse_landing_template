@@ -21,12 +21,12 @@
           "description": "Formato ^[A-Za-z0-9 _-]+$ (letras, dígitos, espacios, _ y - solamente; sin comas ni comillas). Un solo nombre de fuente (ej. \"Poppins\"), no un font-stack CSS. Valor inválido rompe el build igual que los colores."
         },
         "bg_color": {
-          "type": ["string", "null"],
-          "description": "Opcional. Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-bg (fondo del body). Omitir o null cae al default de global.css (#ffffff)."
+          "type": ["string"],
+          "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-bg (fondo del body). Omitir o null cae al default de global.css (#ffffff)."
         },
         "text_color": {
-          "type": ["string", "null"],
-          "description": "Opcional. Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-text (texto principal del body). Omitir o null cae al default de global.css (#111827)."
+          "type": ["string"],
+          "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-text (texto principal del body). Omitir o null cae al default de global.css (#111827)."
         },
         "logo_url": {
           "type": ["string", "null"],
