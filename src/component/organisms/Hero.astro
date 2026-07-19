@@ -5,33 +5,48 @@ import Text from '../atoms/Text.astro';
 import Button from '../atoms/Button.astro';
 import Logo from '../molecules/Logo.astro';
 
-interface Props {
+
+interface HeroTextProps {
   title: string;
   subtitle: string;
   ctaLabel: string;
   align: 'left' | 'center';
-  textPosition: 'left' | 'right';
-  layout?: 'side' | 'background';
+}
+
+interface HeroImgBackgroudConfig {
+  blur: boolean;
+  overlayOpacity: number;
+}
+
+interface HeroImgSideConfig {
+  position: 'left' | 'right';
+  shape: 'circle' | 'rounded';
+}
+
+interface HeroImgProps {
+  imageUrl?: string;
+  backgroudConfig: HeroImgBackgroudConfig;
+  sideConfig: HeroImgSideConfig
+}
+
+interface LogoProps {
   logoText?: string;
   logoIcon?: string;
   logoUrl?: string;
-  imageUrl?: string;
-  ctaHref?: string;
 }
 
-const {
-  title,
-  subtitle,
-  ctaLabel,
-  align,
-  textPosition,
-  layout = 'side',
-  logoText,
-  logoIcon,
-  logoUrl,
-  imageUrl,
-  ctaHref,
-}: Props = Astro.props;
+interface Props {
+  layout?: 'side' | 'background';
+  text: HeroTextProps;
+  img: HeroImgProps;
+  logo: LogoProps
+}
+
+const { layout = 'side', text, img, logo }: Props = Astro.props;
+
+const { title, subtitle, ctaLabel, align } = text;
+const { imageUrl, backgroudConfig, sideConfig } = img;
+const { logoText, logoIcon, logoUrl } = logo;
 
 const isBackground = layout === 'background' && !!imageUrl;
 
@@ -40,14 +55,20 @@ const alignClasses = {
   center: 'items-center text-center',
 };
 
-const textOrderClasses = {
+// sideConfig.position is the side the IMAGE sits on; text takes the opposite side.
+const imageOrderClasses = {
   left: 'md:order-1',
   right: 'md:order-2',
 };
 
-const imageOrderClasses = {
+const textOrderClasses = {
   left: 'md:order-2',
   right: 'md:order-1',
+};
+
+const shapeClasses = {
+  circle: 'rounded-full',
+  rounded: 'rounded-lg',
 };
 ---
 
@@ -69,8 +90,12 @@ const imageOrderClasses = {
   {
     isBackground && (
       <>
-        <img src={imageUrl} alt="" class="absolute inset-0 h-full w-full object-cover" />
-        <div class="absolute inset-0 bg-black/55" />
+        <img
+          src={imageUrl}
+          alt=""
+          class={`absolute inset-0 h-full w-full object-cover ${backgroudConfig.blur ? 'blur-md' : ''}`}
+        />
+        <div class="absolute inset-0 bg-black" style={{ opacity: backgroudConfig.overlayOpacity }} />
       </>
     )
   }
@@ -82,7 +107,7 @@ const imageOrderClasses = {
     }
   >
     <div
-      class={`flex flex-col gap-6 ${alignClasses[align]} ${!isBackground ? textOrderClasses[textPosition] : ''}`}
+      class={`flex flex-col gap-6 ${alignClasses[align]} ${!isBackground ? textOrderClasses[sideConfig.position] : ''}`}
     >
       <Heading as="h1" size="lg" align={align} class={isBackground ? 'text-white' : ''}>
         {title}
@@ -91,7 +116,7 @@ const imageOrderClasses = {
         {subtitle}
       </Text>
       <div>
-        <Button variant="primary" href={ctaHref ?? '#formulario-captura'}>{ctaLabel}</Button>
+        <Button variant="primary" href="#formulario-captura">{ctaLabel}</Button>
       </div>
     </div>
     {
@@ -100,11 +125,11 @@ const imageOrderClasses = {
         <img
           src={imageUrl}
           alt=""
-          class={`h-64 w-full rounded-lg object-cover md:h-96 ${imageOrderClasses[textPosition]}`}
+          class={`h-64 w-full object-cover md:h-96 ${shapeClasses[sideConfig.shape]} ${imageOrderClasses[sideConfig.position]}`}
         />
       ) : (
         <div
-          class={`flex h-64 w-full items-center justify-center rounded-lg bg-[var(--color-bg-muted)] md:h-96 ${imageOrderClasses[textPosition]}`}
+          class={`flex h-64 w-full items-center justify-center bg-[var(--color-bg-muted)] md:h-96 ${shapeClasses[sideConfig.shape]} ${imageOrderClasses[sideConfig.position]}`}
         >
           <Text muted>[Espacio para imagen o ilustración]</Text>
         </div>

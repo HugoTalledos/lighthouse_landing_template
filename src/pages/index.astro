@@ -53,12 +53,19 @@ function sanitizeTheme(theme: RawTheme) {
 
 const heroSection = data.sections.find((s) => s.type === 'hero') as
   | {
-      headline: string;
-      subheadline: string;
-      cta_text: string;
-      image_url?: string | null;
-      image_display?: 'side' | 'background' | null;
-      cta_url?: string | null;
+      layout?: 'side' | 'background' | null;
+      text: {
+        headline: string;
+        subheadline: string;
+        cta_text: string;
+      };
+      image: {
+        url?: string | null;
+        position?: 'left' | 'right' | null;
+        shape?: 'circle' | 'rounded' | null;
+        blur?: boolean | null;
+        overlay_opacity?: number | null;
+      };
     }
   | undefined;
 
@@ -101,17 +108,29 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
 
 <BaseLayout title="Landing Page Template" theme={theme}>
   <Hero
-    title={heroSection?.headline ?? 'Título principal de tu producto o servicio'}
-    subtitle={heroSection?.subheadline ?? 'Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.'}
-    ctaLabel={heroSection?.cta_text ?? 'Comenzar ahora'}
-    align="left"
-    textPosition="left"
-    logoText={data.theme.logo_text ?? undefined}
-    logoIcon={data.theme.logo_icon ?? undefined}
-    logoUrl={data.theme.logo_url ?? undefined}
-    imageUrl={heroSection?.image_url ?? undefined}
-    layout={heroSection?.image_display ?? 'side'}
-    ctaHref={heroSection?.cta_url ?? undefined}
+    layout={heroSection?.layout ?? 'side'}
+    text={{
+      title: heroSection?.text.headline ?? 'Título principal de tu producto o servicio',
+      subtitle: heroSection?.text.subheadline ?? 'Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.',
+      ctaLabel: heroSection?.text.cta_text ?? 'Comenzar ahora',
+      align: 'left',
+    }}
+    img={{
+      imageUrl: heroSection?.image.url ?? undefined,
+      backgroudConfig: {
+        blur: heroSection?.image.blur ?? false,
+        overlayOpacity: heroSection?.image.overlay_opacity ?? 0.55,
+      },
+      sideConfig: {
+        position: heroSection?.image.position ?? 'right',
+        shape: heroSection?.image.shape ?? 'rounded',
+      },
+    }}
+    logo={{
+      logoText: data.theme.logo_text ?? undefined,
+      logoIcon: data.theme.logo_icon ?? undefined,
+      logoUrl: data.theme.logo_url ?? undefined,
+    }}
   />
   <BenefitsSection
     heading={featuresSection?.headline ?? 'Beneficios'}

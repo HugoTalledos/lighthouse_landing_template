@@ -30,7 +30,7 @@
         },
         "logo_icon": {
           "type": ["string", "null"],
-          "description": "Opcional. SVG crudo, se inyecta sin sanitizar vía set:html. Mismo modelo de confianza que HeroSection.image_url y FeatureItem.icon — solo usar SVG confiable/sanitizado. Omitir o null para no usar ícono."
+          "description": "Opcional. SVG crudo, se inyecta sin sanitizar vía set:html. Mismo modelo de confianza que HeroSection.image.url y FeatureItem.icon — solo usar SVG confiable/sanitizado. Omitir o null para no usar ícono."
         }
       }
     },
@@ -56,25 +56,57 @@
     "HeroSection": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Renderiza incondicionalmente. Si la sección 'hero' está ausente del array, index.astro cae a copy placeholder genérica en español — para una página real, siempre inclúyela.",
-      "required": ["type", "headline", "subheadline", "image_url", "cta_text", "cta_url"],
+      "description": "Renderiza incondicionalmente. Si la sección 'hero' está ausente del array, index.astro cae a copy placeholder genérica en español — para una página real, siempre inclúyela. El CTA del hero siempre enlaza a #formulario-captura (ancla de CaptureForm); no es configurable desde este JSON. Las llaves están agrupadas por función (text/image), reflejando el agrupamiento de props del componente Hero.",
+      "required": ["type", "text", "image"],
       "properties": {
         "type": { "const": "hero" },
-        "headline": { "type": "string", "description": "Mapea a la prop title de Hero." },
-        "subheadline": { "type": "string", "description": "Mapea a la prop subtitle de Hero." },
-        "image_url": {
-          "type": ["string", "null"],
-          "description": "Opcional. Mapea a imageUrl. Interpolado en <img src> sin sanitizar. Si se omite/null, renderiza el placeholder '[Espacio para imagen o ilustración]' (aplica sin importar el valor de image_display)."
-        },
-        "image_display": {
+        "layout": {
           "type": ["string", "null"],
           "enum": ["side", "background", null],
-          "description": "Opcional. Mapea a la prop layout de Hero. 'side' (default si se omite/null) muestra image_url al costado del texto, como hoy. 'background' la usa como fondo de toda la sección con un overlay oscuro semitransparente para contraste, y el título/subtítulo pasan a texto claro. Si es 'background' pero image_url es null, cae al layout 'side' (placeholder incluido)."
+          "description": "Opcional. Mapea a la prop layout de Hero. 'side' (default si se omite/null) muestra image.url al costado del texto, como hoy. 'background' la usa como fondo de toda la sección con un overlay oscuro semitransparente para contraste, y el título/subtítulo pasan a texto claro. Si es 'background' pero image.url es null, cae al layout 'side' (placeholder incluido)."
         },
-        "cta_text": { "type": "string", "description": "Mapea a la prop ctaLabel de Hero." },
-        "cta_url": {
+        "text": { "$ref": "#/$defs/HeroText" },
+        "image": { "$ref": "#/$defs/HeroImage" }
+      }
+    },
+    "HeroText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headline", "subheadline", "cta_text"],
+      "properties": {
+        "headline": { "type": "string", "description": "Mapea a la prop title de Hero." },
+        "subheadline": { "type": "string", "description": "Mapea a la prop subtitle de Hero." },
+        "cta_text": { "type": "string", "description": "Mapea a la prop ctaLabel de Hero." }
+      }
+    },
+    "HeroImage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": {
+        "url": {
           "type": ["string", "null"],
-          "description": "Opcional. Mapea a ctaHref. Default de facto #formulario-captura (ancla de CaptureForm) si es null. Solo cambiarlo si deliberadamente se quiere que el CTA del hero enlace a otro lado — alejarse del default rompe el scroll-to-form."
+          "description": "Opcional. Mapea a img.imageUrl de Hero. Interpolado en <img src> sin sanitizar. Si se omite/null, renderiza el placeholder '[Espacio para imagen o ilustración]' (aplica sin importar el valor de layout)."
+        },
+        "position": {
+          "type": ["string", "null"],
+          "enum": ["left", "right", null],
+          "description": "Opcional. Mapea a img.sideConfig.position de Hero. Solo aplica con layout 'side' (o su fallback desde 'background' sin url). Indica el lado donde va la imagen (o su placeholder); el texto se ubica del lado contrario. Default 'right' si se omite/null."
+        },
+        "shape": {
+          "type": ["string", "null"],
+          "enum": ["circle", "rounded", null],
+          "description": "Opcional. Mapea a img.sideConfig.shape de Hero. Solo aplica con layout 'side' (o su fallback). 'rounded' (default si se omite/null) usa esquinas redondeadas; 'circle' usa un radius completo."
+        },
+        "blur": {
+          "type": ["boolean", "null"],
+          "description": "Opcional. Mapea a img.backgroudConfig.blur de Hero. Solo aplica con layout 'background'. Default false si se omite/null."
+        },
+        "overlay_opacity": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Opcional. Mapea a img.backgroudConfig.overlayOpacity de Hero. Solo aplica con layout 'background'. Controla la opacidad del overlay oscuro sobre la imagen de fondo (0 = sin overlay, 1 = negro sólido). Default 0.55 si se omite/null."
         }
       }
     },

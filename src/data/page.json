@@ -10,12 +10,17 @@
   "sections": [
     {
       "type": "hero",
-      "headline": "Café de especialidad, directo a tu puerta",
-      "subheadline": "Suscríbete y recibe granos recién tostados cada mes, seleccionados por baristas expertos.",
-      "image_url": "https://cafearomas.com/cdn/shop/articles/nathan-dumlao-r-KfktlyBL0-unsplash.jpg?v=1712065153",
-      "image_display": "background",
-      "cta_text": "Quiero suscribirme",
-      "cta_url": "#formulario-captura"
+      "layout": "side",
+      "text": {
+        "headline": "Café de especialidad, directo a tu puerta",
+        "subheadline": "Suscríbete y recibe granos recién tostados cada mes, seleccionados por baristas expertos.",
+        "cta_text": "Quiero suscribirme"
+      },
+      "image": {
+        "url": "https://cafearomas.com/cdn/shop/articles/nathan-dumlao-r-KfktlyBL0-unsplash.jpg?v=1712065153",
+        "position": "left",
+        "shape": "circle"
+      }
     },
     {
       "type": "features",
