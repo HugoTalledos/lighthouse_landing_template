@@ -64,10 +64,12 @@ is only a fixture so `npm run dev`/`npm run check` work standalone.
 present in `page.json` is silently ignored. `hero`/`features`/`capture` always render
 (falling back to placeholder/default copy field-by-field when absent); `pricing`/
 `testimonials`/`faq`/`cta`/`footer` render only when present, with no fallback content.
-`theme.primary_color`/`secondary_color`/`font_family` are regex-validated before being
-interpolated into an inline `<style>` override in `BaseLayout`, since this content
-originates from an LLM and ends up in HTML served to real visitors — an invalid value
-throws and fails the build rather than being silently substituted.
+`theme.primary_color`/`secondary_color`/`font_family`/`bg_color`/`text_color` are
+regex-validated before being interpolated into an inline `<style>` override in `BaseLayout`,
+since this content originates from an LLM and ends up in HTML served to real visitors — an
+invalid value throws and fails the build rather than being silently substituted.
+`bg_color`/`text_color` are optional (unlike the other three) — omit or `null` to keep
+`global.css`'s `--color-bg`/`--color-text` defaults.
 
 `theme.logo_text`/`theme.logo_icon`/`theme.logo_url` feed `Logo.astro`
 via `Hero`'s `logoText`/`logoIcon`/`logoUrl` props — `logo_icon` is a raw SVG string

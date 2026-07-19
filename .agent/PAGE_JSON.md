@@ -30,6 +30,8 @@ meta description, or other top-level field — `index.astro` hardcodes
   "primary_color": "#4f46e5",
   "secondary_color": "#0ea5e9",
   "font_family": "Inter",
+  "bg_color": null,
+  "text_color": null,
   "logo_url": null,
   "logo_text": "Acme Inc.",
   "logo_icon": null
@@ -41,12 +43,14 @@ meta description, or other top-level field — `index.astro` hardcodes
 | `primary_color`   | `string`         | yes      | Must match `^#[0-9a-fA-F]{3,8}$` (hex only, 3–8 hex digits after `#`). An invalid value fails `astro build`/`astro dev` with a thrown `Error` naming the field and value — this is not a silent fallback. |
 | `secondary_color` | `string`         | yes      | Same hex validation and same hard-failure behavior on an invalid value. |
 | `font_family`     | `string`         | yes      | Must match `^[A-Za-z0-9 _-]+$` (letters, digits, spaces, `_`, `-` only — no commas, no quotes, no CSS font stacks). Invalid values fail the build the same way. Use a single font name (e.g. `"Poppins"`), not a full `font-family` CSS value. |
+| `bg_color`        | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-bg` (page/body background). Omit or `null` to keep `global.css`'s default (`#ffffff`). |
+| `text_color`      | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-text` (body text color). Omit or `null` to keep `global.css`'s default (`#111827`). |
 | `logo_url`        | `string \| null` | no       | Rendered as `<img>` in the header logo when `logo_icon` is absent/`null`; if `logo_icon` is also set, `logo_icon`'s inline SVG wins and `logo_url` is ignored. Unsanitized — interpolated directly into `<img src>`. |
 | `logo_text`       | `string \| null` | no       | Passed straight through to `Hero`'s `logoText` prop with no validation/sanitization. Omit or `null` to fall back to the `Logo` atom's default (`'[Tu Marca]'`). |
 | `logo_icon`       | `string \| null` | no       | Raw SVG markup string, injected unsanitized via `set:html`. Same trust model as `HeroSection.image_url` and `FeatureItem.icon` below — only put trusted/sanitized SVG here, never raw user input. Omit or `null` for no icon. |
 
-Colors and font are the only theme fields that get validated before hitting the page; the
-rest are trusted verbatim.
+Colors (`primary_color`/`secondary_color`/`bg_color`/`text_color`) and `font_family` are the
+only theme fields that get validated before hitting the page; the rest are trusted verbatim.
 
 ## Sections
 
@@ -279,6 +283,8 @@ A `page.json` using every section type:
     "primary_color": "#4f46e5",
     "secondary_color": "#0ea5e9",
     "font_family": "Inter",
+    "bg_color": null,
+    "text_color": null,
     "logo_url": null,
     "logo_text": "Acme Coffee",
     "logo_icon": null
@@ -355,6 +361,8 @@ omitted:
     "primary_color": "#4f46e5",
     "secondary_color": "#0ea5e9",
     "font_family": "Inter",
+    "bg_color": null,
+    "text_color": null,
     "logo_url": null,
     "logo_text": null,
     "logo_icon": null
@@ -386,7 +394,9 @@ omitted:
 1. Fill `theme.primary_color`/`secondary_color`/`font_family` with valid values — an invalid
    one now fails the build outright (`astro build` throws, naming the field and value),
    rather than silently substituting a default. Double-check the hex format (`#` + 3–8 hex
-   digits) and the font-name character set before generating the file.
+   digits) and the font-name character set before generating the file. `theme.bg_color`/
+   `text_color` are optional but validated the same way when present — set them (instead of
+   `null`) whenever the brief calls for a non-default page background or body text color.
 2. Always include `hero` and `features` sections with real copy — they render unconditionally
    and generic placeholder text will leak to production if left out or left as literal
    Spanish placeholders.

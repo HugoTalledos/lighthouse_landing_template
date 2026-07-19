@@ -560,10 +560,12 @@ falling back to the placeholder copy below when a section is absent — these
 two, plus `CaptureForm`, always render. `pricing`/`testimonials`/`faq`/`cta`/
 `footer` sections map onto `PricingSection`/`TestimonialsSection`/
 `FaqSection`/`CtaSection`/`Footer` and render conditionally — only when
-present in `page.json`, with no fallback content. Theme colors (`theme.primary_color`/`secondary_color`/`font_family`) are validated
-(hex-only colors, alnum-only font name) before being interpolated into an inline `<style>`
-override in `BaseLayout` — an invalid value throws and fails the build rather than falling
-back silently. `theme.logo_text`/`theme.logo_icon`/`theme.logo_url` are passed straight
+present in `page.json`, with no fallback content. Theme colors (`theme.primary_color`/`secondary_color`/`bg_color`/`text_color`/`font_family`)
+are validated (hex-only colors, alnum-only font name) before being interpolated into an
+inline `<style>` override in `BaseLayout` — an invalid value throws and fails the build
+rather than falling back silently. `bg_color`/`text_color` are optional (the other theme
+colors aren't); omitting or nulling them keeps `global.css`'s `--color-bg`/`--color-text`
+defaults. `theme.logo_text`/`theme.logo_icon`/`theme.logo_url` are passed straight
 through (no fallback/sanitization at the `index.astro` level — `?? undefined` only handles
 `null`) to `Hero`'s `logoText`/`logoIcon`/`logoUrl`, which forwards them to `Logo`; `Logo`
 itself supplies the `'[Tu Marca]'` text default when `logo_text` is absent, prefers

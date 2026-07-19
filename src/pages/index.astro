@@ -19,6 +19,8 @@ interface RawTheme {
   primary_color: string;
   secondary_color: string;
   font_family: string;
+  bg_color?: string | null;
+  text_color?: string | null;
   logo_url?: string | null;
   logo_text?: string | null;
   logo_icon?: string | null;
@@ -44,10 +46,18 @@ function sanitizeTheme(theme: RawTheme) {
   if (!SAFE_FONT_RE.test(theme.font_family)) {
     throw new Error(`page.json: theme.font_family contains invalid characters: ${JSON.stringify(theme.font_family)}`);
   }
+  if (theme.bg_color != null && !HEX_COLOR_RE.test(theme.bg_color)) {
+    throw new Error(`page.json: theme.bg_color is not a valid hex color: ${JSON.stringify(theme.bg_color)}`);
+  }
+  if (theme.text_color != null && !HEX_COLOR_RE.test(theme.text_color)) {
+    throw new Error(`page.json: theme.text_color is not a valid hex color: ${JSON.stringify(theme.text_color)}`);
+  }
   return {
     primaryColor: theme.primary_color,
     secondaryColor: theme.secondary_color,
     fontFamily: theme.font_family,
+    bgColor: theme.bg_color ?? undefined,
+    textColor: theme.text_color ?? undefined,
   };
 }
 

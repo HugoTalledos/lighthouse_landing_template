@@ -1,11 +1,13 @@
 {
   "theme": {
-    "primary_color": "#4f46e5",
-    "secondary_color": "#0ea5e9",
-    "font_family": "Inter",
+    "primary_color": "#5b3000",
+    "secondary_color": "#c9a97e",
+    "font_family": "Poppins",
+    "bg_color": "#faf6f0",
+    "text_color": "#2b1c10",
     "logo_url": null,
-    "logo_text": "[Tu Marca]",
-    "logo_icon": null
+    "logo_text": "Café Aromas",
+    "logo_icon": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M2 21h18v-2H2v2zM20 8h-2V5h2c1.1 0 2 .9 2 2s-.9 1-2 1zm-4-5H4v10c0 2.2 1.8 4 4 4h4c2.2 0 4-1.8 4-4v-2h.5c1.9 0 3.5-1.6 3.5-3.5S22.4 3 20.5 3H16z\"/></svg>"
   },
   "sections": [
     {
