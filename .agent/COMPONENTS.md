@@ -319,29 +319,35 @@ first.
 `organisms/Hero.astro`
 
 **Use when** you need the page's top section: header bar (logo) + hero
-banner (headline, subtitle, primary CTA button, image or placeholder).
-Copy, layout, and CTA label/alignment props are required — there are no
+banner (headline, subtitle, primary CTA button, optional image). Copy,
+layout, and CTA label/alignment props are required — there are no
 defaults, so every usage must pass them explicitly. `logoText`/`logoIcon`
 are optional and forwarded straight through to `Logo`; omit them to fall
 back to `Logo`'s own default (`'[Tu Marca]'`, no icon). `imageUrl` is
-optional — when omitted, the `[Espacio para imagen...]` placeholder box
-renders as before. `ctaHref` is optional and defaults to
-`#formulario-captura` (must match `CaptureForm`'s section `id`) — passing it
-explicitly lets `page.json`'s `cta_url` override the default without every
-other caller needing to specify it.
+optional — when omitted, the `[Espacio para imagen o ilustración]`
+placeholder box renders instead, regardless of `layout`. `layout` controls
+how `imageUrl` is displayed: `'side'` (default) places it next to the text
+column, `'background'` uses it as a full-bleed section background with a
+dark overlay for contrast and switches the title/subtitle to light text; if
+`layout` is `'background'` but `imageUrl` is absent, it falls back to
+`'side'`'s rendering (placeholder box included). `ctaHref` is optional and
+defaults to `#formulario-captura` (must match `CaptureForm`'s section `id`)
+— passing it explicitly lets `page.json`'s `cta_url` override the default
+without every other caller needing to specify it.
 
-| Prop           | Type                   | Default                  | Notes |
-|----------------|------------------------|----------------------------|-------|
-| `title`        | `string`               | — (required)               | Rendered via `Heading as="h1" size="lg"` |
-| `subtitle`     | `string`               | — (required)               | Rendered via `Text size="lg" muted` |
-| `ctaLabel`     | `string`               | — (required)               | CTA button text |
-| `align`        | `'left' \| 'center'`   | — (required)               | Alignment of title/subtitle/button within the text column |
-| `textPosition` | `'left' \| 'right'`    | — (required)               | Which side the text column renders on at `md:`; the image placeholder takes the other side. Text stays first in DOM order regardless. |
-| `logoText`     | `string`               | —                          | Forwarded to `Logo`'s `text` prop |
-| `logoIcon`     | `string`               | —                          | Raw SVG string forwarded to `Logo`'s `icon` slot via `set:html` |
-| `logoUrl`      | `string`               | —                          | Forwarded to `Logo`'s `logoUrl` prop; ignored by `Logo` if `logoIcon` is also set |
-| `imageUrl`     | `string`               | placeholder box            | When present, renders an `<img>` instead of the `[Espacio para imagen...]` placeholder |
-| `ctaHref`      | `string`               | `'#formulario-captura'`    | CTA button link target |
+| Prop           | Type                             | Default                  | Notes |
+|----------------|-----------------------------------|----------------------------|-------|
+| `title`        | `string`                         | — (required)               | Rendered via `Heading as="h1" size="lg"` |
+| `subtitle`     | `string`                         | — (required)               | Rendered via `Text size="lg" muted` (background layout drops `muted` in favor of light text) |
+| `ctaLabel`     | `string`                         | — (required)               | CTA button text |
+| `align`        | `'left' \| 'center'`             | — (required)               | Alignment of title/subtitle/button within the text column |
+| `textPosition` | `'left' \| 'right'`              | — (required)               | Only used by `layout: 'side'`: which side the text column renders on at `md:`; the image takes the other side. Text stays first in DOM order regardless. Ignored by `layout: 'background'`. |
+| `layout`       | `'side' \| 'background'`         | `'side'`                   | `'side'` shows `imageUrl` next to the text (unchanged behavior). `'background'` renders `imageUrl` as a full-bleed section background with a `bg-black/55` overlay and light text; falls back to `'side'`'s rendering (placeholder box included) if `imageUrl` is absent. |
+| `logoText`     | `string`                         | —                          | Forwarded to `Logo`'s `text` prop |
+| `logoIcon`     | `string`                         | —                          | Raw SVG string forwarded to `Logo`'s `icon` slot via `set:html` |
+| `logoUrl`      | `string`                         | —                          | Forwarded to `Logo`'s `logoUrl` prop; ignored by `Logo` if `logoIcon` is also set |
+| `imageUrl`     | `string`                         | placeholder box             | When present, renders an `<img>`, positioned per `layout`; when absent, renders the `[Espacio para imagen o ilustración]` placeholder box |
+| `ctaHref`      | `string`                         | `'#formulario-captura'`    | CTA button link target |
 
 ```astro
 <Hero

@@ -64,7 +64,12 @@
         "subheadline": { "type": "string", "description": "Mapea a la prop subtitle de Hero." },
         "image_url": {
           "type": ["string", "null"],
-          "description": "Opcional. Mapea a imageUrl. Interpolado en <img src> sin sanitizar. Si se omite/null, renderiza el placeholder '[Espacio para imagen...]'."
+          "description": "Opcional. Mapea a imageUrl. Interpolado en <img src> sin sanitizar. Si se omite/null, renderiza el placeholder '[Espacio para imagen o ilustración]' (aplica sin importar el valor de image_display)."
+        },
+        "image_display": {
+          "type": ["string", "null"],
+          "enum": ["side", "background", null],
+          "description": "Opcional. Mapea a la prop layout de Hero. 'side' (default si se omite/null) muestra image_url al costado del texto, como hoy. 'background' la usa como fondo de toda la sección con un overlay oscuro semitransparente para contraste, y el título/subtítulo pasan a texto claro. Si es 'background' pero image_url es null, cae al layout 'side' (placeholder incluido)."
         },
         "cta_text": { "type": "string", "description": "Mapea a la prop ctaLabel de Hero." },
         "cta_url": {

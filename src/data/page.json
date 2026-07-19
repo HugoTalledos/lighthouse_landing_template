@@ -10,11 +10,12 @@
   "sections": [
     {
       "type": "hero",
-      "headline": "Título principal de tu producto o servicio",
-      "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
-      "image_url": null,
-      "cta_text": "Comenzar ahora",
-      "cta_url": null
+      "headline": "Café de especialidad, directo a tu puerta",
+      "subheadline": "Suscríbete y recibe granos recién tostados cada mes, seleccionados por baristas expertos.",
+      "image_url": "https://cafearomas.com/cdn/shop/articles/nathan-dumlao-r-KfktlyBL0-unsplash.jpg?v=1712065153",
+      "image_display": "background",
+      "cta_text": "Quiero suscribirme",
+      "cta_url": "#formulario-captura"
     },
     {
       "type": "features",

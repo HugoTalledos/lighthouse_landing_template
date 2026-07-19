@@ -79,13 +79,14 @@ you should always include both.
 }
 ```
 
-| Field         | Type             | Required | Maps to (`Hero` prop) | Notes |
-|---------------|------------------|----------|------------------------|-------|
-| `headline`    | `string`         | yes*     | `title`                | *Falls back to placeholder copy if the whole `hero` section is absent, but if present, treat as required. |
-| `subheadline` | `string`         | yes*     | `subtitle`              | |
-| `cta_text`    | `string`         | yes*     | `ctaLabel`              | |
-| `image_url`   | `string \| null` | no       | `imageUrl`              | Interpolated into `<img src>` unsanitized. When omitted/`null`, renders the `[Espacio para imagen...]` placeholder box instead. |
-| `cta_url`     | `string \| null` | no       | `ctaHref`               | Defaults to `#formulario-captura` (the `CaptureForm` anchor). Only set this to something else if you deliberately want the hero CTA to link elsewhere — changing it away from the default breaks the scroll-to-form behavior. |
+| Field           | Type             | Required | Maps to (`Hero` prop) | Notes |
+|-----------------|------------------|----------|------------------------|-------|
+| `headline`      | `string`         | yes*     | `title`                | *Falls back to placeholder copy if the whole `hero` section is absent, but if present, treat as required. |
+| `subheadline`   | `string`         | yes*     | `subtitle`              | |
+| `cta_text`      | `string`         | yes*     | `ctaLabel`              | |
+| `image_url`     | `string \| null` | no       | `imageUrl`              | Interpolated into `<img src>` unsanitized. When omitted/`null`, renders the `[Espacio para imagen o ilustración]` placeholder box instead, regardless of `image_display`. |
+| `image_display` | `string \| null` | no       | `layout`                | `"side"` (default if omitted/null) shows `image_url` next to the text, as before. `"background"` uses it as a full-bleed section background with a dark semi-transparent overlay for contrast, and the title/subtitle switch to light text. If `"background"` but `image_url` is `null`, falls back to `"side"`'s rendering (placeholder box included). |
+| `cta_url`       | `string \| null` | no       | `ctaHref`               | Defaults to `#formulario-captura` (the `CaptureForm` anchor). Only set this to something else if you deliberately want the hero CTA to link elsewhere — changing it away from the default breaks the scroll-to-form behavior. |
 
 #### `features`
 

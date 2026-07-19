@@ -11,6 +11,7 @@ interface Props {
   ctaLabel: string;
   align: 'left' | 'center';
   textPosition: 'left' | 'right';
+  layout?: 'side' | 'background';
   logoText?: string;
   logoIcon?: string;
   logoUrl?: string;
@@ -18,7 +19,21 @@ interface Props {
   ctaHref?: string;
 }
 
-const { title, subtitle, ctaLabel, align, textPosition, logoText, logoIcon, logoUrl, imageUrl, ctaHref }: Props = Astro.props;
+const {
+  title,
+  subtitle,
+  ctaLabel,
+  align,
+  textPosition,
+  layout = 'side',
+  logoText,
+  logoIcon,
+  logoUrl,
+  imageUrl,
+  ctaHref,
+}: Props = Astro.props;
+
+const isBackground = layout === 'background' && !!imageUrl;
 
 const alignClasses = {
   left: 'items-start text-left',
@@ -44,27 +59,56 @@ const imageOrderClasses = {
   </Container>
 </header>
 
-<section class="py-16 md:py-24">
-  <Container class="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-    <div class={`flex flex-col gap-6 ${alignClasses[align]} ${textOrderClasses[textPosition]}`}>
-      <Heading as="h1" size="lg" align={align}>{title}</Heading>
-      <Text size="lg" muted>
+<section
+  class={
+    isBackground
+      ? 'relative flex min-h-[480px] items-center overflow-hidden md:min-h-[600px]'
+      : 'py-16 md:py-24'
+  }
+>
+  {
+    isBackground && (
+      <>
+        <img src={imageUrl} alt="" class="absolute inset-0 h-full w-full object-cover" />
+        <div class="absolute inset-0 bg-black/55" />
+      </>
+    )
+  }
+  <Container
+    class={
+      isBackground
+        ? 'relative z-10 py-16 md:py-24'
+        : 'grid grid-cols-1 items-center gap-12 md:grid-cols-2'
+    }
+  >
+    <div
+      class={`flex flex-col gap-6 ${alignClasses[align]} ${!isBackground ? textOrderClasses[textPosition] : ''}`}
+    >
+      <Heading as="h1" size="lg" align={align} class={isBackground ? 'text-white' : ''}>
+        {title}
+      </Heading>
+      <Text size="lg" muted={!isBackground} class={isBackground ? 'text-white/85' : ''}>
         {subtitle}
       </Text>
       <div>
         <Button variant="primary" href={ctaHref ?? '#formulario-captura'}>{ctaLabel}</Button>
       </div>
     </div>
-    {imageUrl ? (
-      <img
-        src={imageUrl}
-        alt=""
-        class={`h-64 w-full rounded-lg object-cover md:h-96 ${imageOrderClasses[textPosition]}`}
-      />
-    ) : (
-      <div class={`flex h-64 w-full items-center justify-center rounded-lg bg-[var(--color-bg-muted)] md:h-96 ${imageOrderClasses[textPosition]}`}>
-        <Text muted>[Espacio para imagen o ilustración]</Text>
-      </div>
-    )}
+    {
+      !isBackground &&
+      (imageUrl ? (
+        <img
+          src={imageUrl}
+          alt=""
+          class={`h-64 w-full rounded-lg object-cover md:h-96 ${imageOrderClasses[textPosition]}`}
+        />
+      ) : (
+        <div
+          class={`flex h-64 w-full items-center justify-center rounded-lg bg-[var(--color-bg-muted)] md:h-96 ${imageOrderClasses[textPosition]}`}
+        >
+          <Text muted>[Espacio para imagen o ilustración]</Text>
+        </div>
+      ))
+    }
   </Container>
 </section>

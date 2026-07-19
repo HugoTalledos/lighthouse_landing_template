@@ -52,7 +52,14 @@ function sanitizeTheme(theme: RawTheme) {
 }
 
 const heroSection = data.sections.find((s) => s.type === 'hero') as
-  | { headline: string; subheadline: string; cta_text: string; image_url?: string | null; cta_url?: string | null }
+  | {
+      headline: string;
+      subheadline: string;
+      cta_text: string;
+      image_url?: string | null;
+      image_display?: 'side' | 'background' | null;
+      cta_url?: string | null;
+    }
   | undefined;
 
 const featuresSection = data.sections.find((s) => s.type === 'features') as
@@ -103,6 +110,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     logoIcon={data.theme.logo_icon ?? undefined}
     logoUrl={data.theme.logo_url ?? undefined}
     imageUrl={heroSection?.image_url ?? undefined}
+    layout={heroSection?.image_display ?? 'side'}
     ctaHref={heroSection?.cta_url ?? undefined}
   />
   <BenefitsSection
