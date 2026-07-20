@@ -9,21 +9,12 @@ import FaqSection from '../component/organisms/FaqSection.astro';
 import CtaSection from '../component/organisms/CtaSection.astro';
 import Footer from '../component/organisms/Footer.astro';
 import pageData from '../data/page.json';
+import type { RawTheme } from '../../model/theme.types';
+import type { HeroConfig } from '../../model/hero.types';
 
 interface RawSection {
   type: string;
   [key: string]: unknown;
-}
-
-interface RawTheme {
-  primary_color: string;
-  secondary_color: string;
-  font_family: string;
-  bg_color?: string | null;
-  text_color?: string | null;
-  logo_url?: string | null;
-  logo_text?: string | null;
-  logo_icon?: string | null;
 }
 
 interface PageData {
@@ -61,23 +52,7 @@ function sanitizeTheme(theme: RawTheme) {
   };
 }
 
-const heroSection = data.sections.find((s) => s.type === 'hero') as
-  | {
-      layout?: 'side' | 'background' | null;
-      text: {
-        headline: string;
-        subheadline: string;
-        cta_text: string;
-      };
-      image: {
-        url?: string | null;
-        position?: 'left' | 'right' | null;
-        shape?: 'circle' | 'rounded' | null;
-        blur?: boolean | null;
-        overlay_opacity?: number | null;
-      };
-    }
-  | undefined;
+const heroSection = data.sections.find((s) => s.type === 'hero') as | Omit<HeroConfig, 'logo'> | undefined;
 
 const featuresSection = data.sections.find((s) => s.type === 'features') as
   | { headline?: string; items: { title: string; description: string; icon?: string | null }[] }
@@ -120,21 +95,17 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   <Hero
     layout={heroSection?.layout ?? 'side'}
     text={{
-      title: heroSection?.text.headline ?? 'Título principal de tu producto o servicio',
-      subtitle: heroSection?.text.subheadline ?? 'Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.',
-      ctaLabel: heroSection?.text.cta_text ?? 'Comenzar ahora',
-      align: 'left',
+      headline: heroSection?.text.headline ?? 'Título principal de tu producto o servicio',
+      subheadline: heroSection?.text.subheadline ?? 'Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.',
+      cta_text: heroSection?.text.cta_text ?? 'Comenzar ahora',
+      align: heroSection?.text.align ?? 'center',
     }}
-    img={{
-      imageUrl: heroSection?.image.url ?? undefined,
-      backgroudConfig: {
-        blur: heroSection?.image.blur ?? false,
-        overlayOpacity: heroSection?.image.overlay_opacity ?? 0.55,
-      },
-      sideConfig: {
-        position: heroSection?.image.position ?? 'right',
-        shape: heroSection?.image.shape ?? 'rounded',
-      },
+    image={{
+      url: heroSection?.image.url ?? undefined,
+      blur: heroSection?.image.blur ?? false,
+      overlay_opacity: heroSection?.image.overlay_opacity ?? 0.55,
+      position: heroSection?.image.position ?? 'right',
+      shape: heroSection?.image.shape ?? 'rounded',
     }}
     logo={{
       logoText: data.theme.logo_text ?? undefined,
