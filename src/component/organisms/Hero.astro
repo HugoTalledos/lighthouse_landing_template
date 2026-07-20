@@ -121,19 +121,16 @@ const shapeClasses = {
     </div>
     {
       !isBackground &&
-      (imageUrl ? (
-        <img
-          src={imageUrl}
-          alt=""
-          class={`h-64 w-full object-cover md:h-96 ${shapeClasses[sideConfig.shape]} ${imageOrderClasses[sideConfig.position]}`}
-        />
-      ) : (
-        <div
-          class={`flex h-64 w-full items-center justify-center bg-[var(--color-bg-muted)] md:h-96 ${shapeClasses[sideConfig.shape]} ${imageOrderClasses[sideConfig.position]}`}
-        >
-          <Text muted>[Espacio para imagen o ilustración]</Text>
-        </div>
-      ))
+      (
+        imageUrl ?? 
+        (
+          <img
+            src={imageUrl}
+            alt=""
+            class={`h-64 w-full object-cover md:h-96 ${shapeClasses[sideConfig.shape]} ${imageOrderClasses[sideConfig.position]}`}
+          />
+        )
+      )
     }
   </Container>
 </section>
