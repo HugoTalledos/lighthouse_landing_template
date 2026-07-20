@@ -1,58 +1,28 @@
 ---
+import type { HeroConfig } from '../../../model/hero.types';
 import Container from '../atoms/Container.astro';
 import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import Button from '../atoms/Button.astro';
 import Logo from '../molecules/Logo.astro';
 
+type Props = HeroConfig;
 
-interface HeroTextProps {
-  title: string;
-  subtitle: string;
-  ctaLabel: string;
-  align: 'left' | 'center';
-}
+const { layout, text, image, logo }: Props = Astro.props;
 
-interface HeroImgBackgroudConfig {
-  blur: boolean;
-  overlayOpacity: number;
-}
-
-interface HeroImgSideConfig {
-  position: 'left' | 'right';
-  shape: 'circle' | 'rounded';
-}
-
-interface HeroImgProps {
-  imageUrl?: string;
-  backgroudConfig: HeroImgBackgroudConfig;
-  sideConfig: HeroImgSideConfig
-}
-
-interface LogoProps {
-  logoText?: string;
-  logoIcon?: string;
-  logoUrl?: string;
-}
-
-interface Props {
-  layout?: 'side' | 'background';
-  text: HeroTextProps;
-  img: HeroImgProps;
-  logo: LogoProps
-}
-
-const { layout = 'side', text, img, logo }: Props = Astro.props;
-
-const { title, subtitle, ctaLabel, align } = text;
-const { imageUrl, backgroudConfig, sideConfig } = img;
+const { headline: title, subheadline: subtitle, cta_text: ctaLabel, align } = text;
+const { url: imageUrl, blur, overlay_opacity: overlayOpacity, position, shape } = image;
 const { logoText, logoIcon, logoUrl } = logo;
 
-const isBackground = layout === 'background' && !!imageUrl;
+const backgroudConfig = { blur: blur ?? false, overlayOpacity: overlayOpacity ?? 0.55 };
+const sideConfig = { position: position ?? 'right', shape: shape ?? 'rounded' };
+
+const isBackground = (layout ?? 'side') === 'background' && !!imageUrl;
 
 const alignClasses = {
   left: 'items-start text-left',
   center: 'items-center text-center',
+  right: 'items-end text-right'
 };
 
 // sideConfig.position is the side the IMAGE sits on; text takes the opposite side.
