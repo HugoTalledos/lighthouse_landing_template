@@ -117,6 +117,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     heading={featuresSection?.headline ?? 'Beneficios'}
     headingAlign="center"
     cardAlign="left"
+    iconPosition='center'
     items={(featuresSection?.items ?? fallbackItems).map(({ title, description, icon }) => ({ title, description, icon: icon ?? undefined }))}
   />
   {pricingSection && (

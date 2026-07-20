@@ -1,23 +1,13 @@
 ---
+import type { BenefitConfig } from '../../../model/benefit.types';
 import Container from '../atoms/Container.astro';
 import Heading from '../atoms/Heading.astro';
 import BenefitCard from '../molecules/BenefitCard.astro';
 import checkIcon from '../../assets/icon-placeholder.svg?raw';
 
-interface BenefitItem {
-  title: string;
-  description: string;
-  icon?: string;
-}
 
-interface Props {
-  heading: string;
-  headingAlign: 'left' | 'center';
-  cardAlign: 'left' | 'center';
-  items: BenefitItem[];
-}
-
-const { heading, headingAlign, cardAlign, items }: Props = Astro.props;
+type Props = BenefitConfig;
+const { heading, headingAlign, cardAlign, iconPosition, items }: Props = Astro.props;
 
 function isSvgMarkup(icon: string): boolean {
   return icon.trim().startsWith('<');
@@ -27,9 +17,9 @@ function isSvgMarkup(icon: string): boolean {
 <section class="py-16 md:py-24" id="beneficios">
   <Container class="flex flex-col gap-10">
     <Heading as="h2" size="md" align={headingAlign}>{heading}</Heading>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       {items.map((item) => (
-        <BenefitCard title={item.title} description={item.description} align={cardAlign}>
+        <BenefitCard title={item.title} description={item.description} align={cardAlign} iconPosition={iconPosition}>
           {item.icon && isSvgMarkup(item.icon) ? (
             <Fragment slot="icon" set:html={item.icon} />
           ) : item.icon ? (

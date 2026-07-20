@@ -126,7 +126,7 @@
     "FeaturesSection": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Renderiza incondicionalmente. Si la sección 'features' está ausente, cae a copy placeholder genérica — para una página real, siempre inclúyela.",
+      "description": "Renderiza incondicionalmente. Si la sección 'features' está ausente, cae a copy placeholder genérica — para una página real, siempre inclúyela. BenefitsSection también acepta headingAlign/cardAlign/iconPosition ('left'|'center'|'right', ver model/benefit.types.ts) — controlan alineación de texto y la posición del ícono en la card de forma independiente, pero index.astro los hardcodea (no se leen de page.json), así que no hay campos para ellos aquí.",
       "required": ["type", "headline", "items"],
       "properties": {
         "type": { "const": "features" },

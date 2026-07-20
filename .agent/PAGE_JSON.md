@@ -143,6 +143,15 @@ there is no field to override it from this JSON.
 | `headline` | `string`         | no       | `heading`                          | Falls back to `'Beneficios'` if omitted. |
 | `items`    | `FeatureItem[]`  | yes*     | `items`                            | Array length is not fixed to 3 — the grid wraps for other counts. |
 
+`BenefitsSection`'s `Props` type is `BenefitConfig` (`model/benefit.types.ts`), which also
+declares `headingAlign`, `cardAlign`, and `iconPosition` (each `"left" | "center" | "right"`) —
+`cardAlign`/`headingAlign` control text alignment, and `iconPosition` independently controls
+which side of the card the icon badge sits on (it does not have to match `cardAlign`). None of
+these three are read from `page.json` — `index.astro` hardcodes them
+(`headingAlign="center"`, `cardAlign="left"`, `iconPosition="center"`) — so there is nothing to
+set for them in this file; they're documented here only for context on how `BenefitCard`
+renders.
+
 `FeatureItem`:
 
 | Field         | Type              | Required | Notes |
