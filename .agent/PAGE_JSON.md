@@ -129,7 +129,8 @@ there is no field to override it from this JSON.
 ```json
 {
   "type": "features",
-  "headline": "Beneficios",
+  "headline": "Lo que nos hace distintos",
+  "headline_highlight": "distintos",
   "items": [
     { "icon": "check", "title": "Café de alta calidad", "description": "Granos seleccionados y tostados en pequeños lotes." },
     { "icon": "🚚", "title": "Entrega rápida", "description": "Recibe tu pedido en 24–48 horas." },
@@ -138,10 +139,11 @@ there is no field to override it from this JSON.
 }
 ```
 
-| Field      | Type             | Required | Maps to (`BenefitsSection` prop) | Notes |
-|------------|------------------|----------|-----------------------------------|-------|
-| `headline` | `string`         | no       | `heading`                          | Falls back to `'Beneficios'` if omitted. |
-| `items`    | `FeatureItem[]`  | yes*     | `items`                            | Array length is not fixed to 3 — the grid wraps for other counts. |
+| Field                | Type             | Required | Maps to (`BenefitsSection` prop) | Notes |
+|----------------------|------------------|----------|-----------------------------------|-------|
+| `headline`           | `string`         | no       | `heading`                          | Falls back to `'Beneficios'` if omitted. |
+| `headline_highlight` | `string \| null` | no       | `headingHighlight`                 | Optional substring of `headline` to render in the theme's `secondary_color` instead of the default heading color (e.g. `headline: "Lo que nos hace distintos"` + `headline_highlight: "distintos"` colors just that word). Must match a substring of `headline` **exactly** (case-sensitive, accents included) via `indexOf` — if it doesn't match (typo, wrong case) it's silently ignored and the whole heading renders in the default color, no error. Only the first occurrence is highlighted. Omit or `null` for no highlight. |
+| `items`              | `FeatureItem[]`  | yes*     | `items`                            | Array length is not fixed to 3 — the grid wraps for other counts. |
 
 `BenefitsSection`'s `Props` type is `BenefitConfig` (`model/benefit.types.ts`), which also
 declares `headingAlign`, `cardAlign`, and `iconPosition` (each `"left" | "center" | "right"`) —
@@ -351,6 +353,7 @@ A `page.json` using every section type:
     {
       "type": "features",
       "headline": "Beneficios",
+      "headline_highlight": null,
       "items": [
         { "icon": "☕", "title": "Café de alta calidad", "description": "Granos seleccionados y tostados en pequeños lotes." },
         { "icon": "🚚", "title": "Entrega rápida", "description": "Recibe tu pedido en 24–48 horas." },

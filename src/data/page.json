@@ -28,6 +28,7 @@
     {
       "type": "features",
       "headline": "Lo que nos hace distintos",
+      "headline_highlight": "distintos",
       "items": [
         { "icon": "🌎", "title": "Compra directa", "description": "Pagamos hasta 30% más que el precio de mercado directo a cada finca, sin intermediarios." },
         { "icon": "🔥", "title": "Tueste en lotes pequeños", "description": "Tostamos cada semana en lotes de 20kg para que el grano llegue a tu taza en su punto óptimo." },

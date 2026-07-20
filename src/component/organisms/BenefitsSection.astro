@@ -7,16 +7,40 @@ import checkIcon from '../../assets/icon-placeholder.svg?raw';
 
 
 type Props = BenefitConfig;
-const { heading, headingAlign, cardAlign, iconPosition, items }: Props = Astro.props;
+const { heading, headingHighlight, headingAlign, cardAlign, iconPosition, items }: Props = Astro.props;
 
 function isSvgMarkup(icon: string): boolean {
   return icon.trim().startsWith('<');
 }
+
+interface HeadingPart {
+  text: string;
+  highlighted: boolean;
+}
+
+function splitHeading(text: string, highlight?: string | null): HeadingPart[] {
+  const idx = highlight ? text.indexOf(highlight) : -1;
+  if (idx === -1) return [{ text, highlighted: false }];
+  const before = text.slice(0, idx);
+  const match = text.slice(idx, idx + highlight!.length);
+  const after = text.slice(idx + highlight!.length);
+  return [
+    ...(before ? [{ text: before, highlighted: false }] : []),
+    { text: match, highlighted: true },
+    ...(after ? [{ text: after, highlighted: false }] : []),
+  ];
+}
+
+const headingParts = splitHeading(heading, headingHighlight);
 ---
 
 <section class="py-16 md:py-24" id="beneficios">
   <Container class="flex flex-col gap-10">
-    <Heading as="h2" size="md" align={headingAlign}>{heading}</Heading>
+    <Heading as="h2" size="md" align={headingAlign}>
+      {headingParts.map((part) =>
+        part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
+      )}
+    </Heading>
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       {items.map((item) => (
         <BenefitCard title={item.title} description={item.description} align={cardAlign} iconPosition={iconPosition}>

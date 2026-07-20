@@ -127,12 +127,16 @@
       "type": "object",
       "additionalProperties": false,
       "description": "Renderiza incondicionalmente. Si la sección 'features' está ausente, cae a copy placeholder genérica — para una página real, siempre inclúyela. BenefitsSection también acepta headingAlign/cardAlign/iconPosition ('left'|'center'|'right', ver model/benefit.types.ts) — controlan alineación de texto y la posición del ícono en la card de forma independiente, pero index.astro los hardcodea (no se leen de page.json), así que no hay campos para ellos aquí.",
-      "required": ["type", "headline", "items"],
+      "required": ["type", "headline", "headline_highlight", "items"],
       "properties": {
         "type": { "const": "features" },
         "headline": {
           "type": ["string", "null"],
           "description": "Opcional. Mapea a la prop heading de BenefitsSection. Falls back a 'Beneficios' si se omite/null."
+        },
+        "headline_highlight": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a headingHighlight de BenefitsSection. Substring exacto de headline (sensible a mayúsculas y acentos) que se pinta con theme.secondary_color en vez del color normal del heading (ej. headline 'Lo que nos hace distintos' + headline_highlight 'distintos' resalta solo esa palabra). Si no hace match exacto (typo, mayúscula distinta) se ignora en silencio y el heading se renderiza completo sin resaltar — no rompe el build. Solo la primera coincidencia se resalta. Omitir o null para no resaltar nada."
         },
         "items": {
           "type": "array",

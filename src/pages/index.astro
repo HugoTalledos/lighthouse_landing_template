@@ -55,7 +55,7 @@ function sanitizeTheme(theme: RawTheme) {
 const heroSection = data.sections.find((s) => s.type === 'hero') as | Omit<HeroConfig, 'logo'> | undefined;
 
 const featuresSection = data.sections.find((s) => s.type === 'features') as
-  | { headline?: string; items: { title: string; description: string; icon?: string | null }[] }
+  | { headline?: string; headline_highlight?: string | null; items: { title: string; description: string; icon?: string | null }[] }
   | undefined;
 
 const pricingSection = data.sections.find((s) => s.type === 'pricing') as
@@ -115,6 +115,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   />
   <BenefitsSection
     heading={featuresSection?.headline ?? 'Beneficios'}
+    headingHighlight={featuresSection?.headline_highlight ?? undefined}
     headingAlign="center"
     cardAlign="left"
     iconPosition='center'
