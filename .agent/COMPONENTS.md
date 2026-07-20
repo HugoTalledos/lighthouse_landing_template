@@ -283,29 +283,6 @@ when set, on either variant. Features render in a 2-column checklist
 />
 ```
 
-### TestimonialCard
-
-`molecules/TestimonialCard.astro`
-
-**Use when** rendering one customer quote in a testimonials grid — quote +
-author name + optional author role. This is what `TestimonialsSection` maps
-over.
-
-| Prop         | Type     | Default      | Notes |
-|--------------|----------|--------------|-------|
-| `quote`      | `string` | — (required) | Rendered via `Text size="lg"`, wrapped in curly quotes in markup |
-| `authorName` | `string` | — (required) | Rendered via `Text size="sm"` with `font-semibold` |
-| `authorRole` | `string` | —            | Rendered via `Text size="sm" muted`; omitted entirely if absent |
-| `class`      | `string` | —            | Appended, not merged |
-
-```astro
-<TestimonialCard
-  quote="La calidad del café es inigualable."
-  authorName="María Sánchez"
-  authorRole="Amante del café"
-/>
-```
-
 ### FaqItem
 
 `molecules/FaqItem.astro`
@@ -331,9 +308,9 @@ default. This is what `FaqSection` maps over.
 Organisms compose atoms + molecules into a full page section.
 `src/pages/index.astro` always renders `Hero`, `BenefitsSection`, and
 `CaptureForm`; it additionally renders `PricingSection`,
-`TestimonialsSection`, `FaqSection`, `CtaSection`, and `Footer`
+`FaqSection`, `CtaSection`, and `Footer`
 conditionally, based on which section `type`s are present in `page.json`.
-Don't add a section type beyond these 8 without confirming with the user
+Don't add a section type beyond these 7 without confirming with the user
 first.
 
 ### Hero
@@ -474,32 +451,6 @@ JSON-native field names (`cta_text`, `featured`, `badge_text`), which
 />
 ```
 
-### TestimonialsSection
-
-`organisms/TestimonialsSection.astro`
-
-**Use when** you need a customer testimonials grid (`md:grid-cols-2`).
-Renders with `id="testimonios"`. Renders conditionally in `index.astro` —
-only when a `testimonials` section is present in `page.json`.
-
-| Prop              | Type                  | Default      | Notes |
-|-------------------|-----------------------|--------------|-------|
-| `heading`         | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
-| `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
-| `headingAlign`    | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
-| `items`           | `TestimonialItem[]`   | — (required) | `{ quote: string; authorName: string; authorRole?: string }[]` |
-| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
-
-```astro
-<TestimonialsSection
-  heading="Lo que dicen nuestros clientes"
-  headingAlign="center"
-  items={[
-    { quote: 'La calidad del café es inigualable.', authorName: 'María Sánchez', authorRole: 'Amante del café' },
-  ]}
-/>
-```
-
 ### FaqSection
 
 `organisms/FaqSection.astro`
@@ -586,8 +537,8 @@ no per-platform icons/assets in this template. Renders conditionally in
 by `lighthouse_back`'s `page_renderer.py` before `astro build` runs) and maps
 its `hero` and `features` sections onto `Hero` and `BenefitsSection` props,
 falling back to the placeholder copy below when a section is absent — these
-two, plus `CaptureForm`, always render. `pricing`/`testimonials`/`faq`/`cta`/
-`footer` sections map onto `PricingSection`/`TestimonialsSection`/
+two, plus `CaptureForm`, always render. `pricing`/`faq`/`cta`/
+`footer` sections map onto `PricingSection`/
 `FaqSection`/`CtaSection`/`Footer` and render conditionally — only when
 present in `page.json`, with no fallback content. Theme colors (`theme.primary_color`/`secondary_color`/`bg_color`/`bg_secondary_color`/`text_color`/`font_family`)
 are validated (hex-only colors, alnum-only font name) before being interpolated into an
@@ -605,9 +556,9 @@ itself supplies the `'[Tu Marca]'` text default when `logo_text` is absent, pref
 at all when neither is present. `CaptureForm`'s copy is sourced from an optional `capture` section type (falls back field-by-field to today's default copy when absent) — see `.agent/PAGE_JSON.md` for its shape. See `src/pages/index.astro` for the
 current implementation.
 
-`PricingSection`/`TestimonialsSection`/`FaqSection`/`CtaSection`/`Footer`
+`PricingSection`/`FaqSection`/`CtaSection`/`Footer`
 render conditionally — only when their matching section `type`
-(`pricing`/`testimonials`/`faq`/`cta`/`footer`) is present in `page.json`.
+(`pricing`/`faq`/`cta`/`footer`) is present in `page.json`.
 `Hero.imageUrl`/`ctaHref` and `BenefitItem.icon`-as-text are now rendered
 (previously read but ignored). `theme.logo_url`/`logo_text`/`logo_icon` are all wired to `Logo` as of this repo's
 `2026-07-18-page-json-wiring-gaps.md` plan; confirm `lighthouse_back`'s `page_renderer.py`

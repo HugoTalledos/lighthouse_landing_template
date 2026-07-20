@@ -60,7 +60,7 @@ are trusted verbatim.
 `sections` is an array of objects, each discriminated by a `type` string. `index.astro`
 looks up **at most one** section per `type` via `.find()` — if you include two objects with
 `"type": "hero"`, only the first is used. Order within the array does not affect render
-order (render order is fixed by `index.astro`: Hero → Benefits → Pricing → Testimonials →
+order (render order is fixed by `index.astro`: Hero → Benefits → Pricing →
 FAQ → CTA → CaptureForm → Footer); it only affects which one wins for a duplicate `type`.
 
 Any `type` not in the list below is silently ignored — no error, no render.
@@ -201,7 +201,7 @@ controls copy; the actual form fields (nombre/email/celular) and validation are 
 
 ### Conditionally-rendering sections
 
-`pricing`, `testimonials`, `faq`, `cta`, and `footer` only render when a section of that
+`pricing`, `faq`, `cta`, and `footer` only render when a section of that
 `type` is present in `sections`. There is no fallback/placeholder content for these — omit
 the section entirely if the page shouldn't have it, don't include an empty/partial one.
 
@@ -264,33 +264,6 @@ together as shown above.
 Note there is no `cta_url` per plan — every `PricingCard`'s button links to the default
 `#formulario-captura` anchor; the template has no field to override it per plan.
 
-#### `testimonials`
-
-```json
-{
-  "type": "testimonials",
-  "headline": "Lo que dicen nuestros clientes",
-  "headline_highlight": null,
-  "items": [
-    { "quote": "La calidad del café es inigualable.", "author_name": "María Sánchez", "author_role": "Amante del café" }
-  ]
-}
-```
-
-| Field      | Type                | Required | Notes |
-|------------|---------------------|----------|-------|
-| `headline` | `string`            | no       | Passed to `TestimonialsSection`'s `heading` prop. Falls back to `'Lo que dicen nuestros clientes'` if omitted. |
-| `headline_highlight` | `string \| null` | no | Passed to `headingHighlight`. Same mechanism as `features.headline_highlight` — see that entry for exact-match/case-sensitivity behavior. |
-| `items`    | `TestimonialItem[]` | yes      | `md:grid-cols-2` grid. |
-
-`TestimonialItem`:
-
-| Field         | Type             | Required | Maps to (`TestimonialCard` prop) | Notes |
-|---------------|------------------|----------|------------------------------------|-------|
-| `quote`       | `string`         | yes      | `quote`                            | Rendered wrapped in curly quotes; don't add your own quote marks. |
-| `author_name` | `string`         | yes      | `authorName`                       | |
-| `author_role` | `string \| null` | no       | `authorRole`                       | Omitted entirely from render if absent/`null` (e.g. skip for an anonymous testimonial). |
-
 #### `faq`
 
 ```json
@@ -330,7 +303,7 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 }
 ```
 
-Unlike `pricing`/`testimonials`/`faq`, this section's own copy **is** fully read from JSON
+Unlike `pricing`/`faq`, this section's own copy **is** fully read from JSON
 (no hardcoded fallback text) — a standalone CTA banner distinct from the hero.
 
 | Field          | Type             | Required | Maps to (`CtaSection` prop) | Notes |
@@ -414,13 +387,6 @@ A `page.json` using every section type:
       "plans": [
         { "name": "Plan Individual", "price": "$15.99", "period": "/mes", "features": ["Café de alta calidad", "Entrega rápida"], "cta_text": "Suscríbete ahora" },
         { "name": "Plan Familiar", "price": "$29.99", "period": "/mes", "features": ["2x bolsas de café", "Entrega prioritaria", "Regalo de bienvenida"], "cta_text": "Suscríbete ahora", "featured": true, "badge_text": "Más popular" }
-      ]
-    },
-    {
-      "type": "testimonials",
-      "items": [
-        { "quote": "La calidad del café es inigualable.", "author_name": "María Sánchez", "author_role": "Amante del café" },
-        { "quote": "El servicio de entrega es excelente.", "author_name": "Carlos Ruiz", "author_role": null }
       ]
     },
     {
@@ -516,7 +482,7 @@ omitted:
    Spanish placeholders. `hero.layout` is required — always set it explicitly to `"side"` or
    `"background"` (pick `"background"` only if `hero.image.url` is also set, otherwise it
    silently falls back to `"side"`'s rendering) — never omit the field.
-3. Only include `pricing`, `testimonials`, `faq`, `cta`, `footer` if the brief actually calls
+3. Only include `pricing`, `faq`, `cta`, `footer` if the brief actually calls
    for that section — their presence alone triggers the render, there's no separate
    `"enabled": true/false` flag.
 4. Don't invent extra fields beyond what's documented per section (e.g. a `cta_url` per

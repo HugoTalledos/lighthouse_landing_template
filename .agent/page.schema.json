@@ -49,14 +49,13 @@
     "sections": {
       "type": "array",
       "minItems": 1,
-      "description": "Array de secciones discriminadas por 'type'. index.astro busca a lo sumo una sección por type vía .find() — si hay dos objetos con el mismo 'type', solo se usa la primera. El orden en el array no afecta el orden de render (fijo: Hero → Beneficios → Pricing → Testimonials → FAQ → CTA → CaptureForm → Footer), solo decide cuál gana en caso de type duplicado. Un 'type' no listado en $defs es ignorado silenciosamente, sin error.",
+      "description": "Array de secciones discriminadas por 'type'. index.astro busca a lo sumo una sección por type vía .find() — si hay dos objetos con el mismo 'type', solo se usa la primera. El orden en el array no afecta el orden de render (fijo: Hero → Beneficios → Pricing → FAQ → CTA → CaptureForm → Footer), solo decide cuál gana en caso de type duplicado. Un 'type' no listado en $defs es ignorado silenciosamente, sin error.",
       "items": {
         "anyOf": [
           { "$ref": "#/$defs/HeroSection" },
           { "$ref": "#/$defs/FeaturesSection" },
           { "$ref": "#/$defs/CaptureSection" },
           { "$ref": "#/$defs/PricingSection" },
-          { "$ref": "#/$defs/TestimonialsSection" },
           { "$ref": "#/$defs/FaqSection" },
           { "$ref": "#/$defs/CtaSection" },
           { "$ref": "#/$defs/FooterSection" }
@@ -244,44 +243,6 @@
         }
       }
     },
-    "TestimonialsSection": {
-      "type": "object",
-      "additionalProperties": false,
-      "description": "Renderiza condicionalmente: solo si está presente en 'sections'. No hay copy/fallback placeholder.",
-      "required": ["type", "headline", "headline_highlight", "items"],
-      "properties": {
-        "type": { "const": "testimonials" },
-        "headline": {
-          "type": ["string", "null"],
-          "description": "Opcional. Mapea a heading de TestimonialsSection. Falls back a 'Lo que dicen nuestros clientes' si se omite/null."
-        },
-        "headline_highlight": {
-          "type": ["string", "null"],
-          "description": "Opcional. Mapea a headingHighlight de TestimonialsSection. Substring exacto de headline que se pinta con theme.secondary_color. Mismo mecanismo que features.headline_highlight."
-        },
-        "items": {
-          "type": "array",
-          "description": "Grid md:grid-cols-2.",
-          "items": { "$ref": "#/$defs/TestimonialItem" }
-        }
-      }
-    },
-    "TestimonialItem": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["quote", "author_name", "author_role"],
-      "properties": {
-        "quote": {
-          "type": "string",
-          "description": "Mapea a quote de TestimonialCard. Se renderiza envuelto en comillas curvas; no añadir comillas propias."
-        },
-        "author_name": { "type": "string", "description": "Mapea a authorName de TestimonialCard." },
-        "author_role": {
-          "type": ["string", "null"],
-          "description": "Opcional. Mapea a authorRole de TestimonialCard. Se omite por completo del render si está ausente/null (ej. para un testimonio anónimo)."
-        }
-      }
-    },
     "FaqSection": {
       "type": "object",
       "additionalProperties": false,
@@ -316,7 +277,7 @@
     "CtaSection": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Renderiza condicionalmente: solo si está presente en 'sections'. A diferencia de pricing/testimonials/faq, el copy de esta sección SÍ se lee completo del JSON (sin fallback hardcodeado) — es un banner de CTA independiente, distinto del hero.",
+      "description": "Renderiza condicionalmente: solo si está presente en 'sections'. A diferencia de pricing/faq, el copy de esta sección SÍ se lee completo del JSON (sin fallback hardcodeado) — es un banner de CTA independiente, distinto del hero.",
       "required": ["type", "headline", "headline_highlight", "subheadline", "button_text", "button_url"],
       "properties": {
         "type": { "const": "cta" },

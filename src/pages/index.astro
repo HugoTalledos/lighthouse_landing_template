@@ -4,7 +4,6 @@ import Hero from '../component/organisms/Hero.astro';
 import BenefitsSection from '../component/organisms/BenefitsSection.astro';
 import CaptureForm from '../component/organisms/CaptureForm.astro';
 import PricingSection from '../component/organisms/PricingSection.astro';
-import TestimonialsSection from '../component/organisms/TestimonialsSection.astro';
 import FaqSection from '../component/organisms/FaqSection.astro';
 import CtaSection from '../component/organisms/CtaSection.astro';
 import Footer from '../component/organisms/Footer.astro';
@@ -70,10 +69,6 @@ const pricingSection = data.sections.find((s) => s.type === 'pricing') as
     }
   | undefined;
 
-const testimonialsSection = data.sections.find((s) => s.type === 'testimonials') as
-  | { headline?: string; headline_highlight?: string | null; items: { quote: string; author_name: string; author_role?: string | null }[] }
-  | undefined;
-
 const faqSection = data.sections.find((s) => s.type === 'faq') as
   | { headline?: string; headline_highlight?: string | null; items: { question: string; answer: string }[] }
   | undefined;
@@ -105,7 +100,6 @@ const renderedSections = [
   'hero',
   'benefits',
   pricingSection ? 'pricing' : null,
-  testimonialsSection ? 'testimonials' : null,
   faqSection ? 'faq' : null,
   ctaSection ? 'cta' : null,
   'capture',
@@ -164,19 +158,6 @@ function sectionBackground(key: string): 'primary' | 'secondary' {
         cta_text: plan.cta_text,
         featured: plan.featured ?? undefined,
         badge_text: plan.badge_text ?? undefined,
-      }))}
-    />
-  )}
-  {testimonialsSection && (
-    <TestimonialsSection
-      background={sectionBackground('testimonials')}
-      heading={testimonialsSection.headline ?? 'Lo que dicen nuestros clientes'}
-      headingHighlight={testimonialsSection.headline_highlight ?? undefined}
-      headingAlign="center"
-      items={testimonialsSection.items.map((item) => ({
-        quote: item.quote,
-        authorName: item.author_name,
-        authorRole: item.author_role ?? undefined,
       }))}
     />
   )}

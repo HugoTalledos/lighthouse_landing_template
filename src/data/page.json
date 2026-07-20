@@ -73,16 +73,6 @@
       ]
     },
     {
-      "type": "testimonials",
-      "headline": "Voces de quienes ya encontraron su origen",
-      "items": [
-        { "quote": "Nunca había sabido de dónde venía mi café hasta que probé Raíz. Ahora reconozco la diferencia entre una finca y otra.", "author_name": "Daniela Ortiz", "author_role": "Suscriptora, Ritual diario" },
-        { "quote": "La trazabilidad no es solo marketing: el código realmente te lleva a la finca y a la familia que cosechó el lote.", "author_name": "Ignacio Bravo", "author_role": "Suscriptor, Explorador" },
-        { "quote": "Cambiamos el café de la oficina por Raíz y el equipo lo notó desde la primera semana.", "author_name": "Renata Villalobos", "author_role": null },
-        { "quote": "Soy tostador amateur y la consistencia lote a lote de Raíz es de las mejores que he probado en el país.", "author_name": "Tomás Reyes", "author_role": "Tostador aficionado" }
-      ]
-    },
-    {
       "type": "faq",
       "headline": "Preguntas frecuentes",
       "items": [
