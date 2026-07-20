@@ -18,7 +18,7 @@ const { name, price, period, features, ctaLabel, ctaHref, featured = false, badg
 ---
 
 <div
-  class={`flex flex-col gap-6 rounded-2xl p-8 ${
+  class={`relative flex flex-col gap-6 rounded-2xl p-8 transition-transform duration-300 hover:z-10 hover:scale-105 hover:shadow-xl ${
     featured ? 'bg-[var(--color-text)] text-white' : 'bg-[var(--color-bg-muted)] text-[var(--color-text)]'
   } ${className ?? ''}`}
 >
