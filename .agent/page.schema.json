@@ -246,7 +246,7 @@
     "FaqSection": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Renderiza condicionalmente: solo si está presente en 'sections'. No hay copy/fallback placeholder.",
+      "description": "Renderiza condicionalmente: solo si está presente en 'sections'. No hay copy/fallback placeholder. Cada entrada se renderiza como una BenefitCard (mismo molecule/estilo que las cards de 'features') en un grid responsive (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3), no como acordeón — question y answer siempre están visibles. El slot de ícono de la card muestra la posición 1-based de la entrada en el array en vez de un ícono.",
       "required": ["type", "headline", "headline_highlight", "items"],
       "properties": {
         "type": { "const": "faq" },
@@ -260,7 +260,7 @@
         },
         "items": {
           "type": "array",
-          "description": "Se apila de arriba hacia abajo (no es un grid).",
+          "description": "Grid responsive (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3) — no es fijo a una cantidad.",
           "items": { "$ref": "#/$defs/FaqEntry" }
         }
       }
@@ -270,8 +270,8 @@
       "additionalProperties": false,
       "required": ["question", "answer"],
       "properties": {
-        "question": { "type": "string", "description": "Mapea a question de FaqItem." },
-        "answer": { "type": "string", "description": "Mapea a answer de FaqItem." }
+        "question": { "type": "string", "description": "Mapea a title de BenefitCard." },
+        "answer": { "type": "string", "description": "Mapea a description de BenefitCard." }
       }
     },
     "CtaSection": {

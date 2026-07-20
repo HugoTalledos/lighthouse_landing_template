@@ -1,7 +1,7 @@
 ---
 import Container from '../atoms/Container.astro';
 import Heading from '../atoms/Heading.astro';
-import FaqItem from '../molecules/FaqItem.astro';
+import BenefitCard from '../molecules/BenefitCard.astro';
 import { splitHighlight } from '../../utils/highlightText';
 
 interface FaqEntry {
@@ -21,18 +21,23 @@ const { heading, headingHighlight, headingAlign, items, background = 'primary' }
 
 const headingParts = splitHighlight(heading, headingHighlight);
 const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
+// Cards always use the opposite tone from their section so they contrast with it,
+// regardless of which slot ('primary'/'secondary') this section landed on.
+const cardBackground = background === 'secondary' ? 'primary' : 'secondary';
 ---
 
 <section class={`py-16 md:py-24 ${sectionBgClass}`} id="preguntas-frecuentes">
-  <Container class="mx-auto flex max-w-3xl flex-col gap-10">
+  <Container class="flex flex-col gap-10">
     <Heading as="h2" size="md" align={headingAlign}>
       {headingParts.map((part) =>
         part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
       )}
     </Heading>
-    <div class="flex flex-col gap-4">
-      {items.map((item) => (
-        <FaqItem question={item.question} answer={item.answer} />
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((item, index) => (
+        <BenefitCard title={item.question} description={item.answer} align="left" background={cardBackground}>
+          <Fragment slot="icon"><span class="font-bold">{index + 1}</span></Fragment>
+        </BenefitCard>
       ))}
     </div>
   </Container>

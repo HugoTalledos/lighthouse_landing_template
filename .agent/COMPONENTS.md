@@ -283,24 +283,6 @@ when set, on either variant. Features render in a 2-column checklist
 />
 ```
 
-### FaqItem
-
-`molecules/FaqItem.astro`
-
-**Use when** rendering one question/answer pair in an FAQ list. Uses a
-native `<details>/<summary>` element — no JavaScript, accessible by
-default. This is what `FaqSection` maps over.
-
-| Prop       | Type     | Default      | Notes |
-|------------|----------|--------------|-------|
-| `question` | `string` | — (required) | Rendered in `<summary>` |
-| `answer`   | `string` | — (required) | Rendered via `Text muted`, shown when the `<details>` is expanded |
-| `class`    | `string` | —            | Appended, not merged |
-
-```astro
-<FaqItem question="¿Cómo puedo cancelar mi suscripción?" answer="Puedes cancelar en cualquier momento." />
-```
-
 ---
 
 ## Organisms
@@ -455,17 +437,23 @@ JSON-native field names (`cta_text`, `featured`, `badge_text`), which
 
 `organisms/FaqSection.astro`
 
-**Use when** you need an FAQ list (not a grid — items stack top-to-bottom).
-Renders with `id="preguntas-frecuentes"`. Renders conditionally in
-`index.astro` — only when a `faq` section is present in `page.json`.
+**Use when** you need an FAQ list. Renders as a responsive grid
+(`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`, same breakpoints as
+`BenefitsSection`/`PricingSection`), not a stacked accordion. Renders with
+`id="preguntas-frecuentes"`. Renders conditionally in `index.astro` — only
+when a `faq` section is present in `page.json`. Each entry renders as a
+`BenefitCard` (same molecule/style as `BenefitsSection`'s cards) —
+`question` → `title`, `answer` → `description` — with the entry's 1-based
+position in the array (`1`, `2`, `3`, ...) in the card's icon slot instead
+of an icon. This is a static always-visible card, not an accordion.
 
 | Prop              | Type                  | Default      | Notes |
 |-------------------|-----------------------|--------------|-------|
 | `heading`         | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
 | `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
 | `headingAlign`    | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
-| `items`           | `FaqEntry[]`          | — (required) | `{ question: string; answer: string }[]` |
-| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
+| `items`           | `FaqEntry[]`          | — (required) | `{ question: string; answer: string }[]`. Grid wraps for any count, not fixed to 3. |
+| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field. Each card automatically uses the opposite tone so it always contrasts with this section (same behavior as `BenefitsSection`). |
 
 ```astro
 <FaqSection

@@ -277,18 +277,23 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 }
 ```
 
+Each entry renders as a `BenefitCard` (same molecule/style as the `features` section's cards)
+in a responsive grid, not an accordion — `question` and `answer` are both always visible.
+`question` maps to the card's `title`, `answer` to its `description`, and the card's icon slot
+holds the entry's 1-based position in the array (`1`, `2`, `3`, ...) instead of an icon.
+
 | Field      | Type        | Required | Notes |
 |------------|-------------|----------|-------|
 | `headline` | `string`    | no       | Passed to `FaqSection`'s `heading` prop. Falls back to `'Preguntas frecuentes'` if omitted. |
 | `headline_highlight` | `string \| null` | no | Passed to `headingHighlight`. Same mechanism as `features.headline_highlight` — see that entry for exact-match/case-sensitivity behavior. |
-| `items`    | `FaqEntry[]` | yes     | Stacks top-to-bottom (not a grid). |
+| `items`    | `FaqEntry[]` | yes     | Responsive grid (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`, same breakpoints as `features`/`pricing`) — wraps for any count, not fixed to 3. |
 
 `FaqEntry`:
 
-| Field      | Type     | Required | Maps to (`FaqItem` prop) |
-|------------|----------|----------|----------------------------|
-| `question` | `string` | yes      | `question`                 |
-| `answer`   | `string` | yes      | `answer`                   |
+| Field      | Type     | Required | Maps to (`BenefitCard` prop) | Notes |
+|------------|----------|----------|--------------------------------|-------|
+| `question` | `string` | yes      | `title`                        | |
+| `answer`   | `string` | yes      | `description`                  | |
 
 #### `cta`
 

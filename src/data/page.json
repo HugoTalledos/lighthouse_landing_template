@@ -1,106 +1,194 @@
 {
   "theme": {
-    "primary_color": "#A6491C",
-    "secondary_color": "#5C6B4F",
-    "font_family": "Inter",
-    "bg_color": "#FAF3EA",
-    "bg_secondary_color": null,
-    "text_color": "#2A211B",
+    "primary_color": "#6F4E37",
+    "secondary_color": "#C89F7C",
+    "font_family": "Nunito",
+    "bg_color": "#FFF8F0",
+    "bg_secondary_color": "#F5E6D3",
+    "text_color": "#3E2723",
     "logo_url": null,
-    "logo_text": "Raíz",
-    "logo_icon": "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M12 21V10'/><path d='M12 10c0-4 3-7 7-7 0 4-3 7-7 7Z'/><path d='M12 14c0-3-2.5-5-6-5 0 3 2.5 5 6 5Z'/></svg>"
+    "logo_text": "Acme Coffee",
+    "logo_icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><path d=\"M12 22c0-2 2-4 4-4h24c2 0 4 2 4 4v20c0 8-8 14-16 14s-16-6-16-14V22z\" fill=\"#6F4E37\"/><path d=\"M44 26h4c4 0 8 3 8 8s-4 8-8 8h-4\" stroke=\"#6F4E37\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M22 10c0-2 2-4 4-2s4 4 4 2\" stroke=\"#C89F7C\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><path d=\"M30 8c0-2 2-4 4-2s4 4 4 2\" stroke=\"#C89F7C\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>"
   },
   "sections": [
     {
       "type": "hero",
-      "layout": "background",
+      "layout": "side",
       "text": {
-        "headline": "Café con nombre, apellido y origen",
-        "headline_highlight": "nombre, apellido y origen",
-        "subheadline": "Compramos directo a 12 familias caficultoras y tostamos en lotes pequeños, para que cada taza cuente una historia real.",
-        "cta_text": "Descubre tu origen",
-        "align": "center"
+        "headline": "Café de especialidad, recién tostado, en tu puerta en 24h",
+        "headline_highlight": "en tu puerta en 24h",
+        "subheadline": "Suscríbete a Acme Coffee y recibe cada mes granos de origen único, tostados artesanalmente y enviados el mismo día. Despierta con el aroma que mereces.",
+        "cta_text": "Suscribirme al plan mensual",
+        "align": "left"
       },
       "image": {
-        "url": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1920&q=80",
-        "blur": false,
-        "overlay_opacity": 0.60
+        "url": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=900&q=80",
+        "position": "right",
+        "shape": "rounded",
+        "blur": null,
+        "overlay_opacity": null
       }
     },
     {
       "type": "features",
-      "headline": "Lo que nos hace distintos",
-      "headline_highlight": "distintos",
+      "headline": "Por qué los amantes del café eligen Acme",
+      "headline_highlight": "eligen Acme",
       "items": [
-        { "icon": "🌎", "title": "Compra directa", "description": "Pagamos hasta 30% más que el precio de mercado directo a cada finca, sin intermediarios." },
-        { "icon": "🔥", "title": "Tueste en lotes pequeños", "description": "Tostamos cada semana en lotes de 20kg para que el grano llegue a tu taza en su punto óptimo." },
-        { "icon": "📦", "title": "Trazabilidad total", "description": "Escanea el código en tu bolsa y conoce la finca, la altitud y el proceso exactos de tu café." }
+        {
+          "title": "Tostado el mismo día",
+          "description": "Cada lote se tuesta tras tu pedido para que recibas el café en su punto óptimo de frescura.",
+          "icon": "🔥"
+        },
+        {
+          "title": "Entrega en 24 horas",
+          "description": "Logística propia que garantiza que tu café llegue recién hecho, sin esperas ni sorpresas.",
+          "icon": "⚡"
+        },
+        {
+          "title": "Orígenes únicos seleccionados",
+          "description": "Trabajamos con pequeños productores de Colombia, Etiopía y Guatemala para traerte perfiles irrepetibles.",
+          "icon": "🌱"
+        },
+        {
+          "title": "Cancela cuando quieras",
+          "description": "Sin permanencias, sin letra pequeña. Pausa o cancela tu suscripción con un solo clic.",
+          "icon": "💛"
+        }
       ]
     },
     {
-      "type": "capture",
-      "headline": "Encuentra tu origen ideal",
-      "subheadline": "Cuéntanos cómo te gusta tu café y te recomendamos la finca perfecta para empezar.",
-      "cta_text": "Quiero mi recomendación"
-    },
-    {
       "type": "pricing",
-      "headline": "Elige tu ritmo de consumo",
+      "headline": "Elige el plan que mejor se adapta a ti",
+      "headline_highlight": "mejor se adapta a ti",
       "plans": [
         {
-          "name": "Explorador",
-          "price": "$16",
+          "name": "Espresso",
+          "price": "$14",
           "period": "/mes",
-          "features": ["1 bolsa de 250g", "Finca distinta cada mes", "Ficha de origen incluida", "Sin permanencia"],
-          "cta_text": "Empezar a explorar"
+          "features": [
+            "250 g de café en grano",
+            "Tostado el mismo día",
+            "Entrega en 24h",
+            "Notas de cata incluidas"
+          ],
+          "cta_text": "Suscribirme",
+          "featured": false,
+          "badge_text": null
         },
         {
-          "name": "Ritual diario",
-          "price": "$29",
+          "name": "Ristretto",
+          "price": "$26",
           "period": "/mes",
-          "features": ["2 bolsas de 250g", "Elige molienda por bolsa", "Prioridad en ediciones limitadas", "Envío sin costo"],
-          "cta_text": "Crear mi ritual",
+          "features": [
+            "500 g de café en grano",
+            "Tostado el mismo día",
+            "Entrega prioritaria en 24h",
+            "Notas de cata + guía de preparación",
+            "Acceso a ediciones limitadas"
+          ],
+          "cta_text": "Suscribirme",
           "featured": true,
           "badge_text": "Más popular"
         },
         {
-          "name": "Para el equipo",
-          "price": "$65",
+          "name": "Lungo",
+          "price": "$45",
           "period": "/mes",
-          "features": ["6 bolsas de 250g", "Ideal para oficinas hasta 15 personas", "Factura para tu empresa", "Gerente de cuenta dedicado"],
-          "cta_text": "Cotizar para mi equipo"
+          "features": [
+            "1 kg de café en grano",
+            "Tostado el mismo día",
+            "Entrega prioritaria en 24h",
+            "Notas de cata + guía de preparación",
+            "Acceso a ediciones limitadas",
+            "Regalo sorpresa trimestral"
+          ],
+          "cta_text": "Suscribirme",
+          "featured": false,
+          "badge_text": "Para verdaderos fans"
         }
       ]
     },
     {
       "type": "faq",
-      "headline": "Preguntas frecuentes",
+      "headline": "Resolvemos tus dudas",
+      "headline_highlight": null,
       "items": [
-        { "question": "¿Cómo eligen a las fincas con las que trabajan?", "answer": "Visitamos cada finca antes de firmar una relación de compra directa y evaluamos calidad, prácticas de cultivo y condiciones laborales." },
-        { "question": "¿Puedo pausar o cancelar mi suscripción?", "answer": "Sí, puedes pausar, saltar un envío o cancelar cuando quieras desde tu cuenta, sin costos ocultos." },
-        { "question": "¿Qué significa 'trazabilidad total'?", "answer": "Cada bolsa incluye un código que te muestra la finca, la altitud, el proceso de beneficio y la fecha exacta de tueste de ese lote." },
-        { "question": "¿Tienen opciones sin cafeína?", "answer": "Sí, puedes activar la opción descafeinada en cualquier plan desde la configuración de tu suscripción." }
+        {
+          "question": "¿Puedo elegir el tipo de grano o el tueste?",
+          "answer": "Sí. Al suscribirte completas un breve cuestionario de gustos y nuestro equipo selecciona el origen y perfil de tueste ideal para ti. También puedes elegir manualmente entre nuestro catálogo rotativo."
+        },
+        {
+          "question": "¿Cómo funciona la entrega en 24 horas?",
+          "answer": "Tostamos tu café el mismo día del envío y lo entregamos mediante logística propia en un radio de 24h. Si estás fuera de la zona, el plazo es de 48h con el mismo nivel de frescura garantizada."
+        },
+        {
+          "question": "¿Puedo pausar o cancelar mi suscripción?",
+          "answer": "Por supuesto. Desde tu panel de cliente puedes pausar, cambiar la frecuencia o cancelar en cualquier momento, sin permanencia ni costes adicionales."
+        },
+        {
+          "question": "¿El café llega en grano o molido?",
+          "answer": "Nuestras suscripciones son en grano para preservar todos los aromas. Si lo prefieres molido, indícanos tu método de preparación (espresso, filtro, prensa francesa) y lo adaptamos sin coste."
+        },
+        {
+          "question": "¿Hacen envíos a toda España?",
+          "answer": "Sí, enviamos a toda la península, Baleares y Canarias. El envío es gratuito en todos los planes."
+        }
       ]
     },
     {
       "type": "cta",
-      "headline": "Tu próxima taza puede tener nombre propio",
-      "subheadline": "Prueba tu primera caja con 25% de descuento y conoce el origen detrás de cada grano.",
-      "button_text": "Quiero mi primera caja",
-      "button_url": null
+      "headline": "Tu próximo café excepcional está a un clic de distancia",
+      "headline_highlight": "a un clic de distancia",
+      "subheadline": "Únete a los más de 3.000 amantes del café que ya empiezan cada mañana con Acme Coffee. Primer envío con 15% de descuento.",
+      "button_text": "Suscribirme al plan mensual",
+      "button_url": null,
+      "image_url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80"
+    },
+    {
+      "type": "capture",
+      "headline": "Empieza hoy tu suscripción",
+      "headline_highlight": null,
+      "subheadline": "Déjanos tus datos y te guiaremos en menos de 2 minutos para elegir el plan perfecto para ti.",
+      "cta_text": "Suscribirme ahora"
     },
     {
       "type": "footer",
-      "business_name": "Raíz",
+      "business_name": "Acme Coffee",
       "links": [
-        { "label": "Nuestras fincas", "url": "/fincas" },
-        { "label": "Historias de origen", "url": "/blog" },
-        { "label": "Términos y condiciones", "url": "/terminos" },
-        { "label": "Política de privacidad", "url": "/privacidad" }
+        {
+          "label": "Nuestro café",
+          "url": "/cafe"
+        },
+        {
+          "label": "Cómo funciona",
+          "url": "/como-funciona"
+        },
+        {
+          "label": "Blog",
+          "url": "/blog"
+        },
+        {
+          "label": "Términos y condiciones",
+          "url": "/terminos"
+        },
+        {
+          "label": "Política de privacidad",
+          "url": "/privacidad"
+        }
       ],
       "social_links": [
-        { "platform": "Instagram", "url": "https://instagram.com/raizcafe" },
-        { "platform": "TikTok", "url": "https://tiktok.com/@raizcafe" }
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/acmecoffee"
+        },
+        {
+          "platform": "TikTok",
+          "url": "https://tiktok.com/@acmecoffee"
+        },
+        {
+          "platform": "YouTube",
+          "url": "https://youtube.com/@acmecoffee"
+        }
       ]
     }
   ]
