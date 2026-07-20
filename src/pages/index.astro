@@ -74,7 +74,7 @@ const faqSection = data.sections.find((s) => s.type === 'faq') as
   | undefined;
 
 const ctaSection = data.sections.find((s) => s.type === 'cta') as
-  | { headline: string; headline_highlight?: string | null; subheadline?: string | null; button_text: string; button_url?: string | null }
+  | { headline: string; headline_highlight?: string | null; subheadline?: string | null; button_text: string; button_url?: string | null; image_url?: string | null }
   | undefined;
 
 const footerSection = data.sections.find((s) => s.type === 'footer') as
@@ -178,6 +178,7 @@ function sectionBackground(key: string): 'primary' | 'secondary' {
       subheadline={ctaSection.subheadline ?? undefined}
       buttonLabel={ctaSection.button_text}
       buttonHref={ctaSection.button_url ?? undefined}
+      imageUrl={ctaSection.image_url ?? undefined}
       align="center"
     />
   )}

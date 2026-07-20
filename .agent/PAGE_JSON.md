@@ -299,7 +299,8 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
   "headline_highlight": null,
   "subheadline": "Suscríbete hoy y recibe 15% de descuento en tu primer pedido.",
   "button_text": "Suscríbete al plan mensual",
-  "button_url": null
+  "button_url": null,
+  "image_url": null
 }
 ```
 
@@ -313,6 +314,7 @@ Unlike `pricing`/`faq`, this section's own copy **is** fully read from JSON
 | `subheadline`  | `string \| null` | no       | `subheadline`                  | Omitted entirely from render if absent/`null`. |
 | `button_text`  | `string`         | yes      | `buttonLabel`                  | |
 | `button_url`   | `string \| null` | no       | `buttonHref`                   | Defaults to `#formulario-captura` if omitted/`null`. |
+| `image_url`    | `string \| null` | no       | `imageUrl`                     | Optional full-bleed background image for the section. Interpolated into `<img src>` unsanitized. When present, the section renders the image with a **fixed** dark overlay (`bg-black/55` — not configurable from this JSON, unlike `hero.image.overlay_opacity`) and switches `headline`/`subheadline` to light text for contrast; the section's own `--color-bg`/`--color-bg-secondary` alternation background is ignored while an image is set. Omit or `null` for the plain color background. |
 
 #### `footer`
 
@@ -402,7 +404,8 @@ A `page.json` using every section type:
       "headline_highlight": "café de especialidad",
       "subheadline": "Suscríbete hoy y recibe 15% de descuento en tu primer pedido.",
       "button_text": "Suscríbete al plan mensual",
-      "button_url": null
+      "button_url": null,
+      "image_url": null
     },
     {
       "type": "footer",

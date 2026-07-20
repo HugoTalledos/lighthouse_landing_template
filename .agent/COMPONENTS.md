@@ -484,23 +484,36 @@ Renders with `id="preguntas-frecuentes"`. Renders conditionally in
 **Use when** you need a standalone call-to-action banner (headline +
 optional subheadline + button), distinct from `Hero`. No `id` — nothing
 links to it directly. Renders conditionally in `index.astro` — only when a
-`cta` section is present in `page.json`.
+`cta` section is present in `page.json`. Optionally takes a full-bleed
+background image (`imageUrl`) with a **fixed** dark overlay (`bg-black/55`
+— not configurable, unlike `Hero`'s `image.overlay_opacity`); when set, the
+headline/subheadline switch to light text and the section's own
+`background` prop (primary/secondary color) is ignored, same pattern as
+`Hero`'s `layout: 'background'`.
 
 | Prop                | Type                  | Default                  | Notes |
 |---------------------|-----------------------|---------------------------|-------|
 | `headline`          | `string`              | — (required)              | Rendered via `Heading as="h2" size="md"` |
 | `headlineHighlight` | `string \| null`      | —                         | Optional substring of `headline` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
-| `subheadline`       | `string`              | —                         | Rendered via `Text muted`; omitted entirely if absent |
+| `subheadline`       | `string`              | —                         | Rendered via `Text muted` (or `text-white/85` when `imageUrl` is set); omitted entirely if absent |
 | `buttonLabel`       | `string`              | — (required)              | Button text |
 | `buttonHref`        | `string`              | `'#formulario-captura'`   | Button link target |
 | `align`             | `'left' \| 'center'`  | — (required)              | Alignment of the headline/subheadline/button block |
-| `background`        | `'primary' \| 'secondary'` | `'primary'`          | Applies `--color-bg-secondary` to the section when `'secondary'` (replaces the old always-on `--color-bg-muted` background); computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
+| `imageUrl`          | `string`              | —                         | Full-bleed background image; renders behind a fixed `bg-black/55` overlay. Omit for a plain color background. |
+| `background`        | `'primary' \| 'secondary'` | `'primary'`          | Applies `--color-bg-secondary` to the section when `'secondary'` and no `imageUrl` is set; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
 
 ```astro
 <CtaSection
   headline="No esperes más para disfrutar del café de especialidad en tu casa"
   buttonLabel="Suscríbete al plan mensual"
   align="center"
+/>
+
+<CtaSection
+  headline="No esperes más para disfrutar del café de especialidad en tu casa"
+  buttonLabel="Suscríbete al plan mensual"
+  align="center"
+  imageUrl="https://cdn.example.com/coffee-beans.jpg"
 />
 ```
 

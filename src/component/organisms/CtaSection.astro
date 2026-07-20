@@ -12,10 +12,11 @@ interface Props {
   buttonLabel: string;
   buttonHref?: string;
   align: 'left' | 'center';
+  imageUrl?: string;
   background?: 'primary' | 'secondary';
 }
 
-const { headline, headlineHighlight, subheadline, buttonLabel, buttonHref, align, background = 'primary' }: Props = Astro.props;
+const { headline, headlineHighlight, subheadline, buttonLabel, buttonHref, align, imageUrl, background = 'primary' }: Props = Astro.props;
 
 const alignClasses = {
   left: 'items-start text-left',
@@ -23,17 +24,30 @@ const alignClasses = {
 };
 
 const headlineParts = splitHighlight(headline, headlineHighlight);
-const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
+const hasImage = !!imageUrl;
+// The overlay opacity is fixed (not configurable from page.json) — unlike Hero, which
+// exposes image.overlay_opacity.
+const sectionBgClass = !hasImage && background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
 ---
 
-<section class={`py-16 md:py-24 ${sectionBgClass}`}>
-  <Container class={`mx-auto flex max-w-xl flex-col gap-6 ${alignClasses[align]}`}>
-    <Heading as="h2" size="md" align={align}>
+<section class={`relative overflow-hidden py-16 md:py-24 ${sectionBgClass}`}>
+  {hasImage && (
+    <>
+      <img src={imageUrl} alt="" class="absolute inset-0 h-full w-full object-cover" />
+      <div class="absolute inset-0 bg-black/55" />
+    </>
+  )}
+  <Container class={`relative z-10 mx-auto flex max-w-xl flex-col gap-6 ${alignClasses[align]}`}>
+    <Heading as="h2" size="md" align={align} class={hasImage ? 'text-white' : ''}>
       {headlineParts.map((part) =>
         part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
       )}
     </Heading>
-    {subheadline && <Text muted>{subheadline}</Text>}
+    {subheadline && (
+      <Text muted={!hasImage} class={hasImage ? 'text-white/85' : ''}>
+        {subheadline}
+      </Text>
+    )}
     <Button variant="primary" href={buttonHref ?? '#formulario-captura'}>{buttonLabel}</Button>
   </Container>
 </section>

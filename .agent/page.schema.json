@@ -278,7 +278,7 @@
       "type": "object",
       "additionalProperties": false,
       "description": "Renderiza condicionalmente: solo si está presente en 'sections'. A diferencia de pricing/faq, el copy de esta sección SÍ se lee completo del JSON (sin fallback hardcodeado) — es un banner de CTA independiente, distinto del hero.",
-      "required": ["type", "headline", "headline_highlight", "subheadline", "button_text", "button_url"],
+      "required": ["type", "headline", "headline_highlight", "subheadline", "button_text", "button_url", "image_url"],
       "properties": {
         "type": { "const": "cta" },
         "headline": { "type": "string", "description": "Mapea a headline de CtaSection." },
@@ -294,6 +294,10 @@
         "button_url": {
           "type": ["string", "null"],
           "description": "Opcional. Mapea a buttonHref de CtaSection. Default #formulario-captura si se omite/null."
+        },
+        "image_url": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a imageUrl de CtaSection. Imagen de fondo a pantalla completa para la sección, interpolada sin sanitizar en <img src>. Cuando está presente, se aplica un overlay oscuro FIJO (bg-black/55, no configurable desde este JSON, a diferencia de hero.image.overlay_opacity) y headline/subheadline pasan a texto claro para contraste; el fondo de la alternancia primary/secondary de la sección se ignora mientras haya imagen. Omitir o null para el fondo de color plano."
         }
       }
     },
