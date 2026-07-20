@@ -75,22 +75,49 @@ you should always include both.
 ```json
 {
   "type": "hero",
-  "headline": "Café de especialidad, directo a tu puerta",
-  "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
-  "image_url": null,
-  "cta_text": "Comenzar ahora",
-  "cta_url": null
+  "layout": null,
+  "text": {
+    "headline": "Café de especialidad, directo a tu puerta",
+    "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
+    "cta_text": "Comenzar ahora"
+  },
+  "image": {
+    "url": null,
+    "position": null,
+    "shape": null,
+    "blur": null,
+    "overlay_opacity": null
+  }
 }
 ```
 
-| Field           | Type             | Required | Maps to (`Hero` prop) | Notes |
-|-----------------|------------------|----------|------------------------|-------|
-| `headline`      | `string`         | yes*     | `title`                | *Falls back to placeholder copy if the whole `hero` section is absent, but if present, treat as required. |
-| `subheadline`   | `string`         | yes*     | `subtitle`              | |
-| `cta_text`      | `string`         | yes*     | `ctaLabel`              | |
-| `image_url`     | `string \| null` | no       | `imageUrl`              | Interpolated into `<img src>` unsanitized. When omitted/`null`, renders the `[Espacio para imagen o ilustración]` placeholder box instead, regardless of `image_display`. |
-| `image_display` | `string \| null` | no       | `layout`                | `"side"` (default if omitted/null) shows `image_url` next to the text, as before. `"background"` uses it as a full-bleed section background with a dark semi-transparent overlay for contrast, and the title/subtitle switch to light text. If `"background"` but `image_url` is `null`, falls back to `"side"`'s rendering (placeholder box included). |
-| `cta_url`       | `string \| null` | no       | `ctaHref`               | Defaults to `#formulario-captura` (the `CaptureForm` anchor). Only set this to something else if you deliberately want the hero CTA to link elsewhere — changing it away from the default breaks the scroll-to-form behavior. |
+Props are grouped by function (`text`/`image`), mirroring the `Hero` component's own prop
+grouping — see `.agent/COMPONENTS.md`. The hero CTA always links to `#formulario-captura`
+(the `CaptureForm` anchor); there is no field to override it from this JSON.
+
+| Field   | Type          | Required | Notes |
+|---------|---------------|----------|-------|
+| `layout`| `string \| null` | no    | Maps to `Hero`'s `layout` prop. `"side"` (default if omitted/null) shows `image.url` next to the text. `"background"` uses it as a full-bleed section background with a dark semi-transparent overlay for contrast, and the title/subtitle switch to light text. If `"background"` but `image.url` is `null`, falls back to `"side"`'s rendering (placeholder box included). |
+| `text`  | `HeroText`    | yes*     | *Falls back to placeholder copy if the whole `hero` section is absent, but if present, treat as required. |
+| `image` | `HeroImage`   | yes*     | Same fallback note as `text` — required if `hero` is present. |
+
+`HeroText`:
+
+| Field         | Type     | Required | Maps to (`Hero` prop) | Notes |
+|---------------|----------|----------|------------------------|-------|
+| `headline`    | `string` | yes      | `text.title`           | |
+| `subheadline` | `string` | yes      | `text.subtitle`        | |
+| `cta_text`    | `string` | yes      | `text.ctaLabel`        | |
+
+`HeroImage`:
+
+| Field             | Type              | Required | Maps to (`Hero` prop)               | Notes |
+|-------------------|-------------------|----------|--------------------------------------|-------|
+| `url`             | `string \| null`  | no       | `img.imageUrl`                       | Interpolated into `<img src>` unsanitized. When omitted/`null`, renders the `[Espacio para imagen o ilustración]` placeholder box instead, regardless of `layout`. |
+| `position`        | `string \| null`  | no       | `img.sideConfig.position`            | Only applies with `layout: "side"` (or its fallback from `"background"` without a `url`). `"left"` or `"right"` — which side the image (or its placeholder) sits on; text takes the opposite side. Defaults to `"right"` if omitted/null. |
+| `shape`           | `string \| null`  | no       | `img.sideConfig.shape`               | Only applies with `layout: "side"` (or its fallback). `"rounded"` (default if omitted/null) or `"circle"`. |
+| `blur`            | `boolean \| null` | no       | `img.backgroudConfig.blur`           | Only applies with `layout: "background"`. Defaults to `false` if omitted/null. |
+| `overlay_opacity` | `number \| null`  | no       | `img.backgroudConfig.overlayOpacity` | Only applies with `layout: "background"`. `0`–`1`; `0` = no overlay, `1` = solid black. Defaults to `0.55` if omitted/null. |
 
 #### `features`
 
@@ -292,11 +319,19 @@ A `page.json` using every section type:
   "sections": [
     {
       "type": "hero",
-      "headline": "Café de especialidad, directo a tu puerta",
-      "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
-      "image_url": null,
-      "cta_text": "Comenzar ahora",
-      "cta_url": null
+      "layout": null,
+      "text": {
+        "headline": "Café de especialidad, directo a tu puerta",
+        "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
+        "cta_text": "Comenzar ahora"
+      },
+      "image": {
+        "url": null,
+        "position": null,
+        "shape": null,
+        "blur": null,
+        "overlay_opacity": null
+      }
     },
     {
       "type": "features",
@@ -370,11 +405,19 @@ omitted:
   "sections": [
     {
       "type": "hero",
-      "headline": "Título principal de tu producto o servicio",
-      "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
-      "image_url": null,
-      "cta_text": "Comenzar ahora",
-      "cta_url": null
+      "layout": null,
+      "text": {
+        "headline": "Título principal de tu producto o servicio",
+        "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
+        "cta_text": "Comenzar ahora"
+      },
+      "image": {
+        "url": null,
+        "position": null,
+        "shape": null,
+        "blur": null,
+        "overlay_opacity": null
+      }
     },
     {
       "type": "features",
