@@ -5,13 +5,17 @@ import Heading from '../atoms/Heading.astro';
 import PricingCard from '../molecules/PricingCard.astro';
 import { splitHighlight } from '../../utils/highlightText';
 
-type Props = PricingConfig;
-const { heading, headingHighlight, headingAlign, plans }: Props = Astro.props;
+type Props = PricingConfig & { background?: 'primary' | 'secondary' };
+const { heading, headingHighlight, headingAlign, plans, background = 'primary' }: Props = Astro.props;
 
 const headingParts = splitHighlight(heading, headingHighlight);
+const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
+// Non-featured cards always use the opposite tone from their section so they contrast
+// with it, regardless of which slot ('primary'/'secondary') this section landed on.
+const cardBackground = background === 'secondary' ? 'primary' : 'secondary';
 ---
 
-<section class="py-16 md:py-24" id="precios">
+<section class={`py-16 md:py-24 ${sectionBgClass}`} id="precios">
   <Container class="flex flex-col gap-10">
     <Heading as="h2" size="md" align={headingAlign}>
       {headingParts.map((part) =>
@@ -28,6 +32,7 @@ const headingParts = splitHighlight(heading, headingHighlight);
           ctaLabel={plan.cta_text}
           featured={plan.featured ?? false}
           badgeText={plan.badge_text ?? undefined}
+          background={cardBackground}
         />
       ))}
     </div>

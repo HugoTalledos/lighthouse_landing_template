@@ -7,9 +7,11 @@ import Button from '../atoms/Button.astro';
 import Logo from '../molecules/Logo.astro';
 import { splitHighlight } from '../../utils/highlightText';
 
-type Props = HeroConfig;
+type Props = HeroConfig & { background?: 'primary' | 'secondary' };
 
-const { layout, text, image, logo }: Props = Astro.props;
+const { layout, text, image, logo, background = 'primary' }: Props = Astro.props;
+
+const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
 
 const { headline: title, headline_highlight: titleHighlight, subheadline: subtitle, cta_text: ctaLabel, align } = text;
 const { url: imageUrl, blur, overlay_opacity: overlayOpacity, position, shape } = image;
@@ -45,7 +47,7 @@ const shapeClasses = {
 };
 ---
 
-<header class="border-b border-gray-200">
+<header class={`border-b border-gray-200 ${sectionBgClass}`}>
   <Container class="flex items-center justify-between py-6">
     <Logo text={logoText} logoUrl={logoUrl}>
       {logoIcon && <Fragment slot="icon" set:html={logoIcon} />}
@@ -54,11 +56,11 @@ const shapeClasses = {
 </header>
 
 <section
-  class={
+  class={`${sectionBgClass} ${
     isBackground
       ? 'relative flex min-h-[480px] items-center overflow-hidden md:min-h-[600px]'
       : 'py-16 md:py-24'
-  }
+  }`}
 >
   {
     isBackground && (

@@ -6,17 +6,21 @@ import BenefitCard from '../molecules/BenefitCard.astro';
 import checkIcon from '../../assets/icon-placeholder.svg?raw';
 import { splitHighlight } from '../../utils/highlightText';
 
-type Props = BenefitConfig;
-const { heading, headingHighlight, headingAlign, cardAlign, iconPosition, items }: Props = Astro.props;
+type Props = BenefitConfig & { background?: 'primary' | 'secondary' };
+const { heading, headingHighlight, headingAlign, cardAlign, iconPosition, items, background = 'primary' }: Props = Astro.props;
 
 function isSvgMarkup(icon: string): boolean {
   return icon.trim().startsWith('<');
 }
 
 const headingParts = splitHighlight(heading, headingHighlight);
+const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
+// Cards always use the opposite tone from their section so they contrast with it,
+// regardless of which slot ('primary'/'secondary') this section landed on.
+const cardBackground = background === 'secondary' ? 'primary' : 'secondary';
 ---
 
-<section class="py-16 md:py-24" id="beneficios">
+<section class={`py-16 md:py-24 ${sectionBgClass}`} id="beneficios">
   <Container class="flex flex-col gap-10">
     <Heading as="h2" size="md" align={headingAlign}>
       {headingParts.map((part) =>
@@ -25,7 +29,7 @@ const headingParts = splitHighlight(heading, headingHighlight);
     </Heading>
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       {items.map((item) => (
-        <BenefitCard title={item.title} description={item.description} align={cardAlign} iconPosition={iconPosition}>
+        <BenefitCard title={item.title} description={item.description} align={cardAlign} iconPosition={iconPosition} background={cardBackground}>
           {item.icon && isSvgMarkup(item.icon) ? (
             <Fragment slot="icon" set:html={item.icon} />
           ) : item.icon ? (

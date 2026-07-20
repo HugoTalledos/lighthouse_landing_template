@@ -16,12 +16,15 @@ interface Props {
   businessName: string;
   links: FooterLink[];
   socialLinks?: SocialLink[];
+  background?: 'primary' | 'secondary';
 }
 
-const { businessName, links, socialLinks }: Props = Astro.props;
+const { businessName, links, socialLinks, background = 'primary' }: Props = Astro.props;
+
+const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
 ---
 
-<footer class="border-t border-gray-200 py-10">
+<footer class={`border-t border-gray-200 py-10 ${sectionBgClass}`}>
   <Container class="flex flex-col items-center gap-4 md:flex-row md:justify-between">
     <span class="font-semibold text-[var(--color-text)]">{businessName}</span>
     <nav class="flex gap-4">

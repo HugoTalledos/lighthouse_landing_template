@@ -183,12 +183,14 @@ description card. This is what `BenefitsSection` maps over; use it for any
 similar icon-title-description grid (e.g. a future "features" or "how it
 works" section), not just literally "beneficios".
 
-| Prop          | Type                  | Default      | Notes |
-|---------------|-----------------------|--------------|-------|
-| `title`       | `string`              | — (required) | Rendered via `Heading as="h3" size="sm"` |
-| `description` | `string`              | — (required) | Rendered via `Text muted` |
-| `align`       | `'left' \| 'center'`  | — (required) | Controls card content alignment; passed through to the internal `Heading` |
-| `class`       | `string`              | —            | Appended, not merged |
+| Prop           | Type                            | Default      | Notes |
+|----------------|----------------------------------|--------------|-------|
+| `title`        | `string`                        | — (required) | Rendered via `Heading as="h3" size="sm"` |
+| `description`  | `string`                        | — (required) | Rendered via `Text muted` |
+| `align`        | `'left' \| 'center' \| 'right'` | — (required) | Controls card content alignment; passed through to the internal `Heading` |
+| `iconPosition` | `'left' \| 'center' \| 'right'` | `align`'s value | Independently positions the icon badge (via `self-*`), decoupled from text alignment |
+| `background`   | `'primary' \| 'secondary'`      | `'secondary'` | `'secondary'` → `--color-bg-secondary`, `'primary'` → `--color-bg`. `BenefitsSection` passes whichever tone contrasts with its own section background. |
+| `class`        | `string`                        | —            | Appended, not merged |
 
 Named slot `icon` — pass an inline SVG (see `BenefitsSection.astro`'s
 `set:html={checkIcon}` pattern for importing an SVG with `?raw` and injecting
@@ -258,6 +260,7 @@ when set, on either variant. Features render in a 2-column checklist
 | `ctaHref`    | `string`   | `'#formulario-captura'`    | Button link target |
 | `featured`   | `boolean`  | `false`                    | Switches the card to the dark/inverted "most popular" visual style |
 | `badgeText`  | `string`   | —                          | Pill badge text shown above `name`, e.g. `"Más popular"`. Omit for no badge — independent of `featured` |
+| `background` | `'primary' \| 'secondary'` | `'secondary'` | Fill color when **not** `featured` (`featured` always uses `--color-text` regardless): `'secondary'` → `--color-bg-secondary`, `'primary'` → `--color-bg`. `PricingSection` passes whichever tone contrasts with its own section background. |
 | `class`      | `string`   | —                          | Appended, not merged |
 
 ```astro
@@ -338,45 +341,32 @@ first.
 `organisms/Hero.astro`
 
 **Use when** you need the page's top section: header bar (logo) + hero
-banner (headline, subtitle, primary CTA button, optional image). Copy,
-layout, and CTA label/alignment props are required — there are no
-defaults, so every usage must pass them explicitly. `logoText`/`logoIcon`
-are optional and forwarded straight through to `Logo`; omit them to fall
-back to `Logo`'s own default (`'[Tu Marca]'`, no icon). `imageUrl` is
-optional — when omitted, the `[Espacio para imagen o ilustración]`
-placeholder box renders instead, regardless of `layout`. `layout` controls
-how `imageUrl` is displayed: `'side'` (default) places it next to the text
-column, `'background'` uses it as a full-bleed section background with a
-dark overlay for contrast and switches the title/subtitle to light text; if
-`layout` is `'background'` but `imageUrl` is absent, it falls back to
-`'side'`'s rendering (placeholder box included). `ctaHref` is optional and
-defaults to `#formulario-captura` (must match `CaptureForm`'s section `id`)
-— passing it explicitly lets `page.json`'s `cta_url` override the default
-without every other caller needing to specify it.
+banner (headline, subtitle, primary CTA button, optional image). Props type
+is `HeroConfig` (`model/hero.types.ts`) plus `background` — props are
+grouped by function (`text`/`image`/`logo`), and the CTA always links to
+`#formulario-captura` (not configurable). `image.url` is optional — when
+omitted, the `[Espacio para imagen o ilustración]` placeholder box renders
+instead, regardless of `layout`. `layout` controls how `image.url` is
+displayed: `'side'` (default) places it next to the text column,
+`'background'` uses it as a full-bleed section background with a dark
+overlay for contrast and switches the title/subtitle to light text; if
+`layout` is `'background'` but `image.url` is absent, it falls back to
+`'side'`'s rendering (placeholder box included).
 
-| Prop           | Type                             | Default                  | Notes |
-|----------------|-----------------------------------|----------------------------|-------|
-| `title`        | `string`                         | — (required)               | Rendered via `Heading as="h1" size="lg"` |
-| `subtitle`     | `string`                         | — (required)               | Rendered via `Text size="lg" muted` (background layout drops `muted` in favor of light text) |
-| `ctaLabel`     | `string`                         | — (required)               | CTA button text |
-| `align`        | `'left' \| 'center'`             | — (required)               | Alignment of title/subtitle/button within the text column |
-| `textPosition` | `'left' \| 'right'`              | — (required)               | Only used by `layout: 'side'`: which side the text column renders on at `md:`; the image takes the other side. Text stays first in DOM order regardless. Ignored by `layout: 'background'`. |
-| `layout`       | `'side' \| 'background'`         | `'side'`                   | `'side'` shows `imageUrl` next to the text (unchanged behavior). `'background'` renders `imageUrl` as a full-bleed section background with a `bg-black/55` overlay and light text; falls back to `'side'`'s rendering (placeholder box included) if `imageUrl` is absent. |
-| `logoText`     | `string`                         | —                          | Forwarded to `Logo`'s `text` prop |
-| `logoIcon`     | `string`                         | —                          | Raw SVG string forwarded to `Logo`'s `icon` slot via `set:html` |
-| `logoUrl`      | `string`                         | —                          | Forwarded to `Logo`'s `logoUrl` prop; ignored by `Logo` if `logoIcon` is also set |
-| `imageUrl`     | `string`                         | placeholder box             | When present, renders an `<img>`, positioned per `layout`; when absent, renders the `[Espacio para imagen o ilustración]` placeholder box |
-| `ctaHref`      | `string`                         | `'#formulario-captura'`    | CTA button link target |
+| Prop         | Type                                                     | Default      | Notes |
+|--------------|-----------------------------------------------------------|--------------|-------|
+| `layout`     | `'side' \| 'background' \| null`                         | `'side'`     | `'side'` shows `image.url` next to the text. `'background'` renders it as a full-bleed section background with a `bg-black` overlay (opacity via `image.overlay_opacity`) and light text; falls back to `'side'`'s rendering if `image.url` is absent. |
+| `text`       | `{ headline: string; headline_highlight?: string \| null; subheadline: string; cta_text: string; align: 'left' \| 'center' \| 'right' }` | — (required) | `headline` → `<h1>`; `headline_highlight` colors a substring in `--color-secondary` (see `BenefitsSection`'s `headingHighlight` for the exact-match behavior); `align` controls alignment of the whole title/subtitle/button block |
+| `image`      | `{ url?: string \| null; position?: 'left' \| 'right' \| null; shape?: 'circle' \| 'rounded' \| null; blur?: boolean \| null; overlay_opacity?: number \| null }` | — (required) | `position`/`shape` only apply to `layout: 'side'`; `blur`/`overlay_opacity` only apply to `layout: 'background'` |
+| `logo`       | `{ logoText?: string; logoIcon?: string; logoUrl?: string }` | — (required) | Forwarded to the header `Logo` |
+| `background` | `'primary' \| 'secondary'`                                | `'primary'`  | Applies `--color-bg-secondary` to the header bar + hero section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
 
 ```astro
 <Hero
-  title="Título principal de tu producto o servicio"
-  subtitle="Subtítulo de apoyo que explica en una frase el valor de lo que ofreces."
-  ctaLabel="Comenzar ahora"
-  align="left"
-  textPosition="left"
-  logoText="Acme Inc."
-  logoIcon={acmeIcon}
+  layout="side"
+  text={{ headline: 'Título principal de tu producto o servicio', subheadline: 'Subtítulo de apoyo.', cta_text: 'Comenzar ahora', align: 'left' }}
+  image={{ url: undefined, position: 'right', shape: 'rounded' }}
+  logo={{ logoText: 'Acme Inc.', logoIcon: acmeIcon }}
 />
 ```
 
@@ -398,6 +388,7 @@ molecule's icon-slot convention if you customize per-item icons.
 | `cardAlign`       | `'left' \| 'center' \| 'right'` | — (required) | Passed to every `BenefitCard` uniformly |
 | `iconPosition`    | `'left' \| 'center' \| 'right'` | `cardAlign`'s value | Independently positions each card's icon badge (via `self-*`), decoupled from text alignment |
 | `items`           | `BenefitItem[]`       | — (required) | `{ title: string; description: string; icon?: string }[]`. Length is variable — not fixed to 3. `icon` accepts either raw SVG markup (strings starting with `<`, injected via `set:html`) or a plain string/emoji (rendered as text); omit to fall back to the placeholder icon. |
+| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field. Each `BenefitCard`'s own fill automatically uses the opposite tone so it always contrasts with this section. |
 
 ```astro
 <BenefitsSection
@@ -431,6 +422,7 @@ defaults); the fields themselves stay hardcoded in the markup via
 | `subtitle`        | `string`              | — (required) | Rendered via `Text muted` |
 | `align`           | `'left' \| 'center'`  | — (required) | Alignment of the heading/subtitle block; passed to `Heading` |
 | `ctaLabel`        | `string`              | — (required) | Submit button text |
+| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
 
 To add a new field: add a `FormField` with `required` if it should be
 validated, and if it needs custom validation beyond "non-empty", add a
@@ -469,6 +461,7 @@ JSON-native field names (`cta_text`, `featured`, `badge_text`), which
 | `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
 | `headingAlign`    | `'left' \| 'center' \| 'right'` | — (required) | Passed to the section `Heading` |
 | `plans`           | `PricingPlanConfig[]` | — (required) | `{ name: string; price: string; period?: string \| null; features: string[]; cta_text: string; featured?: boolean \| null; badge_text?: string \| null }[]` |
+| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field. Each non-`featured` `PricingCard`'s own fill automatically uses the opposite tone so it always contrasts with this section. |
 
 ```astro
 <PricingSection
@@ -495,6 +488,7 @@ only when a `testimonials` section is present in `page.json`.
 | `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
 | `headingAlign`    | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
 | `items`           | `TestimonialItem[]`   | — (required) | `{ quote: string; authorName: string; authorRole?: string }[]` |
+| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
 
 ```astro
 <TestimonialsSection
@@ -520,6 +514,7 @@ Renders with `id="preguntas-frecuentes"`. Renders conditionally in
 | `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
 | `headingAlign`    | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
 | `items`           | `FaqEntry[]`          | — (required) | `{ question: string; answer: string }[]` |
+| `background`      | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the section when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
 
 ```astro
 <FaqSection
@@ -548,6 +543,7 @@ links to it directly. Renders conditionally in `index.astro` — only when a
 | `buttonLabel`       | `string`              | — (required)              | Button text |
 | `buttonHref`        | `string`              | `'#formulario-captura'`   | Button link target |
 | `align`             | `'left' \| 'center'`  | — (required)              | Alignment of the headline/subheadline/button block |
+| `background`        | `'primary' \| 'secondary'` | `'primary'`          | Applies `--color-bg-secondary` to the section when `'secondary'` (replaces the old always-on `--color-bg-muted` background); computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
 
 ```astro
 <CtaSection
@@ -572,6 +568,7 @@ no per-platform icons/assets in this template. Renders conditionally in
 | `businessName` | `string`          | — (required) | Rendered as plain bold text, not through `Logo` |
 | `links`        | `FooterLink[]`    | — (required) | `{ label: string; url: string }[]` |
 | `socialLinks`  | `SocialLink[]`    | —            | `{ platform: string; url: string }[]`; the social nav is omitted entirely if absent or empty |
+| `background`   | `'primary' \| 'secondary'` | `'primary'` | Applies `--color-bg-secondary` to the footer when `'secondary'`; computed automatically by `index.astro`'s section-alternation logic, not a `page.json` field |
 
 ```astro
 <Footer
@@ -592,12 +589,15 @@ falling back to the placeholder copy below when a section is absent — these
 two, plus `CaptureForm`, always render. `pricing`/`testimonials`/`faq`/`cta`/
 `footer` sections map onto `PricingSection`/`TestimonialsSection`/
 `FaqSection`/`CtaSection`/`Footer` and render conditionally — only when
-present in `page.json`, with no fallback content. Theme colors (`theme.primary_color`/`secondary_color`/`bg_color`/`text_color`/`font_family`)
+present in `page.json`, with no fallback content. Theme colors (`theme.primary_color`/`secondary_color`/`bg_color`/`bg_secondary_color`/`text_color`/`font_family`)
 are validated (hex-only colors, alnum-only font name) before being interpolated into an
 inline `<style>` override in `BaseLayout` — an invalid value throws and fails the build
-rather than falling back silently. `bg_color`/`text_color` are optional (the other theme
-colors aren't); omitting or nulling them keeps `global.css`'s `--color-bg`/`--color-text`
-defaults. `theme.logo_text`/`theme.logo_icon`/`theme.logo_url` are passed straight
+rather than falling back silently. `bg_color`/`bg_secondary_color`/`text_color` are optional
+(the other theme colors aren't); omitting or nulling them keeps `global.css`'s
+`--color-bg`/`--color-bg-secondary`/`--color-text` defaults. `index.astro` also computes a
+`background` prop (`'primary' | 'secondary'`, alternating `--color-bg`/`--color-bg-secondary`
+per rendered section, skipping ones that don't render) passed to every organism — see each
+organism's own entry above and `.agent/PAGE_JSON.md`'s "Sections" intro. `theme.logo_text`/`theme.logo_icon`/`theme.logo_url` are passed straight
 through (no fallback/sanitization at the `index.astro` level — `?? undefined` only handles
 `null`) to `Hero`'s `logoText`/`logoIcon`/`logoUrl`, which forwards them to `Logo`; `Logo`
 itself supplies the `'[Tu Marca]'` text default when `logo_text` is absent, prefers

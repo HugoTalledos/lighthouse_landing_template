@@ -31,6 +31,7 @@ meta description, or other top-level field — `index.astro` hardcodes
   "secondary_color": "#0ea5e9",
   "font_family": "Inter",
   "bg_color": null,
+  "bg_secondary_color": null,
   "text_color": null,
   "logo_url": null,
   "logo_text": "Acme Inc.",
@@ -38,19 +39,21 @@ meta description, or other top-level field — `index.astro` hardcodes
 }
 ```
 
-| Field             | Type             | Required | Notes |
-|-------------------|------------------|----------|-------|
-| `primary_color`   | `string`         | yes      | Must match `^#[0-9a-fA-F]{3,8}$` (hex only, 3–8 hex digits after `#`). An invalid value fails `astro build`/`astro dev` with a thrown `Error` naming the field and value — this is not a silent fallback. |
-| `secondary_color` | `string`         | yes      | Same hex validation and same hard-failure behavior on an invalid value. |
-| `font_family`     | `string`         | yes      | Must match `^[A-Za-z0-9 _-]+$` (letters, digits, spaces, `_`, `-` only — no commas, no quotes, no CSS font stacks). Invalid values fail the build the same way. Use a single font name (e.g. `"Poppins"`), not a full `font-family` CSS value. |
-| `bg_color`        | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-bg` (page/body background). Omit or `null` to keep `global.css`'s default (`#ffffff`). |
-| `text_color`      | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-text` (body text color). Omit or `null` to keep `global.css`'s default (`#111827`). |
-| `logo_url`        | `string \| null` | no       | Rendered as `<img>` in the header logo when `logo_icon` is absent/`null`; if `logo_icon` is also set, `logo_icon`'s inline SVG wins and `logo_url` is ignored. Unsanitized — interpolated directly into `<img src>`. |
-| `logo_text`       | `string \| null` | no       | Passed straight through to `Hero`'s `logoText` prop with no validation/sanitization. Omit or `null` to fall back to the `Logo` atom's default (`'[Tu Marca]'`). |
-| `logo_icon`       | `string \| null` | no       | Raw SVG markup string, injected unsanitized via `set:html`. Same trust model as `HeroSection.image_url` and `FeatureItem.icon` below — only put trusted/sanitized SVG here, never raw user input. Omit or `null` for no icon. |
+| Field                | Type             | Required | Notes |
+|----------------------|------------------|----------|-------|
+| `primary_color`      | `string`         | yes      | Must match `^#[0-9a-fA-F]{3,8}$` (hex only, 3–8 hex digits after `#`). An invalid value fails `astro build`/`astro dev` with a thrown `Error` naming the field and value — this is not a silent fallback. |
+| `secondary_color`    | `string`         | yes      | Same hex validation and same hard-failure behavior on an invalid value. |
+| `font_family`        | `string`         | yes      | Must match `^[A-Za-z0-9 _-]+$` (letters, digits, spaces, `_`, `-` only — no commas, no quotes, no CSS font stacks). Invalid values fail the build the same way. Use a single font name (e.g. `"Poppins"`), not a full `font-family` CSS value. |
+| `bg_color`           | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-bg` (page/body background) — the "primary" tone in the section background alternation below. Omit or `null` to keep `global.css`'s default (`#ffffff`). |
+| `bg_secondary_color` | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-bg-secondary` — the "secondary" tone in the section background alternation below, and the fill color for `BenefitCard` and non-featured `PricingCard`s. Omit or `null` to keep `global.css`'s default (`#f3f4f6`). |
+| `text_color`         | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-text` (body text color). Omit or `null` to keep `global.css`'s default (`#111827`). |
+| `logo_url`           | `string \| null` | no       | Rendered as `<img>` in the header logo when `logo_icon` is absent/`null`; if `logo_icon` is also set, `logo_icon`'s inline SVG wins and `logo_url` is ignored. Unsanitized — interpolated directly into `<img src>`. |
+| `logo_text`          | `string \| null` | no       | Passed straight through to `Hero`'s `logoText` prop with no validation/sanitization. Omit or `null` to fall back to the `Logo` atom's default (`'[Tu Marca]'`). |
+| `logo_icon`          | `string \| null` | no       | Raw SVG markup string, injected unsanitized via `set:html`. Same trust model as `HeroSection.image_url` and `FeatureItem.icon` below — only put trusted/sanitized SVG here, never raw user input. Omit or `null` for no icon. |
 
-Colors (`primary_color`/`secondary_color`/`bg_color`/`text_color`) and `font_family` are the
-only theme fields that get validated before hitting the page; the rest are trusted verbatim.
+Colors (`primary_color`/`secondary_color`/`bg_color`/`bg_secondary_color`/`text_color`) and
+`font_family` are the only theme fields that get validated before hitting the page; the rest
+are trusted verbatim.
 
 ## Sections
 
@@ -61,6 +64,14 @@ order (render order is fixed by `index.astro`: Hero → Benefits → Pricing →
 FAQ → CTA → CaptureForm → Footer); it only affects which one wins for a duplicate `type`.
 
 Any `type` not in the list below is silently ignored — no error, no render.
+
+`index.astro` alternates each *rendered* section's background between `--color-bg`
+("primary") and `--color-bg-secondary` ("secondary") in that fixed visual order — Hero is
+primary, Benefits secondary, Pricing primary, and so on — skipping any optional section
+that doesn't render so the banding stays consistent regardless of which sections are
+present. This isn't a `page.json` field; it's computed automatically. `BenefitCard` and
+non-featured `PricingCard`s always use whichever tone contrasts with their own section
+(so they never blend into a same-toned band).
 
 ### Always-rendering sections
 
@@ -363,6 +374,7 @@ A `page.json` using every section type:
     "secondary_color": "#0ea5e9",
     "font_family": "Inter",
     "bg_color": null,
+    "bg_secondary_color": null,
     "text_color": null,
     "logo_url": null,
     "logo_text": "Acme Coffee",
@@ -453,6 +465,7 @@ omitted:
     "secondary_color": "#0ea5e9",
     "font_family": "Inter",
     "bg_color": null,
+    "bg_secondary_color": null,
     "text_color": null,
     "logo_url": null,
     "logo_text": null,

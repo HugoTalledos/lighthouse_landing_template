@@ -12,9 +12,10 @@ interface Props {
   buttonLabel: string;
   buttonHref?: string;
   align: 'left' | 'center';
+  background?: 'primary' | 'secondary';
 }
 
-const { headline, headlineHighlight, subheadline, buttonLabel, buttonHref, align }: Props = Astro.props;
+const { headline, headlineHighlight, subheadline, buttonLabel, buttonHref, align, background = 'primary' }: Props = Astro.props;
 
 const alignClasses = {
   left: 'items-start text-left',
@@ -22,9 +23,10 @@ const alignClasses = {
 };
 
 const headlineParts = splitHighlight(headline, headlineHighlight);
+const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
 ---
 
-<section class="bg-[var(--color-bg-muted)] py-16 md:py-24">
+<section class={`py-16 md:py-24 ${sectionBgClass}`}>
   <Container class={`mx-auto flex max-w-xl flex-col gap-6 ${alignClasses[align]}`}>
     <Heading as="h2" size="md" align={align}>
       {headlineParts.map((part) =>

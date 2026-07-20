@@ -7,10 +7,11 @@ interface Props {
   description: string;
   align: ALIGN_CONFIG
   iconPosition?: ALIGN_CONFIG
+  background?: 'primary' | 'secondary';
   class?: string;
 }
 
-const { title, description, align, iconPosition, class: className }: Props = Astro.props;
+const { title, description, align, iconPosition, background = 'secondary', class: className }: Props = Astro.props;
 
 const alignClasses = {
   left: 'items-start text-left',
@@ -25,9 +26,10 @@ const iconPositionClasses = {
 };
 
 const resolvedIconPosition = iconPositionClasses[iconPosition ?? align];
+const cardBgClass = background === 'primary' ? 'bg-[var(--color-bg)]' : 'bg-[var(--color-bg-secondary)]';
 ---
 
-<div class={`group flex flex-col gap-5 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-[color-mix(in_srgb,var(--color-primary)_20%,transparent)] ${alignClasses[align]} ${className ?? ''}`}>
+<div class={`group flex flex-col gap-5 rounded-2xl ${cardBgClass} p-8 shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-[color-mix(in_srgb,var(--color-primary)_20%,transparent)] ${alignClasses[align]} ${className ?? ''}`}>
   <div class={`flex h-14 w-14 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--color-primary)_10%,white)] text-2xl text-[var(--color-primary)] ring-1 ring-[color-mix(in_srgb,var(--color-primary)_15%,white)] transition-transform duration-300 group-hover:scale-110 group-hover:bg-[color-mix(in_srgb,var(--color-primary)_15%,white)] ${resolvedIconPosition}`}>
     <slot name="icon" />
   </div>

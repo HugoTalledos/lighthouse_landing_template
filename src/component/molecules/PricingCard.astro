@@ -11,15 +11,18 @@ interface Props {
   ctaHref?: string;
   featured?: boolean;
   badgeText?: string;
+  background?: 'primary' | 'secondary';
   class?: string;
 }
 
-const { name, price, period, features, ctaLabel, ctaHref, featured = false, badgeText, class: className }: Props = Astro.props;
+const { name, price, period, features, ctaLabel, ctaHref, featured = false, badgeText, background = 'secondary', class: className }: Props = Astro.props;
+
+const nonFeaturedBgClass = background === 'primary' ? 'bg-[var(--color-bg)]' : 'bg-[var(--color-bg-secondary)]';
 ---
 
 <div
   class={`relative flex flex-col gap-6 rounded-2xl p-8 transition-transform duration-300 hover:z-10 hover:scale-105 hover:shadow-xl ${
-    featured ? 'bg-[var(--color-text)] text-white' : 'bg-[var(--color-bg-muted)] text-[var(--color-text)]'
+    featured ? 'bg-[var(--color-text)] text-white' : `${nonFeaturedBgClass} text-[var(--color-text)]`
   } ${className ?? ''}`}
 >
   {badgeText && (

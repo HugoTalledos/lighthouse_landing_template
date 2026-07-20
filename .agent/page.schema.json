@@ -6,7 +6,7 @@
     "theme": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["primary_color", "secondary_color", "font_family", "bg_color", "text_color", "logo_url", "logo_text", "logo_icon"],
+      "required": ["primary_color", "secondary_color", "font_family", "bg_color", "bg_secondary_color", "text_color", "logo_url", "logo_text", "logo_icon"],
       "properties": {
         "primary_color": {
           "type": "string",
@@ -22,7 +22,11 @@
         },
         "bg_color": {
           "type": ["string"],
-          "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-bg (fondo del body). Omitir o null cae al default de global.css (#ffffff)."
+          "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-bg (fondo del body) — el tono 'primary' de la alternancia de fondos por sección. Omitir o null cae al default de global.css (#ffffff)."
+        },
+        "bg_secondary_color": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-bg-secondary — el tono 'secondary' de la alternancia de fondos por sección (index.astro alterna cada sección renderizada entre --color-bg y --color-bg-secondary, en orden fijo, saltando secciones ausentes), y también el fill de BenefitCard y de PricingCard no destacadas (siempre usan el tono que contrasta con su propia sección). Omitir o null cae al default de global.css (#f3f4f6)."
         },
         "text_color": {
           "type": ["string"],

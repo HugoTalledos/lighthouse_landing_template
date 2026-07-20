@@ -40,6 +40,9 @@ function sanitizeTheme(theme: RawTheme) {
   if (theme.bg_color != null && !HEX_COLOR_RE.test(theme.bg_color)) {
     throw new Error(`page.json: theme.bg_color is not a valid hex color: ${JSON.stringify(theme.bg_color)}`);
   }
+  if (theme.bg_secondary_color != null && !HEX_COLOR_RE.test(theme.bg_secondary_color)) {
+    throw new Error(`page.json: theme.bg_secondary_color is not a valid hex color: ${JSON.stringify(theme.bg_secondary_color)}`);
+  }
   if (theme.text_color != null && !HEX_COLOR_RE.test(theme.text_color)) {
     throw new Error(`page.json: theme.text_color is not a valid hex color: ${JSON.stringify(theme.text_color)}`);
   }
@@ -48,6 +51,7 @@ function sanitizeTheme(theme: RawTheme) {
     secondaryColor: theme.secondary_color,
     fontFamily: theme.font_family,
     bgColor: theme.bg_color ?? undefined,
+    bgSecondaryColor: theme.bg_secondary_color ?? undefined,
     textColor: theme.text_color ?? undefined,
   };
 }
@@ -93,10 +97,29 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   { title: 'Beneficio dos', description: 'Descripción breve del segundo beneficio ofrecido.' },
   { title: 'Beneficio tres', description: 'Descripción breve del tercer beneficio ofrecido.' },
 ];
+
+// Alternates each rendered section's background (primary/secondary) in visual order,
+// skipping sections that don't render so the banding stays consistent regardless of
+// which optional sections are present in page.json.
+const renderedSections = [
+  'hero',
+  'benefits',
+  pricingSection ? 'pricing' : null,
+  testimonialsSection ? 'testimonials' : null,
+  faqSection ? 'faq' : null,
+  ctaSection ? 'cta' : null,
+  'capture',
+  footerSection ? 'footer' : null,
+].filter((key): key is string => key !== null);
+
+function sectionBackground(key: string): 'primary' | 'secondary' {
+  return renderedSections.indexOf(key) % 2 === 0 ? 'primary' : 'secondary';
+}
 ---
 
 <BaseLayout title="Landing Page Template" theme={theme}>
   <Hero
+    background={sectionBackground('hero')}
     layout={heroSection?.layout ?? 'side'}
     text={{
       headline: heroSection?.text.headline ?? 'Título principal de tu producto o servicio',
@@ -119,6 +142,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     }}
   />
   <BenefitsSection
+    background={sectionBackground('benefits')}
     heading={featuresSection?.headline ?? 'Beneficios'}
     headingHighlight={featuresSection?.headline_highlight ?? undefined}
     headingAlign="center"
@@ -128,6 +152,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   />
   {pricingSection && (
     <PricingSection
+      background={sectionBackground('pricing')}
       heading={pricingSection.headline ?? 'Planes'}
       headingHighlight={pricingSection.headline_highlight ?? undefined}
       headingAlign="center"
@@ -144,6 +169,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   )}
   {testimonialsSection && (
     <TestimonialsSection
+      background={sectionBackground('testimonials')}
       heading={testimonialsSection.headline ?? 'Lo que dicen nuestros clientes'}
       headingHighlight={testimonialsSection.headline_highlight ?? undefined}
       headingAlign="center"
@@ -156,6 +182,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   )}
   {faqSection && (
     <FaqSection
+      background={sectionBackground('faq')}
       heading={faqSection.headline ?? 'Preguntas frecuentes'}
       headingHighlight={faqSection.headline_highlight ?? undefined}
       headingAlign="center"
@@ -164,6 +191,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   )}
   {ctaSection && (
     <CtaSection
+      background={sectionBackground('cta')}
       headline={ctaSection.headline}
       headlineHighlight={ctaSection.headline_highlight ?? undefined}
       subheadline={ctaSection.subheadline ?? undefined}
@@ -173,6 +201,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     />
   )}
   <CaptureForm
+    background={sectionBackground('capture')}
     heading={captureSection?.headline ?? 'Déjanos tus datos'}
     headingHighlight={captureSection?.headline_highlight ?? undefined}
     subtitle={captureSection?.subheadline ?? 'Te contactaremos con más información.'}
@@ -181,6 +210,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   />
   {footerSection && (
     <Footer
+      background={sectionBackground('footer')}
       businessName={footerSection.business_name}
       links={footerSection.links}
       socialLinks={footerSection.social_links}

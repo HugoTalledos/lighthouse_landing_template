@@ -12,9 +12,10 @@ interface Props {
   subtitle: string;
   align: 'left' | 'center';
   ctaLabel: string;
+  background?: 'primary' | 'secondary';
 }
 
-const { heading, headingHighlight, subtitle, align, ctaLabel }: Props = Astro.props;
+const { heading, headingHighlight, subtitle, align, ctaLabel, background = 'primary' }: Props = Astro.props;
 
 const alignClasses = {
   left: 'text-left',
@@ -22,9 +23,10 @@ const alignClasses = {
 };
 
 const headingParts = splitHighlight(heading, headingHighlight);
+const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
 ---
 
-<section class="py-16 md:py-24" id="formulario-captura">
+<section class={`py-16 md:py-24 ${sectionBgClass}`} id="formulario-captura">
   <Container class="mx-auto flex max-w-xl flex-col gap-6">
     <div class={`flex flex-col gap-2 ${alignClasses[align]}`}>
       <Heading as="h2" size="md" align={align}>

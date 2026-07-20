@@ -14,14 +14,16 @@ interface Props {
   headingHighlight?: string | null;
   headingAlign: 'left' | 'center';
   items: FaqEntry[];
+  background?: 'primary' | 'secondary';
 }
 
-const { heading, headingHighlight, headingAlign, items }: Props = Astro.props;
+const { heading, headingHighlight, headingAlign, items, background = 'primary' }: Props = Astro.props;
 
 const headingParts = splitHighlight(heading, headingHighlight);
+const sectionBgClass = background === 'secondary' ? 'bg-[var(--color-bg-secondary)]' : '';
 ---
 
-<section class="py-16 md:py-24" id="preguntas-frecuentes">
+<section class={`py-16 md:py-24 ${sectionBgClass}`} id="preguntas-frecuentes">
   <Container class="mx-auto flex max-w-3xl flex-col gap-10">
     <Heading as="h2" size="md" align={headingAlign}>
       {headingParts.map((part) =>

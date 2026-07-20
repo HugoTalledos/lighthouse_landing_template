@@ -4,6 +4,7 @@
     "secondary_color": "#5C6B4F",
     "font_family": "Inter",
     "bg_color": "#FAF3EA",
+    "bg_secondary_color": null,
     "text_color": "#2A211B",
     "logo_url": null,
     "logo_text": "Raíz",

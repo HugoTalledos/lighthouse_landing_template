@@ -7,6 +7,7 @@ interface Theme {
   secondaryColor?: string;
   bgColor?: string;
   bgMutedColor?: string;
+  bgSecondaryColor?: string;
   textColor?: string;
   textMutedColor?: string;
   fontFamily?: string;
@@ -34,6 +35,7 @@ const { title = 'Landing Page Template', theme }: Props = Astro.props;
         ${theme.secondaryColor ? `--color-secondary: ${theme.secondaryColor}!important;` : ''}
         ${theme.bgColor ? `--color-bg: ${theme.bgColor}!important;` : ''}
         ${theme.bgMutedColor ? `--color-bg-muted: ${theme.bgMutedColor}!important;` : ''}
+        ${theme.bgSecondaryColor ? `--color-bg-secondary: ${theme.bgSecondaryColor}!important;` : ''}
         ${theme.textColor ? `--color-text: ${theme.textColor}!important;` : ''}
         ${theme.textMutedColor ? `--color-text-muted: ${theme.textMutedColor}!important;` : ''}
         ${theme.fontFamily ? `--font-sans: '${theme.fontFamily}', system-ui, sans-serif!important;` : ''}
