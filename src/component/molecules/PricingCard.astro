@@ -56,18 +56,18 @@ const { name, price, period, features, ctaLabel, ctaHref, featured = false, badg
   </ul>
 
   <div class={`mt-auto flex items-center justify-between gap-4 border-t pt-6 ${featured ? 'border-white/10' : 'border-black/10'}`}>
-    <p class="text-3xl font-bold">
-      {price}
-      {period && <span class={`text-base font-normal ${featured ? 'text-white/60' : 'text-[var(--color-text-muted)]'}`}> {period}</span>}
-    </p>
+    <div class="flex shrink-0 flex-col">
+      <span class="whitespace-nowrap text-3xl font-bold">{price}</span>
+      {period && <span class={`text-xs font-normal ${featured ? 'text-white/60' : 'text-[var(--color-text-muted)]'}`}>{period}</span>}
+    </div>
     <a
       href={ctaHref ?? '#formulario-captura'}
-      class={`inline-flex shrink-0 items-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-opacity hover:opacity-90 ${
+      class={`inline-flex min-w-0 items-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-opacity hover:opacity-90 ${
         featured ? 'bg-[var(--color-secondary)] text-[var(--color-text)]' : 'bg-[var(--color-text)] text-[var(--color-bg)]'
       }`}
     >
-      {ctaLabel}
-      <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <span class="min-w-0 truncate">{ctaLabel}</span>
+      <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 10h12M11 5l5 5-5 5" />
       </svg>
     </a>
