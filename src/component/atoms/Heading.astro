@@ -2,7 +2,7 @@
 interface Props {
   as?: 'h1' | 'h2' | 'h3';
   size?: 'lg' | 'md' | 'sm';
-  align?: 'left' | 'center';
+  align?: 'left' | 'center' | 'right';
   class?: string;
 }
 
@@ -17,6 +17,7 @@ const sizes = {
 const aligns = {
   left: 'text-left',
   center: 'text-center',
+  right: 'text-right'
 };
 ---
 
