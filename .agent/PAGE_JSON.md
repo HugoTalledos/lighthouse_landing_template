@@ -75,6 +75,7 @@ you should always include both.
 ```json
 {
   "type": "hero",
+  "layout": "side",
   "text": {
     "headline": "Café de especialidad, directo a tu puerta",
     "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
@@ -96,7 +97,7 @@ grouping — see `.agent/COMPONENTS.md`. The hero CTA always links to `#formular
 
 | Field   | Type          | Required | Notes |
 |---------|---------------|----------|-------|
-| `layout`| `string`      | no       | Maps to `Hero`'s `layout` prop. Enum `"side"` \| `"background"` (no `null` — omit the key entirely for the default instead of passing `null`). `"side"` (default if omitted) shows `image.url` next to the text. `"background"` uses it as a full-bleed section background with a dark semi-transparent overlay for contrast, and the title/subtitle switch to light text. If `"background"` but `image.url` is `null`, falls back to `"side"`'s rendering (placeholder box included). |
+| `layout`| `string`      | yes      | **Always set this explicitly — never omit it.** Maps to `Hero`'s `layout` prop. Enum `"side"` \| `"background"` (no `null`). `"side"` shows `image.url` next to the text. `"background"` uses it as a full-bleed section background with a dark semi-transparent overlay for contrast, and the title/subtitle switch to light text. If `"background"` but `image.url` is `null`, falls back to `"side"`'s rendering (placeholder box included). |
 | `text`  | `HeroText`    | yes*     | *Falls back to placeholder copy if the whole `hero` section is absent, but if present, treat as required. |
 | `image` | `HeroImage`   | yes*     | Same fallback note as `text` — required if `hero` is present. |
 
@@ -318,6 +319,7 @@ A `page.json` using every section type:
   "sections": [
     {
       "type": "hero",
+      "layout": "side",
       "text": {
         "headline": "Café de especialidad, directo a tu puerta",
         "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
@@ -403,6 +405,7 @@ omitted:
   "sections": [
     {
       "type": "hero",
+      "layout": "side",
       "text": {
         "headline": "Título principal de tu producto o servicio",
         "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
@@ -439,7 +442,9 @@ omitted:
    `null`) whenever the brief calls for a non-default page background or body text color.
 2. Always include `hero` and `features` sections with real copy — they render unconditionally
    and generic placeholder text will leak to production if left out or left as literal
-   Spanish placeholders.
+   Spanish placeholders. `hero.layout` is required — always set it explicitly to `"side"` or
+   `"background"` (pick `"background"` only if `hero.image.url` is also set, otherwise it
+   silently falls back to `"side"`'s rendering) — never omit the field.
 3. Only include `pricing`, `testimonials`, `faq`, `cta`, `footer` if the brief actually calls
    for that section — their presence alone triggers the render, there's no separate
    `"enabled": true/false` flag.
