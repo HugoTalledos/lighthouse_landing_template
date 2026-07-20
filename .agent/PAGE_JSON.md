@@ -75,7 +75,6 @@ you should always include both.
 ```json
 {
   "type": "hero",
-  "layout": null,
   "text": {
     "headline": "Café de especialidad, directo a tu puerta",
     "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
@@ -97,7 +96,7 @@ grouping — see `.agent/COMPONENTS.md`. The hero CTA always links to `#formular
 
 | Field   | Type          | Required | Notes |
 |---------|---------------|----------|-------|
-| `layout`| `string \| null` | yes*    | Maps to `Hero`'s `layout` prop. `"side"` shows `image.url` next to the text. `"background"` uses it as a full-bleed section background with a dark semi-transparent overlay for contrast, and the title/subtitle switch to light text. If `"background"` but `image.url` is `null`, falls back to `"side"`'s rendering (placeholder box included). |
+| `layout`| `string`      | no       | Maps to `Hero`'s `layout` prop. Enum `"side"` \| `"background"` (no `null` — omit the key entirely for the default instead of passing `null`). `"side"` (default if omitted) shows `image.url` next to the text. `"background"` uses it as a full-bleed section background with a dark semi-transparent overlay for contrast, and the title/subtitle switch to light text. If `"background"` but `image.url` is `null`, falls back to `"side"`'s rendering (placeholder box included). |
 | `text`  | `HeroText`    | yes*     | *Falls back to placeholder copy if the whole `hero` section is absent, but if present, treat as required. |
 | `image` | `HeroImage`   | yes*     | Same fallback note as `text` — required if `hero` is present. |
 
@@ -319,7 +318,6 @@ A `page.json` using every section type:
   "sections": [
     {
       "type": "hero",
-      "layout": null,
       "text": {
         "headline": "Café de especialidad, directo a tu puerta",
         "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
@@ -405,7 +403,6 @@ omitted:
   "sections": [
     {
       "type": "hero",
-      "layout": null,
       "text": {
         "headline": "Título principal de tu producto o servicio",
         "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
