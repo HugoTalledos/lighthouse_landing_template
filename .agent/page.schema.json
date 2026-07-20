@@ -80,11 +80,16 @@
     "HeroText": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["headline", "subheadline", "cta_text"],
+      "required": ["headline", "subheadline", "cta_text", "align"],
       "properties": {
-        "headline": { "type": "string", "description": "Mapea a la prop title de Hero." },
-        "subheadline": { "type": "string", "description": "Mapea a la prop subtitle de Hero." },
-        "cta_text": { "type": "string", "description": "Mapea a la prop ctaLabel de Hero." }
+        "headline": { "type": "string", "description": "Mapea a text.headline de Hero. Se renderiza como el <h1> del hero." },
+        "subheadline": { "type": "string", "description": "Mapea a text.subheadline de Hero. Texto de apoyo bajo el headline." },
+        "cta_text": { "type": "string", "description": "Mapea a text.cta_text de Hero. Etiqueta del botón, que siempre enlaza a #formulario-captura (no configurable desde este JSON)." },
+        "align": {
+          "type": "string",
+          "enum": ["left", "center", "right"],
+          "description": "Mapea a text.align de Hero. Controla la alineación (texto y flex) del bloque headline/subheadline/botón. Independiente de image.position — aplica igual con layout 'side' o 'background'. index.astro cae a 'center' si se omite, pero fijarlo explícitamente para una página real."
+        }
       }
     },
     "HeroImage": {
@@ -94,27 +99,27 @@
       "properties": {
         "url": {
           "type": ["string", "null"],
-          "description": "Opcional. Mapea a img.imageUrl de Hero. Interpolado en <img src> sin sanitizar. Si se omite/null, renderiza el placeholder '[Espacio para imagen o ilustración]' (aplica sin importar el valor de layout)."
+          "description": "Opcional. Mapea a image.url de Hero. Interpolado en <img src> sin sanitizar. Si se omite/null, renderiza el placeholder '[Espacio para imagen o ilustración]' (aplica sin importar el valor de layout)."
         },
         "position": {
           "type": ["string", "null"],
           "enum": ["left", "right", null],
-          "description": "Opcional. Mapea a img.sideConfig.position de Hero. Solo aplica con layout 'side' (o su fallback desde 'background' sin url). Indica el lado donde va la imagen (o su placeholder); el texto se ubica del lado contrario. Default 'right' si se omite/null."
+          "description": "Opcional. Mapea a image.position de Hero. Solo aplica con layout 'side' (o su fallback desde 'background' sin url). Indica el lado donde va la imagen (o su placeholder); el texto se ubica del lado contrario. Default 'right' si se omite/null."
         },
         "shape": {
           "type": ["string", "null"],
           "enum": ["circle", "rounded", null],
-          "description": "Opcional. Mapea a img.sideConfig.shape de Hero. Solo aplica con layout 'side' (o su fallback). 'rounded' (default si se omite/null) usa esquinas redondeadas; 'circle' usa un radius completo."
+          "description": "Opcional. Mapea a image.shape de Hero. Solo aplica con layout 'side' (o su fallback). 'rounded' (default si se omite/null) usa esquinas redondeadas; 'circle' usa un radius completo."
         },
         "blur": {
           "type": ["boolean", "null"],
-          "description": "Opcional. Mapea a img.backgroudConfig.blur de Hero. Solo aplica con layout 'background'. Default false si se omite/null."
+          "description": "Opcional. Mapea a image.blur de Hero. Solo aplica con layout 'background'. Default false si se omite/null."
         },
         "overlay_opacity": {
           "type": ["number", "null"],
           "minimum": 0,
           "maximum": 1,
-          "description": "Opcional. Mapea a img.backgroudConfig.overlayOpacity de Hero. Solo aplica con layout 'background'. Controla la opacidad del overlay oscuro sobre la imagen de fondo (0 = sin overlay, 1 = negro sólido). Default 0.55 si se omite/null."
+          "description": "Opcional. Mapea a image.overlay_opacity de Hero. Solo aplica con layout 'background'. Controla la opacidad del overlay oscuro sobre la imagen de fondo (0 = sin overlay, 1 = negro sólido). Default 0.55 si se omite/null."
         }
       }
     },

@@ -79,7 +79,8 @@ you should always include both.
   "text": {
     "headline": "Café de especialidad, directo a tu puerta",
     "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
-    "cta_text": "Comenzar ahora"
+    "cta_text": "Comenzar ahora",
+    "align": "center"
   },
   "image": {
     "url": null,
@@ -92,8 +93,11 @@ you should always include both.
 ```
 
 Props are grouped by function (`text`/`image`), mirroring the `Hero` component's own prop
-grouping — see `.agent/COMPONENTS.md`. The hero CTA always links to `#formulario-captura`
-(the `CaptureForm` anchor); there is no field to override it from this JSON.
+grouping — see `.agent/COMPONENTS.md`. As of the current template, `Hero.astro`'s `Props`
+type *is* `HeroConfig` (`model/hero.types.ts`), so every field below maps onto the
+component's props under the same key — no renaming happens between this JSON and the
+component. The hero CTA always links to `#formulario-captura` (the `CaptureForm` anchor);
+there is no field to override it from this JSON.
 
 | Field   | Type          | Required | Notes |
 |---------|---------------|----------|-------|
@@ -105,19 +109,20 @@ grouping — see `.agent/COMPONENTS.md`. The hero CTA always links to `#formular
 
 | Field         | Type     | Required | Maps to (`Hero` prop) | Notes |
 |---------------|----------|----------|------------------------|-------|
-| `headline`    | `string` | yes      | `text.title`           | |
-| `subheadline` | `string` | yes      | `text.subtitle`        | |
-| `cta_text`    | `string` | yes      | `text.ctaLabel`        | |
+| `headline`    | `string` | yes      | `text.headline`        | Rendered as the hero's `<h1>`. |
+| `subheadline` | `string` | yes      | `text.subheadline`     | Rendered as supporting body text below the headline. |
+| `cta_text`    | `string` | yes      | `text.cta_text`        | Button label. The button always links to `#formulario-captura` — not configurable from this JSON. |
+| `align`       | `string` | yes      | `text.align`           | Enum `"left"` \| `"center"` \| `"right"`. Controls the text alignment of the headline/subheadline/button block (and their flex alignment within it). Independent of `image.position` — applies the same way under both `layout: "side"` and `layout: "background"`. `index.astro` falls back to `"center"` if omitted, but set it explicitly for a real page. |
 
 `HeroImage`:
 
-| Field             | Type              | Required | Maps to (`Hero` prop)               | Notes |
-|-------------------|-------------------|----------|--------------------------------------|-------|
-| `url`             | `string \| null`  | no       | `img.imageUrl`                       | Interpolated into `<img src>` unsanitized. When omitted/`null`, renders the `[Espacio para imagen o ilustración]` placeholder box instead, regardless of `layout`. |
-| `position`        | `string \| null`  | no       | `img.sideConfig.position`            | Only applies with `layout: "side"` (or its fallback from `"background"` without a `url`). `"left"` or `"right"` — which side the image (or its placeholder) sits on; text takes the opposite side. Defaults to `"right"` if omitted/null. |
-| `shape`           | `string \| null`  | no       | `img.sideConfig.shape`               | Only applies with `layout: "side"` (or its fallback). `"rounded"` (default if omitted/null) or `"circle"`. |
-| `blur`            | `boolean \| null` | no       | `img.backgroudConfig.blur`           | Only applies with `layout: "background"`. Defaults to `false` if omitted/null. |
-| `overlay_opacity` | `number \| null`  | no       | `img.backgroudConfig.overlayOpacity` | Only applies with `layout: "background"`. `0`–`1`; `0` = no overlay, `1` = solid black. Defaults to `0.55` if omitted/null. |
+| Field             | Type              | Required | Maps to (`Hero` prop) | Notes |
+|-------------------|-------------------|----------|------------------------|-------|
+| `url`             | `string \| null`  | no       | `image.url`            | Interpolated into `<img src>` unsanitized. When omitted/`null`, renders the `[Espacio para imagen o ilustración]` placeholder box instead, regardless of `layout`. |
+| `position`        | `string \| null`  | no       | `image.position`       | Only applies with `layout: "side"` (or its fallback from `"background"` without a `url`). `"left"` or `"right"` — which side the image (or its placeholder) sits on; text takes the opposite side. Defaults to `"right"` if omitted/null. |
+| `shape`           | `string \| null`  | no       | `image.shape`          | Only applies with `layout: "side"` (or its fallback). `"rounded"` (default if omitted/null) or `"circle"`. |
+| `blur`            | `boolean \| null` | no       | `image.blur`           | Only applies with `layout: "background"`. Defaults to `false` if omitted/null. |
+| `overlay_opacity` | `number \| null`  | no       | `image.overlay_opacity`| Only applies with `layout: "background"`. `0`–`1`; `0` = no overlay, `1` = solid black. Defaults to `0.55` if omitted/null. |
 
 #### `features`
 
@@ -323,7 +328,8 @@ A `page.json` using every section type:
       "text": {
         "headline": "Café de especialidad, directo a tu puerta",
         "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
-        "cta_text": "Comenzar ahora"
+        "cta_text": "Comenzar ahora",
+        "align": "center"
       },
       "image": {
         "url": null,
@@ -409,7 +415,8 @@ omitted:
       "text": {
         "headline": "Título principal de tu producto o servicio",
         "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
-        "cta_text": "Comenzar ahora"
+        "cta_text": "Comenzar ahora",
+        "align": "center"
       },
       "image": {
         "url": null,
