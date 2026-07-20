@@ -1,36 +1,110 @@
 {
   "theme": {
-    "primary_color": "#5b3000",
-    "secondary_color": "#c9a97e",
-    "font_family": "Poppins",
-    "bg_color": "#faf6f0",
-    "text_color": "#2b1c10",
+    "primary_color": "#A6491C",
+    "secondary_color": "#5C6B4F",
+    "font_family": "Inter",
+    "bg_color": "#FAF3EA",
+    "text_color": "#2A211B",
     "logo_url": null,
-    "logo_text": "Café Aromas",
-    "logo_icon": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M2 21h18v-2H2v2zM20 8h-2V5h2c1.1 0 2 .9 2 2s-.9 1-2 1zm-4-5H4v10c0 2.2 1.8 4 4 4h4c2.2 0 4-1.8 4-4v-2h.5c1.9 0 3.5-1.6 3.5-3.5S22.4 3 20.5 3H16z\"/></svg>"
+    "logo_text": "Raíz",
+    "logo_icon": "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M12 21V10'/><path d='M12 10c0-4 3-7 7-7 0 4-3 7-7 7Z'/><path d='M12 14c0-3-2.5-5-6-5 0 3 2.5 5 6 5Z'/></svg>"
   },
   "sections": [
     {
       "type": "hero",
-      "layout": "side",
+      "layout": "background",
       "text": {
-        "headline": "Café de especialidad, directo a tu puerta",
-        "subheadline": "Suscríbete y recibe granos recién tostados cada mes, seleccionados por baristas expertos.",
-        "cta_text": "Quiero suscribirme"
+        "headline": "Café con nombre, apellido y origen",
+        "subheadline": "Compramos directo a 12 familias caficultoras y tostamos en lotes pequeños, para que cada taza cuente una historia real.",
+        "cta_text": "Descubre tu origen"
       },
       "image": {
-        "url": "https://cafearomas.com/cdn/shop/articles/nathan-dumlao-r-KfktlyBL0-unsplash.jpg?v=1712065153",
-        "position": "left",
-        "shape": "circle"
+        "url": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1920&q=80",
+        "blur": false,
+        "overlay_opacity": 0.60
       }
     },
     {
       "type": "features",
-      "headline": "Beneficios",
+      "headline": "Lo que nos hace distintos",
       "items": [
-        { "icon": "check", "title": "Beneficio uno", "description": "Descripción breve del primer beneficio ofrecido." },
-        { "icon": "check", "title": "Beneficio dos", "description": "Descripción breve del segundo beneficio ofrecido." },
-        { "icon": "check", "title": "Beneficio tres", "description": "Descripción breve del tercer beneficio ofrecido." }
+        { "icon": "🌎", "title": "Compra directa", "description": "Pagamos hasta 30% más que el precio de mercado directo a cada finca, sin intermediarios." },
+        { "icon": "🔥", "title": "Tueste en lotes pequeños", "description": "Tostamos cada semana en lotes de 20kg para que el grano llegue a tu taza en su punto óptimo." },
+        { "icon": "📦", "title": "Trazabilidad total", "description": "Escanea el código en tu bolsa y conoce la finca, la altitud y el proceso exactos de tu café." }
+      ]
+    },
+    {
+      "type": "capture",
+      "headline": "Encuentra tu origen ideal",
+      "subheadline": "Cuéntanos cómo te gusta tu café y te recomendamos la finca perfecta para empezar.",
+      "cta_text": "Quiero mi recomendación"
+    },
+    {
+      "type": "pricing",
+      "headline": "Elige tu ritmo de consumo",
+      "plans": [
+        {
+          "name": "Explorador",
+          "price": "$16",
+          "period": "/mes",
+          "features": ["1 bolsa de 250g", "Finca distinta cada mes", "Ficha de origen incluida", "Sin permanencia"],
+          "cta_text": "Empezar a explorar"
+        },
+        {
+          "name": "Ritual diario",
+          "price": "$29",
+          "period": "/mes",
+          "features": ["2 bolsas de 250g", "Elige molienda por bolsa", "Prioridad en ediciones limitadas", "Envío sin costo"],
+          "cta_text": "Crear mi ritual"
+        },
+        {
+          "name": "Para el equipo",
+          "price": "$65",
+          "period": "/mes",
+          "features": ["6 bolsas de 250g", "Ideal para oficinas hasta 15 personas", "Factura para tu empresa", "Gerente de cuenta dedicado"],
+          "cta_text": "Cotizar para mi equipo"
+        }
+      ]
+    },
+    {
+      "type": "testimonials",
+      "headline": "Voces de quienes ya encontraron su origen",
+      "items": [
+        { "quote": "Nunca había sabido de dónde venía mi café hasta que probé Raíz. Ahora reconozco la diferencia entre una finca y otra.", "author_name": "Daniela Ortiz", "author_role": "Suscriptora, Ritual diario" },
+        { "quote": "La trazabilidad no es solo marketing: el código realmente te lleva a la finca y a la familia que cosechó el lote.", "author_name": "Ignacio Bravo", "author_role": "Suscriptor, Explorador" },
+        { "quote": "Cambiamos el café de la oficina por Raíz y el equipo lo notó desde la primera semana.", "author_name": "Renata Villalobos", "author_role": null },
+        { "quote": "Soy tostador amateur y la consistencia lote a lote de Raíz es de las mejores que he probado en el país.", "author_name": "Tomás Reyes", "author_role": "Tostador aficionado" }
+      ]
+    },
+    {
+      "type": "faq",
+      "headline": "Preguntas frecuentes",
+      "items": [
+        { "question": "¿Cómo eligen a las fincas con las que trabajan?", "answer": "Visitamos cada finca antes de firmar una relación de compra directa y evaluamos calidad, prácticas de cultivo y condiciones laborales." },
+        { "question": "¿Puedo pausar o cancelar mi suscripción?", "answer": "Sí, puedes pausar, saltar un envío o cancelar cuando quieras desde tu cuenta, sin costos ocultos." },
+        { "question": "¿Qué significa 'trazabilidad total'?", "answer": "Cada bolsa incluye un código que te muestra la finca, la altitud, el proceso de beneficio y la fecha exacta de tueste de ese lote." },
+        { "question": "¿Tienen opciones sin cafeína?", "answer": "Sí, puedes activar la opción descafeinada en cualquier plan desde la configuración de tu suscripción." }
+      ]
+    },
+    {
+      "type": "cta",
+      "headline": "Tu próxima taza puede tener nombre propio",
+      "subheadline": "Prueba tu primera caja con 25% de descuento y conoce el origen detrás de cada grano.",
+      "button_text": "Quiero mi primera caja",
+      "button_url": null
+    },
+    {
+      "type": "footer",
+      "business_name": "Raíz",
+      "links": [
+        { "label": "Nuestras fincas", "url": "/fincas" },
+        { "label": "Historias de origen", "url": "/blog" },
+        { "label": "Términos y condiciones", "url": "/terminos" },
+        { "label": "Política de privacidad", "url": "/privacidad" }
+      ],
+      "social_links": [
+        { "platform": "Instagram", "url": "https://instagram.com/raizcafe" },
+        { "platform": "TikTok", "url": "https://tiktok.com/@raizcafe" }
       ]
     }
   ]
