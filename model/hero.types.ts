@@ -7,6 +7,7 @@ export interface HeroConfig {
 
 interface HeroTextConfig {
     headline: string;
+    headline_highlight?: string | null;
     subheadline: string;
     cta_text: string;
     align: ALIGN_CONFIG

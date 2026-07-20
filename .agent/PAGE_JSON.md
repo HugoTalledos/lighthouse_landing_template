@@ -78,6 +78,7 @@ you should always include both.
   "layout": "side",
   "text": {
     "headline": "Café de especialidad, directo a tu puerta",
+    "headline_highlight": null,
     "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
     "cta_text": "Comenzar ahora",
     "align": "center"
@@ -110,6 +111,7 @@ there is no field to override it from this JSON.
 | Field         | Type     | Required | Maps to (`Hero` prop) | Notes |
 |---------------|----------|----------|------------------------|-------|
 | `headline`    | `string` | yes      | `text.headline`        | Rendered as the hero's `<h1>`. |
+| `headline_highlight` | `string \| null` | no | `text.headline_highlight` | Optional substring of `headline` to render in the theme's `secondary_color` instead of the default heading color (same mechanism as `features.headline_highlight` below — see that entry for exact-match/case-sensitivity behavior). Applies the same way under both `layout: "side"` and `layout: "background"`. Omit or `null` for no highlight. |
 | `subheadline` | `string` | yes      | `text.subheadline`     | Rendered as supporting body text below the headline. |
 | `cta_text`    | `string` | yes      | `text.cta_text`        | Button label. The button always links to `#formulario-captura` — not configurable from this JSON. |
 | `align`       | `string` | yes      | `text.align`           | Enum `"left"` \| `"center"` \| `"right"`. Controls the text alignment of the headline/subheadline/button block (and their flex alignment within it). Independent of `image.position` — applies the same way under both `layout: "side"` and `layout: "background"`. `index.astro` falls back to `"center"` if omitted, but set it explicitly for a real page. |
@@ -338,6 +340,7 @@ A `page.json` using every section type:
       "layout": "side",
       "text": {
         "headline": "Café de especialidad, directo a tu puerta",
+        "headline_highlight": "especialidad",
         "subheadline": "Suscríbete y recibe granos recién tostados cada mes.",
         "cta_text": "Comenzar ahora",
         "align": "center"
@@ -426,6 +429,7 @@ omitted:
       "layout": "side",
       "text": {
         "headline": "Título principal de tu producto o servicio",
+        "headline_highlight": null,
         "subheadline": "Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.",
         "cta_text": "Comenzar ahora",
         "align": "center"

@@ -15,6 +15,7 @@
       "layout": "background",
       "text": {
         "headline": "Café con nombre, apellido y origen",
+        "headline_highlight": "nombre, apellido y origen",
         "subheadline": "Compramos directo a 12 familias caficultoras y tostamos en lotes pequeños, para que cada taza cuente una historia real.",
         "cta_text": "Descubre tu origen",
         "align": "center"

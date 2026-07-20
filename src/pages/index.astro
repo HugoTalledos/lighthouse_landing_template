@@ -96,6 +96,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     layout={heroSection?.layout ?? 'side'}
     text={{
       headline: heroSection?.text.headline ?? 'Título principal de tu producto o servicio',
+      headline_highlight: heroSection?.text.headline_highlight ?? undefined,
       subheadline: heroSection?.text.subheadline ?? 'Subtítulo de apoyo que explica en una frase el valor de lo que ofreces.',
       cta_text: heroSection?.text.cta_text ?? 'Comenzar ahora',
       align: heroSection?.text.align ?? 'center',

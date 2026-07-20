@@ -5,14 +5,17 @@ import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import Button from '../atoms/Button.astro';
 import Logo from '../molecules/Logo.astro';
+import { splitHighlight } from '../../utils/highlightText';
 
 type Props = HeroConfig;
 
 const { layout, text, image, logo }: Props = Astro.props;
 
-const { headline: title, subheadline: subtitle, cta_text: ctaLabel, align } = text;
+const { headline: title, headline_highlight: titleHighlight, subheadline: subtitle, cta_text: ctaLabel, align } = text;
 const { url: imageUrl, blur, overlay_opacity: overlayOpacity, position, shape } = image;
 const { logoText, logoIcon, logoUrl } = logo;
+
+const titleParts = splitHighlight(title, titleHighlight);
 
 const backgroudConfig = { blur: blur ?? false, overlayOpacity: overlayOpacity ?? 0.55 };
 const sideConfig = { position: position ?? 'right', shape: shape ?? 'rounded' };
@@ -80,7 +83,9 @@ const shapeClasses = {
       class={`flex flex-col gap-6 ${alignClasses[align]} ${!isBackground ? textOrderClasses[sideConfig.position] : ''}`}
     >
       <Heading as="h1" size="lg" align={align} class={isBackground ? 'text-white' : ''}>
-        {title}
+        {titleParts.map((part) =>
+          part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
+        )}
       </Heading>
       <Text size="lg" muted={!isBackground} class={isBackground ? 'text-white/85' : ''}>
         {subtitle}

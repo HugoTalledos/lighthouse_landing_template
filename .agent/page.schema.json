@@ -80,9 +80,13 @@
     "HeroText": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["headline", "subheadline", "cta_text", "align"],
+      "required": ["headline", "headline_highlight", "subheadline", "cta_text", "align"],
       "properties": {
         "headline": { "type": "string", "description": "Mapea a text.headline de Hero. Se renderiza como el <h1> del hero." },
+        "headline_highlight": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a text.headline_highlight de Hero. Substring exacto de headline (sensible a mayúsculas y acentos) que se pinta con theme.secondary_color en vez del color normal del headline. Mismo mecanismo que features.headline_highlight. Si no hace match exacto se ignora en silencio (no rompe el build) y el headline se renderiza completo sin resaltar. Solo la primera coincidencia se resalta. Aplica igual con layout 'side' o 'background'. Omitir o null para no resaltar nada."
+        },
         "subheadline": { "type": "string", "description": "Mapea a text.subheadline de Hero. Texto de apoyo bajo el headline." },
         "cta_text": { "type": "string", "description": "Mapea a text.cta_text de Hero. Etiqueta del botón, que siempre enlaza a #formulario-captura (no configurable desde este JSON)." },
         "align": {
