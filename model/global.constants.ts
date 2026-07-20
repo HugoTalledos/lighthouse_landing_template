@@ -1,0 +1,1 @@
+type ALIGN_CONFIG = 'left' | 'center' | 'right'
