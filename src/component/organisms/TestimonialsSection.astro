@@ -2,6 +2,7 @@
 import Container from '../atoms/Container.astro';
 import Heading from '../atoms/Heading.astro';
 import TestimonialCard from '../molecules/TestimonialCard.astro';
+import { splitHighlight } from '../../utils/highlightText';
 
 interface TestimonialItem {
   quote: string;
@@ -11,16 +12,23 @@ interface TestimonialItem {
 
 interface Props {
   heading: string;
+  headingHighlight?: string | null;
   headingAlign: 'left' | 'center';
   items: TestimonialItem[];
 }
 
-const { heading, headingAlign, items }: Props = Astro.props;
+const { heading, headingHighlight, headingAlign, items }: Props = Astro.props;
+
+const headingParts = splitHighlight(heading, headingHighlight);
 ---
 
 <section class="py-16 md:py-24" id="testimonios">
   <Container class="flex flex-col gap-10">
-    <Heading as="h2" size="md" align={headingAlign}>{heading}</Heading>
+    <Heading as="h2" size="md" align={headingAlign}>
+      {headingParts.map((part) =>
+        part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
+      )}
+    </Heading>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {items.map((item) => (
         <TestimonialCard quote={item.quote} authorName={item.authorName} authorRole={item.authorRole} />

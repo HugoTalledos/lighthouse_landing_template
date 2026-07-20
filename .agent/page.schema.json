@@ -166,12 +166,16 @@
       "type": "object",
       "additionalProperties": false,
       "description": "Siempre renderiza (como hero/features), pero a diferencia de esas dos, omitir la sección 'capture' entera también está bien: index.astro cae al copy default campo por campo. Los tres campos son individualmente opcionales — se puede setear solo uno y confiar en los defaults para el resto. Esta sección solo controla copy; los campos del formulario (nombre/email/celular) y su validación están hardcodeados en CaptureForm.astro/CaptureForm.client.ts.",
-      "required": ["type", "headline", "subheadline", "cta_text"],
+      "required": ["type", "headline", "headline_highlight", "subheadline", "cta_text"],
       "properties": {
         "type": { "const": "capture" },
         "headline": {
           "type": ["string", "null"],
           "description": "Opcional. Mapea a heading de CaptureForm. Falls back a 'Déjanos tus datos' si se omite/null o si la sección entera está ausente."
+        },
+        "headline_highlight": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a headingHighlight de CaptureForm. Substring exacto de headline que se pinta con theme.secondary_color. Mismo mecanismo que features.headline_highlight."
         },
         "subheadline": {
           "type": ["string", "null"],
@@ -186,13 +190,17 @@
     "PricingSection": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Renderiza condicionalmente: solo si está presente en 'sections'. No hay copy/fallback placeholder — omitir la sección entera si la página no debe tener pricing, no incluir una vacía/parcial.",
-      "required": ["type", "headline", "plans"],
+      "description": "Renderiza condicionalmente: solo si está presente en 'sections'. No hay copy/fallback placeholder — omitir la sección entera si la página no debe tener pricing, no incluir una vacía/parcial. PricingSection's Props type es PricingConfig (model/pricing.types.ts). La card es clara por defecto y cambia a un estilo oscuro invertido (bg en theme.text_color, texto/íconos blancos, botón CTA en theme.secondary_color) cuando plan.featured es true. El badge 'most popular' (plan.badge_text) es independiente de featured: solo se muestra si badge_text está seteado, en cualquiera de los dos estilos de card.",
+      "required": ["type", "headline", "headline_highlight", "plans"],
       "properties": {
         "type": { "const": "pricing" },
         "headline": {
           "type": ["string", "null"],
           "description": "Opcional. Mapea a heading de PricingSection. Falls back a 'Planes' si se omite/null."
+        },
+        "headline_highlight": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a headingHighlight de PricingSection. Substring exacto de headline que se pinta con theme.secondary_color. Mismo mecanismo que features.headline_highlight."
         },
         "plans": {
           "type": "array",
@@ -205,7 +213,7 @@
       "type": "object",
       "additionalProperties": false,
       "description": "No existe un cta_url por plan — el botón de cada PricingCard siempre enlaza al ancla default #formulario-captura; la plantilla no tiene campo para sobreescribirlo por plan.",
-      "required": ["name", "price", "period", "features", "cta_text"],
+      "required": ["name", "price", "period", "features", "cta_text", "featured", "badge_text"],
       "properties": {
         "name": { "type": "string", "description": "Mapea a la prop name de PricingCard." },
         "price": {
@@ -218,22 +226,34 @@
         },
         "features": {
           "type": "array",
-          "description": "Mapea a features de PricingCard. Se renderiza como lista con prefijo ✓.",
+          "description": "Mapea a features de PricingCard. Se renderiza como checklist, 2 columnas en cards anchas.",
           "items": { "type": "string" }
         },
-        "cta_text": { "type": "string", "description": "Mapea a ctaLabel de PricingCard." }
+        "cta_text": { "type": "string", "description": "Mapea a ctaLabel de PricingCard." },
+        "featured": {
+          "type": ["boolean", "null"],
+          "description": "Opcional. Mapea a featured de PricingCard. Cambia la card al estilo oscuro/invertido ('most popular'). Default false/claro si se omite/null. Independiente de badge_text."
+        },
+        "badge_text": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a badgeText de PricingCard. Texto del chip/badge sobre el nombre del plan (ej. 'Más popular', 'Mejor valor'). Omitir o null para no mostrar badge en este plan — este es el campo que hace configurable el chip 'most popular' por plan."
+        }
       }
     },
     "TestimonialsSection": {
       "type": "object",
       "additionalProperties": false,
       "description": "Renderiza condicionalmente: solo si está presente en 'sections'. No hay copy/fallback placeholder.",
-      "required": ["type", "headline", "items"],
+      "required": ["type", "headline", "headline_highlight", "items"],
       "properties": {
         "type": { "const": "testimonials" },
         "headline": {
           "type": ["string", "null"],
           "description": "Opcional. Mapea a heading de TestimonialsSection. Falls back a 'Lo que dicen nuestros clientes' si se omite/null."
+        },
+        "headline_highlight": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a headingHighlight de TestimonialsSection. Substring exacto de headline que se pinta con theme.secondary_color. Mismo mecanismo que features.headline_highlight."
         },
         "items": {
           "type": "array",
@@ -262,12 +282,16 @@
       "type": "object",
       "additionalProperties": false,
       "description": "Renderiza condicionalmente: solo si está presente en 'sections'. No hay copy/fallback placeholder.",
-      "required": ["type", "headline", "items"],
+      "required": ["type", "headline", "headline_highlight", "items"],
       "properties": {
         "type": { "const": "faq" },
         "headline": {
           "type": ["string", "null"],
           "description": "Opcional. Mapea a heading de FaqSection. Falls back a 'Preguntas frecuentes' si se omite/null."
+        },
+        "headline_highlight": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a headingHighlight de FaqSection. Substring exacto de headline que se pinta con theme.secondary_color. Mismo mecanismo que features.headline_highlight."
         },
         "items": {
           "type": "array",
@@ -289,10 +313,14 @@
       "type": "object",
       "additionalProperties": false,
       "description": "Renderiza condicionalmente: solo si está presente en 'sections'. A diferencia de pricing/testimonials/faq, el copy de esta sección SÍ se lee completo del JSON (sin fallback hardcodeado) — es un banner de CTA independiente, distinto del hero.",
-      "required": ["type", "headline", "subheadline", "button_text", "button_url"],
+      "required": ["type", "headline", "headline_highlight", "subheadline", "button_text", "button_url"],
       "properties": {
         "type": { "const": "cta" },
         "headline": { "type": "string", "description": "Mapea a headline de CtaSection." },
+        "headline_highlight": {
+          "type": ["string", "null"],
+          "description": "Opcional. Mapea a headlineHighlight de CtaSection. Substring exacto de headline que se pinta con theme.secondary_color. Mismo mecanismo que features.headline_highlight."
+        },
         "subheadline": {
           "type": ["string", "null"],
           "description": "Opcional. Mapea a subheadline de CtaSection. Se omite por completo del render si está ausente/null."

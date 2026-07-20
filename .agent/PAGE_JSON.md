@@ -170,6 +170,7 @@ renders.
 {
   "type": "capture",
   "headline": "Déjanos tus datos",
+  "headline_highlight": null,
   "subheadline": "Te contactaremos con más información.",
   "cta_text": "Enviar"
 }
@@ -178,6 +179,7 @@ renders.
 | Field         | Type     | Required | Maps to (`CaptureForm` prop) | Notes |
 |---------------|----------|----------|-------------------------------|-------|
 | `headline`    | `string` | no       | `heading`                      | Falls back to `'Déjanos tus datos'` if omitted or the whole `capture` section is absent. |
+| `headline_highlight` | `string \| null` | no | `headingHighlight` | Optional substring of `headline` to render in the theme's `secondary_color`. Same mechanism as `features.headline_highlight` — see that entry for exact-match/case-sensitivity behavior. |
 | `subheadline` | `string` | no       | `subtitle`                     | Falls back to `'Te contactaremos con más información.'`. |
 | `cta_text`    | `string` | no       | `ctaLabel`                     | Falls back to `'Enviar'`. |
 
@@ -197,32 +199,56 @@ the section entirely if the page shouldn't have it, don't include an empty/parti
 ```json
 {
   "type": "pricing",
+  "headline": "Elige tu plan",
+  "headline_highlight": null,
   "plans": [
     {
       "name": "Plan Individual",
       "price": "$15.99",
       "period": "/mes",
       "features": ["Café de alta calidad", "Entrega rápida"],
-      "cta_text": "Suscríbete ahora"
+      "cta_text": "Suscríbete ahora",
+      "featured": false,
+      "badge_text": null
+    },
+    {
+      "name": "Plan Familiar",
+      "price": "$29.99",
+      "period": "/mes",
+      "features": ["2x bolsas de café", "Entrega prioritaria", "Regalo de bienvenida"],
+      "cta_text": "Suscríbete ahora",
+      "featured": true,
+      "badge_text": "Más popular"
     }
   ]
 }
 ```
 
-| Field      | Type          | Required | Notes |
-|------------|---------------|----------|-------|
-| `headline` | `string`      | no       | Passed to `PricingSection`'s `heading` prop. Falls back to `'Planes'` if omitted. |
-| `plans`    | `PricingPlan[]` | yes    | Grid wraps for counts other than 3. |
+`PricingSection`'s `Props` type is `PricingConfig` (`model/pricing.types.ts`). The card design
+is a light card by default and switches to a dark, inverted-color card (bg in `theme.text_color`,
+white text/icons, `theme.secondary_color` CTA button) when `featured: true` — modeled after a
+"most popular" plan callout. The pill badge above the plan name is entirely separate from
+`featured`: it only renders when `badge_text` is set (on either a featured or non-featured card),
+so a plan can have the dark styling without a badge, a badge without the dark styling, or both
+together as shown above.
+
+| Field                | Type             | Required | Notes |
+|----------------------|------------------|----------|-------|
+| `headline`           | `string`         | no       | Passed to `PricingSection`'s `heading` prop. Falls back to `'Planes'` if omitted. |
+| `headline_highlight` | `string \| null` | no       | Passed to `headingHighlight`. Same mechanism as `features.headline_highlight` — see that entry for exact-match/case-sensitivity behavior. |
+| `plans`              | `PricingPlan[]`  | yes      | Grid wraps for counts other than 3. |
 
 `PricingPlan`:
 
-| Field      | Type             | Required | Maps to (`PricingCard` prop) | Notes |
-|------------|------------------|----------|-------------------------------|-------|
-| `name`     | `string`         | yes      | `name`                        | |
-| `price`    | `string`         | yes      | `price`                       | Free-form string, not a number — include currency symbol, e.g. `"$15.99"`. |
-| `period`   | `string \| null` | no       | `period`                      | Appended muted after the price, e.g. `/mes`. Omit or `null` for a one-time price with no period. |
-| `features` | `string[]`       | yes      | `features`                    | Rendered as a `✓`-prefixed list. |
-| `cta_text` | `string`         | yes      | `ctaLabel`                    | |
+| Field        | Type              | Required | Maps to (`PricingCard` prop) | Notes |
+|--------------|-------------------|----------|-------------------------------|-------|
+| `name`       | `string`          | yes      | `name`                        | |
+| `price`      | `string`          | yes      | `price`                       | Free-form string, not a number — include currency symbol, e.g. `"$15.99"`. |
+| `period`     | `string \| null`  | no       | `period`                      | Appended muted after the price, e.g. `/mes`. Omit or `null` for a one-time price with no period. |
+| `features`   | `string[]`        | yes      | `features`                    | Rendered as a checklist, 2 columns on wider cards. |
+| `cta_text`   | `string`          | yes      | `ctaLabel`                    | |
+| `featured`   | `boolean \| null` | no       | `featured`                    | Optional. Switches the card to the dark/inverted "most popular" visual style. Defaults to `false`/light if omitted/null. Independent of `badge_text` (see note above). |
+| `badge_text` | `string \| null`  | no       | `badgeText`                   | Optional. Text for the pill badge shown above the plan name (e.g. `"Más popular"`, `"Mejor valor"`). Omit or `null` to show no badge for this plan — this is the field that makes the "most popular" chip configurable per plan. |
 
 Note there is no `cta_url` per plan — every `PricingCard`'s button links to the default
 `#formulario-captura` anchor; the template has no field to override it per plan.
@@ -232,6 +258,8 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 ```json
 {
   "type": "testimonials",
+  "headline": "Lo que dicen nuestros clientes",
+  "headline_highlight": null,
   "items": [
     { "quote": "La calidad del café es inigualable.", "author_name": "María Sánchez", "author_role": "Amante del café" }
   ]
@@ -241,6 +269,7 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 | Field      | Type                | Required | Notes |
 |------------|---------------------|----------|-------|
 | `headline` | `string`            | no       | Passed to `TestimonialsSection`'s `heading` prop. Falls back to `'Lo que dicen nuestros clientes'` if omitted. |
+| `headline_highlight` | `string \| null` | no | Passed to `headingHighlight`. Same mechanism as `features.headline_highlight` — see that entry for exact-match/case-sensitivity behavior. |
 | `items`    | `TestimonialItem[]` | yes      | `md:grid-cols-2` grid. |
 
 `TestimonialItem`:
@@ -256,6 +285,8 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 ```json
 {
   "type": "faq",
+  "headline": "Preguntas frecuentes",
+  "headline_highlight": null,
   "items": [
     { "question": "¿Cómo puedo cancelar mi suscripción?", "answer": "Puedes cancelar en cualquier momento desde tu cuenta." }
   ]
@@ -265,6 +296,7 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 | Field      | Type        | Required | Notes |
 |------------|-------------|----------|-------|
 | `headline` | `string`    | no       | Passed to `FaqSection`'s `heading` prop. Falls back to `'Preguntas frecuentes'` if omitted. |
+| `headline_highlight` | `string \| null` | no | Passed to `headingHighlight`. Same mechanism as `features.headline_highlight` — see that entry for exact-match/case-sensitivity behavior. |
 | `items`    | `FaqEntry[]` | yes     | Stacks top-to-bottom (not a grid). |
 
 `FaqEntry`:
@@ -280,6 +312,7 @@ Note there is no `cta_url` per plan — every `PricingCard`'s button links to th
 {
   "type": "cta",
   "headline": "No esperes más para disfrutar del café de especialidad en tu casa",
+  "headline_highlight": null,
   "subheadline": "Suscríbete hoy y recibe 15% de descuento en tu primer pedido.",
   "button_text": "Suscríbete al plan mensual",
   "button_url": null
@@ -292,6 +325,7 @@ Unlike `pricing`/`testimonials`/`faq`, this section's own copy **is** fully read
 | Field          | Type             | Required | Maps to (`CtaSection` prop) | Notes |
 |----------------|------------------|----------|-------------------------------|-------|
 | `headline`     | `string`         | yes      | `headline`                     | |
+| `headline_highlight` | `string \| null` | no | `headlineHighlight`      | Optional substring of `headline` to render in the theme's `secondary_color`. Same mechanism as `features.headline_highlight` — see that entry for exact-match/case-sensitivity behavior. |
 | `subheadline`  | `string \| null` | no       | `subheadline`                  | Omitted entirely from render if absent/`null`. |
 | `button_text`  | `string`         | yes      | `buttonLabel`                  | |
 | `button_url`   | `string \| null` | no       | `buttonHref`                   | Defaults to `#formulario-captura` if omitted/`null`. |
@@ -367,7 +401,7 @@ A `page.json` using every section type:
       "type": "pricing",
       "plans": [
         { "name": "Plan Individual", "price": "$15.99", "period": "/mes", "features": ["Café de alta calidad", "Entrega rápida"], "cta_text": "Suscríbete ahora" },
-        { "name": "Plan Familiar", "price": "$29.99", "period": "/mes", "features": ["2x bolsas de café", "Entrega prioritaria", "Regalo de bienvenida"], "cta_text": "Suscríbete ahora" }
+        { "name": "Plan Familiar", "price": "$29.99", "period": "/mes", "features": ["2x bolsas de café", "Entrega prioritaria", "Regalo de bienvenida"], "cta_text": "Suscríbete ahora", "featured": true, "badge_text": "Más popular" }
       ]
     },
     {
@@ -387,6 +421,7 @@ A `page.json` using every section type:
     {
       "type": "cta",
       "headline": "No esperes más para disfrutar del café de especialidad en tu casa",
+      "headline_highlight": "café de especialidad",
       "subheadline": "Suscríbete hoy y recibe 15% de descuento en tu primer pedido.",
       "button_text": "Suscríbete al plan mensual",
       "button_url": null

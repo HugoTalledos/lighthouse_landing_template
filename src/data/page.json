@@ -58,7 +58,9 @@
           "price": "$29",
           "period": "/mes",
           "features": ["2 bolsas de 250g", "Elige molienda por bolsa", "Prioridad en ediciones limitadas", "Envío sin costo"],
-          "cta_text": "Crear mi ritual"
+          "cta_text": "Crear mi ritual",
+          "featured": true,
+          "badge_text": "Más popular"
         },
         {
           "name": "Para el equipo",

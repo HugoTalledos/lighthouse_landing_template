@@ -1,38 +1,33 @@
 ---
+import type { PricingConfig } from '../../../model/pricing.types';
 import Container from '../atoms/Container.astro';
 import Heading from '../atoms/Heading.astro';
 import PricingCard from '../molecules/PricingCard.astro';
+import { splitHighlight } from '../../utils/highlightText';
 
-interface PricingPlan {
-  name: string;
-  price: string;
-  period?: string;
-  features: string[];
-  ctaLabel: string;
-  ctaHref?: string;
-}
+type Props = PricingConfig;
+const { heading, headingHighlight, headingAlign, plans }: Props = Astro.props;
 
-interface Props {
-  heading: string;
-  headingAlign: 'left' | 'center';
-  plans: PricingPlan[];
-}
-
-const { heading, headingAlign, plans }: Props = Astro.props;
+const headingParts = splitHighlight(heading, headingHighlight);
 ---
 
 <section class="py-16 md:py-24" id="precios">
   <Container class="flex flex-col gap-10">
-    <Heading as="h2" size="md" align={headingAlign}>{heading}</Heading>
+    <Heading as="h2" size="md" align={headingAlign}>
+      {headingParts.map((part) =>
+        part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
+      )}
+    </Heading>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
       {plans.map((plan) => (
         <PricingCard
           name={plan.name}
           price={plan.price}
-          period={plan.period}
+          period={plan.period ?? undefined}
           features={plan.features}
-          ctaLabel={plan.ctaLabel}
-          ctaHref={plan.ctaHref}
+          ctaLabel={plan.cta_text}
+          featured={plan.featured ?? false}
+          badgeText={plan.badge_text ?? undefined}
         />
       ))}
     </div>

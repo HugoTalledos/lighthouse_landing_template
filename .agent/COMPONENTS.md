@@ -241,15 +241,24 @@ runtime. If you add a new component with an optional icon slot, use the same
 **Use when** rendering one plan in a pricing grid — name, price, optional
 period, feature list, CTA button. This is what `PricingSection` maps over.
 
-| Prop       | Type       | Default                    | Notes |
-|------------|------------|-----------------------------|-------|
-| `name`     | `string`   | — (required)                | Rendered via `Heading as="h3" size="sm"` |
-| `price`    | `string`   | — (required)                | Rendered as a styled `<p>`, not through `Heading`/`Text` — neither atom offers a "large numeral" style |
-| `period`   | `string`   | —                            | Appended muted after `price` when present, e.g. `/mes` |
-| `features` | `string[]` | — (required)                | Rendered as a `✓`-prefixed list, `Text size="sm"` each |
-| `ctaLabel` | `string`   | — (required)                | Button text |
-| `ctaHref`  | `string`   | `'#formulario-captura'`     | Button link target |
-| `class`    | `string`   | —                            | Appended, not merged |
+Redesigned as a light card by default; pass `featured` to switch it to a
+dark, inverted-color card (bg in `--color-text`, white text/icons, CTA
+button in `--color-secondary`) — modeled as a "most popular" plan callout.
+The pill badge (`badgeText`) is independent of `featured`: it only renders
+when set, on either variant. Features render in a 2-column checklist
+(`grid-cols-1 sm:grid-cols-2`) with a small circular check icon per item.
+
+| Prop         | Type       | Default                  | Notes |
+|--------------|------------|---------------------------|-------|
+| `name`       | `string`   | — (required)               | Rendered via `Heading as="h3" size="sm"` |
+| `price`      | `string`   | — (required)               | Rendered as a styled `<p>`, not through `Heading`/`Text` — neither atom offers a "large numeral" style |
+| `period`     | `string`   | —                          | Appended muted after `price` when present, e.g. `/mes` |
+| `features`   | `string[]` | — (required)               | Rendered as a checklist (circular check icon + `Text size="sm"`), 2 columns |
+| `ctaLabel`   | `string`   | — (required)               | Button text |
+| `ctaHref`    | `string`   | `'#formulario-captura'`    | Button link target |
+| `featured`   | `boolean`  | `false`                    | Switches the card to the dark/inverted "most popular" visual style |
+| `badgeText`  | `string`   | —                          | Pill badge text shown above `name`, e.g. `"Más popular"`. Omit for no badge — independent of `featured` |
+| `class`      | `string`   | —                          | Appended, not merged |
 
 ```astro
 <PricingCard
@@ -258,6 +267,16 @@ period, feature list, CTA button. This is what `PricingSection` maps over.
   period="/mes"
   features={['Café de alta calidad', 'Entrega rápida']}
   ctaLabel="Suscríbete ahora"
+/>
+
+<PricingCard
+  name="Plan Familiar"
+  price="$29.99"
+  period="/mes"
+  features={['2x bolsas de café', 'Entrega prioritaria', 'Regalo de bienvenida']}
+  ctaLabel="Suscríbete ahora"
+  featured
+  badgeText="Más popular"
 />
 ```
 
@@ -371,12 +390,14 @@ required props — there are no defaults. Renders with `id="beneficios"` for
 anchor-linking. Uses `BenefitCard` under the hood, so follow that
 molecule's icon-slot convention if you customize per-item icons.
 
-| Prop           | Type                  | Default      | Notes |
-|----------------|-----------------------|--------------|-------|
-| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
-| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
-| `cardAlign`    | `'left' \| 'center'`  | — (required) | Passed to every `BenefitCard` uniformly |
-| `items`        | `BenefitItem[]`       | — (required) | `{ title: string; description: string; icon?: string }[]`. Length is variable — not fixed to 3. `icon` accepts either raw SVG markup (strings starting with `<`, injected via `set:html`) or a plain string/emoji (rendered as text); omit to fall back to the placeholder icon. |
+| Prop              | Type                  | Default      | Notes |
+|-------------------|-----------------------|--------------|-------|
+| `heading`         | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary` instead of the default heading color; ignored silently if it doesn't match exactly (case/accent-sensitive) |
+| `headingAlign`    | `'left' \| 'center' \| 'right'` | — (required) | Passed to the section `Heading` |
+| `cardAlign`       | `'left' \| 'center' \| 'right'` | — (required) | Passed to every `BenefitCard` uniformly |
+| `iconPosition`    | `'left' \| 'center' \| 'right'` | `cardAlign`'s value | Independently positions each card's icon badge (via `self-*`), decoupled from text alignment |
+| `items`           | `BenefitItem[]`       | — (required) | `{ title: string; description: string; icon?: string }[]`. Length is variable — not fixed to 3. `icon` accepts either raw SVG markup (strings starting with `<`, injected via `set:html`) or a plain string/emoji (rendered as text); omit to fall back to the placeholder icon. |
 
 ```astro
 <BenefitsSection
@@ -403,12 +424,13 @@ defaults); the fields themselves stay hardcoded in the markup via
 `CaptureForm.client.ts`. Renders with `id="formulario-captura"` (must match
 `Hero`'s CTA anchor).
 
-| Prop       | Type                  | Default      | Notes |
-|------------|-----------------------|--------------|-------|
-| `heading`  | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
-| `subtitle` | `string`              | — (required) | Rendered via `Text muted` |
-| `align`    | `'left' \| 'center'`  | — (required) | Alignment of the heading/subtitle block; passed to `Heading` |
-| `ctaLabel` | `string`              | — (required) | Submit button text |
+| Prop              | Type                  | Default      | Notes |
+|-------------------|-----------------------|--------------|-------|
+| `heading`         | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
+| `subtitle`        | `string`              | — (required) | Rendered via `Text muted` |
+| `align`           | `'left' \| 'center'`  | — (required) | Alignment of the heading/subtitle block; passed to `Heading` |
+| `ctaLabel`        | `string`              | — (required) | Submit button text |
 
 To add a new field: add a `FormField` with `required` if it should be
 validated, and if it needs custom validation beyond "non-empty", add a
@@ -436,18 +458,25 @@ other counts). Renders with `id="precios"`. Renders conditionally in
 `index.astro` — only when a `pricing` section is present in `page.json`,
 unlike `Hero`/`BenefitsSection`/`CaptureForm` which always render.
 
-| Prop           | Type                  | Default      | Notes |
-|----------------|-----------------------|--------------|-------|
-| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
-| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
-| `plans`        | `PricingPlan[]`       | — (required) | `{ name: string; price: string; period?: string; features: string[]; ctaLabel: string; ctaHref?: string }[]` |
+Props type is `PricingConfig` (`model/pricing.types.ts`) — `plans` uses the
+JSON-native field names (`cta_text`, `featured`, `badge_text`), which
+`PricingSection` maps onto each `PricingCard`'s own prop names
+(`ctaLabel`, `featured`, `badgeText`).
+
+| Prop              | Type                  | Default      | Notes |
+|-------------------|-----------------------|--------------|-------|
+| `heading`         | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
+| `headingAlign`    | `'left' \| 'center' \| 'right'` | — (required) | Passed to the section `Heading` |
+| `plans`           | `PricingPlanConfig[]` | — (required) | `{ name: string; price: string; period?: string \| null; features: string[]; cta_text: string; featured?: boolean \| null; badge_text?: string \| null }[]` |
 
 ```astro
 <PricingSection
   heading="Planes"
   headingAlign="center"
   plans={[
-    { name: 'Plan Individual', price: '$15.99', period: '/mes', features: ['Café de alta calidad'], ctaLabel: 'Suscríbete ahora' },
+    { name: 'Plan Individual', price: '$15.99', period: '/mes', features: ['Café de alta calidad'], cta_text: 'Suscríbete ahora' },
+    { name: 'Plan Familiar', price: '$29.99', period: '/mes', features: ['2x bolsas de café'], cta_text: 'Suscríbete ahora', featured: true, badge_text: 'Más popular' },
   ]}
 />
 ```
@@ -460,11 +489,12 @@ unlike `Hero`/`BenefitsSection`/`CaptureForm` which always render.
 Renders with `id="testimonios"`. Renders conditionally in `index.astro` —
 only when a `testimonials` section is present in `page.json`.
 
-| Prop           | Type                  | Default      | Notes |
-|----------------|-----------------------|--------------|-------|
-| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
-| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
-| `items`        | `TestimonialItem[]`   | — (required) | `{ quote: string; authorName: string; authorRole?: string }[]` |
+| Prop              | Type                  | Default      | Notes |
+|-------------------|-----------------------|--------------|-------|
+| `heading`         | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
+| `headingAlign`    | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
+| `items`           | `TestimonialItem[]`   | — (required) | `{ quote: string; authorName: string; authorRole?: string }[]` |
 
 ```astro
 <TestimonialsSection
@@ -484,11 +514,12 @@ only when a `testimonials` section is present in `page.json`.
 Renders with `id="preguntas-frecuentes"`. Renders conditionally in
 `index.astro` — only when a `faq` section is present in `page.json`.
 
-| Prop           | Type                  | Default      | Notes |
-|----------------|-----------------------|--------------|-------|
-| `heading`      | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
-| `headingAlign` | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
-| `items`        | `FaqEntry[]`          | — (required) | `{ question: string; answer: string }[]` |
+| Prop              | Type                  | Default      | Notes |
+|-------------------|-----------------------|--------------|-------|
+| `heading`         | `string`              | — (required) | Rendered via `Heading as="h2" size="md"` |
+| `headingHighlight`| `string \| null`      | —            | Optional substring of `heading` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
+| `headingAlign`    | `'left' \| 'center'`  | — (required) | Passed to the section `Heading` |
+| `items`           | `FaqEntry[]`          | — (required) | `{ question: string; answer: string }[]` |
 
 ```astro
 <FaqSection
@@ -509,13 +540,14 @@ optional subheadline + button), distinct from `Hero`. No `id` — nothing
 links to it directly. Renders conditionally in `index.astro` — only when a
 `cta` section is present in `page.json`.
 
-| Prop          | Type                  | Default                  | Notes |
-|---------------|-----------------------|---------------------------|-------|
-| `headline`    | `string`              | — (required)              | Rendered via `Heading as="h2" size="md"` |
-| `subheadline` | `string`              | —                         | Rendered via `Text muted`; omitted entirely if absent |
-| `buttonLabel` | `string`              | — (required)              | Button text |
-| `buttonHref`  | `string`              | `'#formulario-captura'`   | Button link target |
-| `align`       | `'left' \| 'center'`  | — (required)              | Alignment of the headline/subheadline/button block |
+| Prop                | Type                  | Default                  | Notes |
+|---------------------|-----------------------|---------------------------|-------|
+| `headline`          | `string`              | — (required)              | Rendered via `Heading as="h2" size="md"` |
+| `headlineHighlight` | `string \| null`      | —                         | Optional substring of `headline` rendered in `--color-secondary`; ignored silently if it doesn't match exactly |
+| `subheadline`       | `string`              | —                         | Rendered via `Text muted`; omitted entirely if absent |
+| `buttonLabel`       | `string`              | — (required)              | Button text |
+| `buttonHref`        | `string`              | `'#formulario-captura'`   | Button link target |
+| `align`             | `'left' \| 'center'`  | — (required)              | Alignment of the headline/subheadline/button block |
 
 ```astro
 <CtaSection

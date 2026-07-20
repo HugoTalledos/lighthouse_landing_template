@@ -4,26 +4,34 @@ import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import Button from '../atoms/Button.astro';
 import FormField from '../molecules/FormField.astro';
+import { splitHighlight } from '../../utils/highlightText';
 
 interface Props {
   heading: string;
+  headingHighlight?: string | null;
   subtitle: string;
   align: 'left' | 'center';
   ctaLabel: string;
 }
 
-const { heading, subtitle, align, ctaLabel }: Props = Astro.props;
+const { heading, headingHighlight, subtitle, align, ctaLabel }: Props = Astro.props;
 
 const alignClasses = {
   left: 'text-left',
   center: 'text-center',
 };
+
+const headingParts = splitHighlight(heading, headingHighlight);
 ---
 
 <section class="py-16 md:py-24" id="formulario-captura">
   <Container class="mx-auto flex max-w-xl flex-col gap-6">
     <div class={`flex flex-col gap-2 ${alignClasses[align]}`}>
-      <Heading as="h2" size="md" align={align}>{heading}</Heading>
+      <Heading as="h2" size="md" align={align}>
+        {headingParts.map((part) =>
+          part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
+        )}
+      </Heading>
       <Text muted>{subtitle}</Text>
     </div>
     <form id="capture-form" class="flex flex-col gap-4" novalidate>

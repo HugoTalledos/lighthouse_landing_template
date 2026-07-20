@@ -3,26 +3,34 @@ import Container from '../atoms/Container.astro';
 import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import Button from '../atoms/Button.astro';
+import { splitHighlight } from '../../utils/highlightText';
 
 interface Props {
   headline: string;
+  headlineHighlight?: string | null;
   subheadline?: string;
   buttonLabel: string;
   buttonHref?: string;
   align: 'left' | 'center';
 }
 
-const { headline, subheadline, buttonLabel, buttonHref, align }: Props = Astro.props;
+const { headline, headlineHighlight, subheadline, buttonLabel, buttonHref, align }: Props = Astro.props;
 
 const alignClasses = {
   left: 'items-start text-left',
   center: 'items-center text-center',
 };
+
+const headlineParts = splitHighlight(headline, headlineHighlight);
 ---
 
 <section class="bg-[var(--color-bg-muted)] py-16 md:py-24">
   <Container class={`mx-auto flex max-w-xl flex-col gap-6 ${alignClasses[align]}`}>
-    <Heading as="h2" size="md" align={align}>{headline}</Heading>
+    <Heading as="h2" size="md" align={align}>
+      {headlineParts.map((part) =>
+        part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
+      )}
+    </Heading>
     {subheadline && <Text muted>{subheadline}</Text>}
     <Button variant="primary" href={buttonHref ?? '#formulario-captura'}>{buttonLabel}</Button>
   </Container>

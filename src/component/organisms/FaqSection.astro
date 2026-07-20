@@ -2,6 +2,7 @@
 import Container from '../atoms/Container.astro';
 import Heading from '../atoms/Heading.astro';
 import FaqItem from '../molecules/FaqItem.astro';
+import { splitHighlight } from '../../utils/highlightText';
 
 interface FaqEntry {
   question: string;
@@ -10,16 +11,23 @@ interface FaqEntry {
 
 interface Props {
   heading: string;
+  headingHighlight?: string | null;
   headingAlign: 'left' | 'center';
   items: FaqEntry[];
 }
 
-const { heading, headingAlign, items }: Props = Astro.props;
+const { heading, headingHighlight, headingAlign, items }: Props = Astro.props;
+
+const headingParts = splitHighlight(heading, headingHighlight);
 ---
 
 <section class="py-16 md:py-24" id="preguntas-frecuentes">
   <Container class="mx-auto flex max-w-3xl flex-col gap-10">
-    <Heading as="h2" size="md" align={headingAlign}>{heading}</Heading>
+    <Heading as="h2" size="md" align={headingAlign}>
+      {headingParts.map((part) =>
+        part.highlighted ? <span class="text-[var(--color-secondary)]">{part.text}</span> : part.text
+      )}
+    </Heading>
     <div class="flex flex-col gap-4">
       {items.map((item) => (
         <FaqItem question={item.question} answer={item.answer} />

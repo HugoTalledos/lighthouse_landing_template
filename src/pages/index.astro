@@ -59,19 +59,23 @@ const featuresSection = data.sections.find((s) => s.type === 'features') as
   | undefined;
 
 const pricingSection = data.sections.find((s) => s.type === 'pricing') as
-  | { headline?: string; plans: { name: string; price: string; period?: string | null; features: string[]; cta_text: string }[] }
+  | {
+      headline?: string;
+      headline_highlight?: string | null;
+      plans: { name: string; price: string; period?: string | null; features: string[]; cta_text: string; featured?: boolean | null; badge_text?: string | null }[];
+    }
   | undefined;
 
 const testimonialsSection = data.sections.find((s) => s.type === 'testimonials') as
-  | { headline?: string; items: { quote: string; author_name: string; author_role?: string | null }[] }
+  | { headline?: string; headline_highlight?: string | null; items: { quote: string; author_name: string; author_role?: string | null }[] }
   | undefined;
 
 const faqSection = data.sections.find((s) => s.type === 'faq') as
-  | { headline?: string; items: { question: string; answer: string }[] }
+  | { headline?: string; headline_highlight?: string | null; items: { question: string; answer: string }[] }
   | undefined;
 
 const ctaSection = data.sections.find((s) => s.type === 'cta') as
-  | { headline: string; subheadline?: string | null; button_text: string; button_url?: string | null }
+  | { headline: string; headline_highlight?: string | null; subheadline?: string | null; button_text: string; button_url?: string | null }
   | undefined;
 
 const footerSection = data.sections.find((s) => s.type === 'footer') as
@@ -79,7 +83,7 @@ const footerSection = data.sections.find((s) => s.type === 'footer') as
   | undefined;
 
 const captureSection = data.sections.find((s) => s.type === 'capture') as
-  | { headline?: string; subheadline?: string; cta_text?: string }
+  | { headline?: string; headline_highlight?: string | null; subheadline?: string; cta_text?: string }
   | undefined;
 
 const theme = sanitizeTheme(data.theme);
@@ -125,19 +129,23 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   {pricingSection && (
     <PricingSection
       heading={pricingSection.headline ?? 'Planes'}
+      headingHighlight={pricingSection.headline_highlight ?? undefined}
       headingAlign="center"
       plans={pricingSection.plans.map((plan) => ({
         name: plan.name,
         price: plan.price,
         period: plan.period ?? undefined,
         features: plan.features,
-        ctaLabel: plan.cta_text,
+        cta_text: plan.cta_text,
+        featured: plan.featured ?? undefined,
+        badge_text: plan.badge_text ?? undefined,
       }))}
     />
   )}
   {testimonialsSection && (
     <TestimonialsSection
       heading={testimonialsSection.headline ?? 'Lo que dicen nuestros clientes'}
+      headingHighlight={testimonialsSection.headline_highlight ?? undefined}
       headingAlign="center"
       items={testimonialsSection.items.map((item) => ({
         quote: item.quote,
@@ -147,11 +155,17 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
     />
   )}
   {faqSection && (
-    <FaqSection heading={faqSection.headline ?? 'Preguntas frecuentes'} headingAlign="center" items={faqSection.items} />
+    <FaqSection
+      heading={faqSection.headline ?? 'Preguntas frecuentes'}
+      headingHighlight={faqSection.headline_highlight ?? undefined}
+      headingAlign="center"
+      items={faqSection.items}
+    />
   )}
   {ctaSection && (
     <CtaSection
       headline={ctaSection.headline}
+      headlineHighlight={ctaSection.headline_highlight ?? undefined}
       subheadline={ctaSection.subheadline ?? undefined}
       buttonLabel={ctaSection.button_text}
       buttonHref={ctaSection.button_url ?? undefined}
@@ -160,6 +174,7 @@ const fallbackItems: { title: string; description: string; icon?: string | null 
   )}
   <CaptureForm
     heading={captureSection?.headline ?? 'Déjanos tus datos'}
+    headingHighlight={captureSection?.headline_highlight ?? undefined}
     subtitle={captureSection?.subheadline ?? 'Te contactaremos con más información.'}
     align="center"
     ctaLabel={captureSection?.cta_text ?? 'Enviar'}
