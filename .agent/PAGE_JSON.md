@@ -30,9 +30,9 @@ meta description, or other top-level field — `index.astro` hardcodes
   "primary_color": "#4f46e5",
   "secondary_color": "#0ea5e9",
   "font_family": "Inter",
-  "bg_color": null,
-  "bg_secondary_color": null,
-  "text_color": null,
+  "bg_color": "#ffffff",
+  "bg_secondary_color": "#f3f4f6",
+  "text_color": "#111827",
   "logo_url": null,
   "logo_text": "Acme Inc.",
   "logo_icon": null
@@ -44,9 +44,9 @@ meta description, or other top-level field — `index.astro` hardcodes
 | `primary_color`      | `string`         | yes      | Must match `^#[0-9a-fA-F]{3,8}$` (hex only, 3–8 hex digits after `#`). An invalid value fails `astro build`/`astro dev` with a thrown `Error` naming the field and value — this is not a silent fallback. |
 | `secondary_color`    | `string`         | yes      | Same hex validation and same hard-failure behavior on an invalid value. |
 | `font_family`        | `string`         | yes      | Must match `^[A-Za-z0-9 _-]+$` (letters, digits, spaces, `_`, `-` only — no commas, no quotes, no CSS font stacks). Invalid values fail the build the same way. Use a single font name (e.g. `"Poppins"`), not a full `font-family` CSS value. |
-| `bg_color`           | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-bg` (page/body background) — the "primary" tone in the section background alternation below. Omit or `null` to keep `global.css`'s default (`#ffffff`). |
-| `bg_secondary_color` | `string` | yes       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-bg-secondary` — the "secondary" tone in the section background alternation below, and the fill color for `BenefitCard` and non-featured `PricingCard`s. Omit or `null` to keep `global.css`'s default (`#f3f4f6`). |
-| `text_color`         | `string \| null` | no       | Same hex validation and same hard-failure behavior as `primary_color` when present. Overrides `--color-text` (body text color). Omit or `null` to keep `global.css`'s default (`#111827`). |
+| `bg_color`           | `string`         | yes      | Same hex validation and same hard-failure behavior as `primary_color` (an empty string is invalid too). Overrides `--color-bg` (page/body background) — the "primary" tone in the section background alternation below. Use `"#ffffff"` for the default look. |
+| `bg_secondary_color` | `string`         | yes      | Same hex validation and same hard-failure behavior as `primary_color` (an empty string is invalid too). Overrides `--color-bg-secondary` — the "secondary" tone in the section background alternation below, and the fill color for `BenefitCard` and non-featured `PricingCard`s. Use `"#f3f4f6"` for the default look. |
+| `text_color`         | `string`         | yes      | Same hex validation and same hard-failure behavior as `primary_color` (an empty string is invalid too). Overrides `--color-text` (body text color). Use `"#111827"` for the default look. |
 | `logo_url`           | `string \| null` | no       | Rendered as `<img>` in the header logo when `logo_icon` is absent/`null`; if `logo_icon` is also set, `logo_icon`'s inline SVG wins and `logo_url` is ignored. Unsanitized — interpolated directly into `<img src>`. |
 | `logo_text`          | `string \| null` | no       | Passed straight through to `Hero`'s `logoText` prop with no validation/sanitization. Omit or `null` to fall back to the `Logo` atom's default (`'[Tu Marca]'`). |
 | `logo_icon`          | `string \| null` | no       | Raw SVG markup string, injected unsanitized via `set:html`. Same trust model as `HeroSection.image_url` and `FeatureItem.icon` below — only put trusted/sanitized SVG here, never raw user input. Omit or `null` for no icon. |
@@ -353,9 +353,9 @@ A `page.json` using every section type:
     "primary_color": "#4f46e5",
     "secondary_color": "#0ea5e9",
     "font_family": "Inter",
-    "bg_color": null,
-    "bg_secondary_color": null,
-    "text_color": null,
+    "bg_color": "#ffffff",
+    "bg_secondary_color": "#f3f4f6",
+    "text_color": "#111827",
     "logo_url": null,
     "logo_text": "Acme Coffee",
     "logo_icon": null
@@ -438,9 +438,9 @@ omitted:
     "primary_color": "#4f46e5",
     "secondary_color": "#0ea5e9",
     "font_family": "Inter",
-    "bg_color": null,
-    "bg_secondary_color": null,
-    "text_color": null,
+    "bg_color": "#ffffff",
+    "bg_secondary_color": "#f3f4f6",
+    "text_color": "#111827",
     "logo_url": null,
     "logo_text": null,
     "logo_icon": null

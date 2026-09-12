@@ -10,10 +10,12 @@
       "properties": {
         "primary_color": {
           "type": "string",
+          "pattern": "^#[0-9a-fA-F]{3,8}$",
           "description": "Hex color, formato ^#[0-9a-fA-F]{3,8}$ (# + 3 a 8 dígitos hex). Un valor inválido rompe el build (astro build lanza un Error nombrando el campo y el valor), no hay fallback silencioso."
         },
         "secondary_color": {
           "type": "string",
+          "pattern": "^#[0-9a-fA-F]{3,8}$",
           "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$). Mismo comportamiento de fallo duro ante un valor inválido."
         },
         "font_family": {
@@ -21,16 +23,19 @@
           "description": "Formato ^[A-Za-z0-9 _-]+$ (letras, dígitos, espacios, _ y - solamente; sin comas ni comillas). Un solo nombre de fuente (ej. \"Poppins\"), no un font-stack CSS. Valor inválido rompe el build igual que los colores."
         },
         "bg_color": {
-          "type": ["string"],
-          "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-bg (fondo del body) — el tono 'primary' de la alternancia de fondos por sección. Omitir o null cae al default de global.css (#ffffff)."
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{3,8}$",
+          "description": "Obligatorio. Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$); un valor inválido (incluido \"\") rompe el build. Sobreescribe --color-bg (fondo del body) — el tono 'primary' de la alternancia de fondos por sección. Para el look por defecto usar \"#ffffff\"."
         },
         "bg_secondary_color": {
-          "type": ["string"],
-          "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-bg-secondary — el tono 'secondary' de la alternancia de fondos por sección (index.astro alterna cada sección renderizada entre --color-bg y --color-bg-secondary, en orden fijo, saltando secciones ausentes), y también el fill de BenefitCard y de PricingCard no destacadas (siempre usan el tono que contrasta con su propia sección). Omitir o null cae al default de global.css (#f3f4f6)."
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{3,8}$",
+          "description": "Obligatorio. Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$); un valor inválido (incluido \"\") rompe el build. Sobreescribe --color-bg-secondary — el tono 'secondary' de la alternancia de fondos por sección (index.astro alterna cada sección renderizada entre --color-bg y --color-bg-secondary, en orden fijo, saltando secciones ausentes), y también el fill de BenefitCard y de PricingCard no destacadas (siempre usan el tono que contrasta con su propia sección). Para el look por defecto usar \"#f3f4f6\"."
         },
         "text_color": {
-          "type": ["string"],
-          "description": "Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$) cuando no es null — mismo fallo duro ante un valor inválido. Sobreescribe --color-text (texto principal del body). Omitir o null cae al default de global.css (#111827)."
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{3,8}$",
+          "description": "Obligatorio. Mismo formato hex que primary_color (^#[0-9a-fA-F]{3,8}$); un valor inválido (incluido \"\") rompe el build. Sobreescribe --color-text (texto principal del body). Para el look por defecto usar \"#111827\"."
         },
         "logo_url": {
           "type": ["string", "null"],
